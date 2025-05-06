@@ -14,6 +14,6 @@ class KasirController extends Controller
         return view('Kasir.kasir-main');
     }
     function reservasi_meja(){
-        return view('Kasir.resevasi-meja');
+        return view('Kasir.reservasi-meja');
     }
 }

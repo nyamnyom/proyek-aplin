@@ -24,12 +24,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="reservasi-meja.php">
+                            <a class="nav-link" href="reservasi-meja">
                                 <i class="fas fa-bookmark me-2"></i> Reservasi Meja
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="daftar-pesanan.php">
+                            <a class="nav-link" href="daftar-pesanan">
                                 <i class="fas fa-clipboard-list me-2"></i> Daftar Pesanan
                             </a>
                         </li>
@@ -77,7 +77,7 @@
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item logout" href="../login.php">Logout</a></li>
+                                    <li><a class="dropdown-item logout" href="/">Logout</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -397,7 +397,7 @@
                                         Sudah termasuk pajak
                                     </label>
                                 </div>
-                                <a href="payment-system.php">
+                                <a href="payment-system">
                                 <button class="checkout-btn">
                                     Lanjutkan Pembayaran
                                 </button>

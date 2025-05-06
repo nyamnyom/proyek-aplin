@@ -37,4 +37,3 @@ Route::get('/daftar-pesanan', [KasirController::class, 'daftar_pesanan']);
 Route::get('/payment-system', [KasirController::class, 'payment_system']);
 Route::get('/kasir-main', [KasirController::class, 'kasir_main']);
 Route::get('/reservasi-meja', [KasirController::class, 'reservasi_meja']);
-
