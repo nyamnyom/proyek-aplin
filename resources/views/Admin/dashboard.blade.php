@@ -18,12 +18,12 @@
       <div class="p-2 pt-3">
         <h6 class="text-uppercase text-muted mb-3 ms-2 small">Main Menu</h6>
         <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a class="nav-link active" href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li class="nav-item mb-2"><a class="nav-link" href="manajemen-menu.php"><i class="bi bi-egg-fried"></i> Manajemen Menu</a></li>
-            <li class="nav-item mb-2"><a class="nav-link" href="riwayat-penjualan.php"><i class="fas fa-list-alt"></i> Riwayat Penjualan</a></li>
-            <li class="nav-item mb-2"><a class="nav-link" href="manajemen-pegawai.php"><i class="bi bi-people-fill"></i> Manajemen Pegawai</a></li>
-            <li class="nav-item mb-2"><a class="nav-link" href="daftar-event.php"><i class="fas fa-calendar"></i> Daftar Event</a></li>
-            <li class="nav-item mb-2"><a class="nav-link" href="inventaris.php"><i class="bi bi-cart-fill"></i> Inventaris</a></li>
+            <li class="nav-item mb-2"><a class="nav-link active" href="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="manajemen-menu"><i class="bi bi-egg-fried"></i> Manajemen Menu</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="riwayat-penjualan"><i class="fas fa-list-alt"></i> Riwayat Penjualan</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="manajemen-pegawai"><i class="bi bi-people-fill"></i> Manajemen Pegawai</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="daftar-event"><i class="fas fa-calendar"></i> Daftar Event</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="inventaris"><i class="bi bi-cart-fill"></i> Inventaris</a></li>
         </ul>
       </div>
     </div>
@@ -58,7 +58,7 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item logout" href="../login.php">Logout</a></li>
+                            <li><a class="dropdown-item logout" href="/">Logout</a></li>
                         </ul>
                     </div>
                 </div>
