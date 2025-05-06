@@ -1,20 +1,19 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
+// Customer
 Route::get('/', function () {
     return view('Customer/Customer');
 });
-
 
 Route::get('/Customer/Dine-in', function() {
     $menus = DB::table('menus')->where('is_active', true)->get();
     return view('Customer/Dine-in', ['menus' => $menus]);
 });
-
-
 
 Route::get('/Checkout', function () {
     return view('Customer/Checkout');
@@ -77,3 +76,7 @@ Route::post('/checkout/process', function () {
     // Redirect ke halaman konfirmasi pembayaran atau selesai
     return redirect('/')->with('success', 'Pembayaran berhasil, terima kasih!');
 });
+
+
+// Admin
+Route::get('/dashboard', [AdminController::class, 'dashboard']);
