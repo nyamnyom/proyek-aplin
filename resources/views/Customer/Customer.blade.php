@@ -44,7 +44,7 @@
                                 <i class="fas fa-chair fa-5x text-success mb-4"></i>
                                 <h3 class="card-title">Dine In</h3>
                                 <p class="card-text">Nikmati makanan langsung di tempat kami</p>
-                                <a href="/customer/dine-in" class="btn btn-success btn-lg mt-3">
+                                <a href="Customer/Dine-in" class="btn btn-success btn-lg mt-3">
                                     Pilih <i class="fas fa-arrow-right ms-2"></i>
                                 </a>
                             </div>
@@ -58,7 +58,7 @@
                                 <i class="fas fa-shopping-bag fa-5x text-warning mb-4"></i>
                                 <h3 class="card-title">Take Away</h3>
                                 <p class="card-text">Bawa pulang makanan favorit Anda</p>
-                                <a href="/customer/take-away" class="btn btn-warning btn-lg mt-3">
+                                <a href="/Customer/take-away" class="btn btn-warning btn-lg mt-3">
                                     Pilih <i class="fas fa-arrow-right ms-2"></i>
                                 </a>
                             </div>
