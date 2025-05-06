@@ -19,7 +19,7 @@
                     <h6 class="text-uppercase text-muted mb-3 small">Main Menu</h6>
                     <ul class="nav flex-column">
                         <li class="nav-item" >
-                            <a class="nav-link" href="restaurant-pos-system.php">
+                            <a class="nav-link" href="kasir-main">
                                 <i class="fas fa-plus-circle me-2"></i> Tambah Pesanan
                             </a>
                         </li>

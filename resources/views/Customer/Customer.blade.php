@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #000000;
-            --secondary-color: #ffffff;
+            --primary-color: #8B0000;
+            --secondary-color: #D32F2F;
             --text-light: #FFFFFF;
-            --text-dark: #ff0000;
-            --bg-gray: #007bff;
+            --text-dark: #333333;
+            --bg-gray: #F5F5F5;
         }
 
         body {

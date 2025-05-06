@@ -24,7 +24,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link active" href="reservasi-meja">
+                      <a class="nav-link active" href="reservasi-meja.php">
                           <i class="fas fa-bookmark me-2"></i> Reservasi Meja
                       </a>
                   </li>
