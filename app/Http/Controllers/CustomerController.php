@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Customer;
+use App\Models\Htrans;
+use App\Models\Dtrans;
+
 
 class CustomerController extends Controller
 {
@@ -76,37 +79,64 @@ class CustomerController extends Controller
         return redirect()->route('checkout')->with('success', 'Pesanan telah diperbarui.');
     }
 
+    
     // Memproses checkout dan metode pembayaran
-    public function processCheckout(Request $request)
-    {
-        $cart = session()->get('cart', []);
-
-        if (empty($cart)) {
-            return redirect('/Customer/Dine-in')->with('error', 'Cart kosong, silakan tambahkan item terlebih dahulu');
-        }
-
-        // Simpan data transaksi ke database (misalnya, buat transaksi dan simpan ke tabel transaksi)
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['qty'];
-        }
-
-        // Simulasi proses pembayaran (Anda bisa menambahkan model untuk transaksi atau pembayaran)
-        // Misalnya, simpan transaksi ke dalam database atau menggunakan API payment gateway
-
-        // Pilih metode pembayaran
-        $payment_method = $request->input('payment_method');
-        
-        // Proses pembayaran berdasarkan metode yang dipilih
-        if ($payment_method == 'transfer') {
-            // Logic pembayaran transfer bank
-        } else {
-            // Logic pembayaran cash on delivery
-        }
-
-        // Setelah proses selesai, hapus cart dari session
-        session()->forget('cart');
-
-        return redirect('/')->with('success', 'Pembayaran berhasil, terima kasih!');
+   // Memproses checkout dan metode pembayaran
+public function process(Request $request)
+{
+    $cart = session('cart');
+    if (!$cart || count($cart) == 0) {
+        return redirect('/Customer/Dine-in')->with('error', 'Tidak ada pesanan.');
     }
+
+    // Hitung total
+    $total = 0;
+    foreach ($cart as $item) {
+        $total += $item['price'] * $item['qty'];
+    }
+
+    // Simpan Htrans (nota utama)
+    $htrans_id = DB::table('htrans')->insertGetId([
+        'total' => $total,
+        'payment_method' => $request->payment_method,
+        'created_at' => now(),
+        'updated_at' => now()
+    ]);
+
+    // Simpan Dtrans (detail barang)
+    foreach ($cart as $item) {
+        DB::table('dtrans')->insert([
+            'htrans_id' => $htrans_id,
+            'item_name' => $item['name'],
+            'qty' => $item['qty'],
+            'price' => $item['price'],
+            'subtotal' => $item['price'] * $item['qty'],
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+    }
+
+    // Kosongkan cart session
+    Session::forget('cart');
+
+    // Redirect ke halaman nota
+    return redirect()->route('checkout.nota', ['id' => $htrans_id]); // <- Ini dia
+}
+
+    public function nota($id)
+    {
+        // Cek apakah transaksi ditemukan
+        $htrans = Htrans::find($id);
+        if (!$htrans) {
+            return redirect()->route('checkout.index')->with('error', 'Nota tidak ditemukan.');
+        }
+    
+        // Ambil data transaksi detail
+        $dtrans = Dtrans::where('htrans_id', $id)->get();
+    
+        // Kirim data ke view nota
+        return view('customer.nota', compact('htrans', 'dtrans'));
+    }
+    
+
 }
