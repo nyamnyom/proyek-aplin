@@ -4,23 +4,28 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\WebController;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 // Login Register
-Route::get('/', [WebController::class, 'login']);
+Route::get('/login', [WebController::class, 'login']);
 Route::get('/register', [WebController::class, 'register']);
 
 
 // Customer
-Route::get('/home', [CustomerController::class, 'home']);
+Route::get('/', [CustomerController::class, 'home']);
 Route::get('/Customer/Dine-in', [CustomerController::class, 'dineIn']);
 Route::get('/Checkout', [CustomerController::class, 'checkout']);
 Route::post('/add-to-cart/{id}', [CustomerController::class, 'addToCart']);
 Route::get('/checkout', [CustomerController::class, 'checkout'])->name('checkout');
 Route::post('/checkout/update', [CustomerController::class, 'updateCart'])->name('checkout.update');
 Route::post('/checkout/process', [CustomerController::class, 'processCheckout'])->name('checkout.process');
+Route::post('/checkout/process', [CustomerController::class, 'process'])->name('checkout.process');
+Route::get('/Customer/nota/{id}', [CustomerController::class, 'nota'])->name('checkout.nota');
+
+
 
 // Admin
 Route::get('/dashboard', [AdminController::class, 'dashboard']);
@@ -37,4 +42,3 @@ Route::get('/daftar-pesanan', [KasirController::class, 'daftar_pesanan']);
 Route::get('/payment-system', [KasirController::class, 'payment_system']);
 Route::get('/kasir-main', [KasirController::class, 'kasir_main']);
 Route::get('/reservasi-meja', [KasirController::class, 'reservasi_meja']);
-

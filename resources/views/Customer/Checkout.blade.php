@@ -94,6 +94,9 @@
         .text-dark {
             color: var(--text-dark);
         }
+        .quantity-control {
+    max-width: 140px;
+}
     </style>
 </head>
 <body class="bg-light">
@@ -119,7 +122,11 @@
                             </div>
                             <span>Rp {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}</span>
                             <div>
-                                <input type="number" name="cart[{{ $key }}][qty]" class="form-control quantity-input" value="{{ $item['qty'] }}" min="1">
+                                <div class="input-group quantity-control">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="updateQty('{{ $key }}', -1)">−</button>
+                                    <input type="text" id="qty-{{ $key }}" name="cart[{{ $key }}][qty]" class="form-control text-center" value="{{ $item['qty'] }}" readonly>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="updateQty('{{ $key }}', 1)">+</button>
+                                </div>
                             </div>
                         </li>
                     @endforeach
@@ -134,15 +141,14 @@
                     <h3 class="payment-title">Metode Pembayaran</h3>
                     <div class="payment-options">
                         <div class="payment-option selected" onclick="selectPaymentMethod(this)">Cash</div>
-                        <div class="payment-option" onclick="selectPaymentMethod(this)">Credit Card</div>
+                        <div class="payment-option" onclick="selectPaymentMethod(this)">Debit Card</div>
                         <div class="payment-option" onclick="selectPaymentMethod(this)">QRIS</div>
-                        <div class="payment-option" onclick="selectPaymentMethod(this)">GoPay</div>
-                        <div class="payment-option" onclick="selectPaymentMethod(this)">OVO</div>
-                        <div class="payment-option" onclick="selectPaymentMethod(this)">Dana</div>
+                        
                     </div>
                 </div>
 
                 <input type="hidden" id="payment_method" name="payment_method" value="cash">
+
 
                 <div class="text-end mt-4">
                     <button type="submit" class="btn btn-primary btn-lg">Perbarui Pesanan</button>
@@ -151,10 +157,12 @@
 
             <!-- Button Proses Pembayaran -->
             <div class="text-end mt-4">
-                <form action="/checkout/process" method="POST">
-                    @csrf
-                    <button class="btn btn-success btn-lg">Proses Pembayaran</button>
-                </form>
+                    <form action="/checkout/process" method="POST">
+                        @csrf
+                        <input type="hidden" name="cart_items" value="{{ json_encode(session('cart')) }}">
+                        <input type="hidden" id="payment_method" name="payment_method" value="cash">
+                        <button class="btn btn-success btn-lg">Proses Pembayaran</button>
+                    </form>
             </div>
         </div>
         @else
@@ -165,6 +173,15 @@
     </div>
 
     <script>
+
+function updateQty(key, change) {
+    const input = document.getElementById('qty-' + key);
+    let currentValue = parseInt(input.value) || 1;
+    let newValue = currentValue + change;
+    if (newValue < 1) newValue = 1; // Set ke 1 jika kurang dari 1
+    input.value = newValue;
+}
+
         function selectPaymentMethod(element) {
             const paymentOptions = document.querySelectorAll('.payment-option');
             paymentOptions.forEach(option => option.classList.remove('selected'));

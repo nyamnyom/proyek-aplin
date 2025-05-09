@@ -7,7 +7,7 @@
   @include('style.kasirStyle')
 </head>
 <body>
-  <div class="container-fluid p-0">
+  <div class="container-fluid p-0" style="height: 100vh; overflow: hidden;">
     <div class="row g-0">
       <!-- Sidebar -->
       <div class="col-md-2 px-0 sidebar">
@@ -24,7 +24,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link active" href="reservasi-meja.php">
+                      <a class="nav-link active" href="reservasi-meja">
                           <i class="fas fa-bookmark me-2"></i> Reservasi Meja
                       </a>
                   </li>
@@ -48,7 +48,7 @@
       </div>
       
       <!-- Main Content -->
-      <div class="col-md-10 main-content">
+      <div class="col-md-9 main-content" style="height: 100vh; overflow-y: auto;">
         <!-- Top Navigation -->
         <nav class="navbar navbar-expand navbar-light bg-white p-3">
             <div class="container-fluid">
@@ -77,7 +77,7 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item logout" href="../login.php">Logout</a></li>
+                            <li><a class="dropdown-item logout" href="/">Logout</a></li>
                         </ul>
                     </div>
                 </div>
