@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 // Login Register
-Route::get('/', [WebController::class, 'login']);
+Route::get('/login', [WebController::class, 'login']);
 Route::get('/register', [WebController::class, 'register']);
 
 
 // Customer
-Route::get('/home', [CustomerController::class, 'home']);
+Route::get('/', [CustomerController::class, 'home']);
 Route::get('/Customer/Dine-in', [CustomerController::class, 'dineIn']);
 Route::get('/Checkout', [CustomerController::class, 'checkout']);
 Route::post('/add-to-cart/{id}', [CustomerController::class, 'addToCart']);
