@@ -14,9 +14,7 @@
             @include('Layout.sidebar-kasir')
             <div class="col-md-10 px-0">
                 @include('Layout.navbar-kasir')
-                <div class="row mx-0">
-                    @yield('content')
-                </div>
+                @yield('content')
             </div>
         </div>
     </div>

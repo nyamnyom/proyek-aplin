@@ -25,7 +25,7 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item logout" href="../login.php">Logout</a></li>
+                    <li><a class="dropdown-item logout" href="/">Logout</a></li>
                 </ul>
             </div>
         </div>
