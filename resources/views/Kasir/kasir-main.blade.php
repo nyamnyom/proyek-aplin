@@ -40,106 +40,50 @@
                     <div class="tab-content mt-3">
                         <div class="tab-pane fade show active" id="makanan">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Nasi Semacem Babi">
-                                        </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Nasi Semacem Babi</div>
-                                            <div class="menu-price">Rp 40.000</div>
-                                            <div class="menu-category">21 menit masak</div>
-                                        </div>
+                                @if ($foods->isEmpty())
+                                    <div class="alert alert-info">
+                                        Makanan tidak ditemukan
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Nasi Chachu Babi">
+                                @else
+                                    @foreach ($foods as $food)
+                                        <div class="col-md-4">
+                                            <div class="menu-card">
+                                                <div class="menu-image">
+                                                    <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Nasi Semacem Babi">
+                                                </div>
+                                                <div class="menu-details">
+                                                    <div class="menu-title">{{$food->name}}</div>
+                                                    <div class="menu-price">Rp {{ number_format($food->price, 0, ',', '.') }}</div>
+                                                    <div class="menu-category">21 menit masak</div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Nasi Chachu Babi</div>
-                                            <div class="menu-price">Rp 40.000</div>
-                                            <div class="menu-category">17 menit masak</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Nasi Sayur Babi">
-                                        </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Nasi Sayur Babi</div>
-                                            <div class="menu-price">Rp 45.000</div>
-                                            <div class="menu-category">25 menit masak</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://awsimages.detik.net.id/community/media/visual/2021/12/24/bakmi-babi-bogor-1.jpeg?w=1200" alt="Mie Charsiu Babi">
-                                        </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Mie Charsiu Babi</div>
-                                            <div class="menu-price">Rp 45.000</div>
-                                            <div class="menu-category">18 menit masak</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://awsimages.detik.net.id/community/media/visual/2021/12/24/bakmi-babi-bogor-1.jpeg?w=1200" alt="Mie Semacem Babi">
-                                        </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Mie Semacem Babi</div>
-                                            <div class="menu-price">Rp 45.000</div>
-                                            <div class="menu-category">19 menit masak</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://awsimages.detik.net.id/community/media/visual/2021/12/24/bakmi-babi-bogor-1.jpeg?w=1200" alt="Mie Charsiu Babi">
-                                        </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Mie Charsiu Babi</div>
-                                            <div class="menu-price">Rp 45.000</div>
-                                            <div class="menu-category">17 menit masak</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                         <div class="tab-pane fade" id="minuman">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://nilaigizi.com/assets/images/produk/produk_1578041377.jpg" alt="Es Teh">
-                                        </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Es Teh</div>
-                                            <div class="menu-price">Rp 10.000</div>
-                                            <div class="menu-category">3 menit sajian</div>
-                                        </div>
+                                @if ($drinks->isEmpty())
+                                    <div class="alert alert-info">
+                                        Minuman tidak ditemukan
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://dcostseafood.id/wp-content/uploads/2021/12/ES-JERUK-murni.jpg" alt="Es Jeruk">
+                                @else
+                                    @foreach ($drinks as $drink)
+                                        <div class="col-md-4">
+                                            <div class="menu-card">
+                                                <div class="menu-image">
+                                                    <img src="https://nilaigizi.com/assets/images/produk/produk_1578041377.jpg" alt="Es Teh">
+                                                </div>
+                                                <div class="menu-details">
+                                                    <div class="menu-title">{{$drink->name}}</div>
+                                                    <div class="menu-price">Rp {{ number_format($drink->price, 0, ',', '.') }}</div>
+                                                    <div class="menu-category">3 menit sajian</div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Es Jeruk</div>
-                                            <div class="menu-price">Rp 12.000</div>
-                                            <div class="menu-category">4 menit sajian</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                         <div class="tab-pane fade" id="camilan">
@@ -226,7 +170,6 @@
                             <div class="flex-grow-1">
                                 <div class="fw-bold">Nasi Semacem Babi</div>
                                 <div class="text-muted small">Rp 40.000</div>
-                                <input type="text" class="note-input" placeholder="Jangan tambah pedas">
                             </div>
                             <div class="d-flex align-items-center ms-3">
                                 <input type="number" class="item-qty" value="2">
@@ -239,6 +182,7 @@
                             </button>
                         </div>
                     </div>
+                    <input type="text" class="note-input" value="Jangan tambah pedas">
                     
                     <div class="order-item">
                         <div class="d-flex">
