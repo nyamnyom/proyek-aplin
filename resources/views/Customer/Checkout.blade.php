@@ -147,7 +147,7 @@
                     </div>
                 </div>
 
-                <input type="hidden" id="payment_method" name="payment_method" value="cash">
+               
 
 
                 <div class="text-end mt-4">
@@ -156,14 +156,15 @@
             </form>
 
             <!-- Button Proses Pembayaran -->
-            <div class="text-end mt-4">
-                    <form action="/checkout/process" method="POST">
-                        @csrf
-                        <input type="hidden" name="cart_items" value="{{ json_encode(session('cart')) }}">
-                        <input type="hidden" id="payment_method" name="payment_method" value="cash">
-                        <button class="btn btn-success btn-lg">Proses Pembayaran</button>
-                    </form>
-            </div>
+            
+      <h5>Metode Pembayaran</h5>
+      
+      <form id="paymentForm" action="{{ route('checkout.process') }}" method="POST">
+        @csrf
+        <input type="hidden" id="payment_method" name="payment_method" value="cash">
+        <button class="btn btn-success">Proses Pembayaran</button>
+      </form>
+    </div>
         </div>
         @else
         <div class="alert alert-warning">

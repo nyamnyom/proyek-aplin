@@ -22,8 +22,8 @@ Route::post('/add-to-cart/{id}', [CustomerController::class, 'addToCart']);
 Route::get('/checkout', [CustomerController::class, 'checkout'])->name('checkout');
 Route::post('/checkout/update', [CustomerController::class, 'updateCart'])->name('checkout.update');
 Route::post('/checkout/process', [CustomerController::class, 'processCheckout'])->name('checkout.process');
-Route::post('/checkout/process', [CustomerController::class, 'process'])->name('checkout.process');
 Route::get('/Customer/nota/{id}', [CustomerController::class, 'nota'])->name('checkout.nota');
+Route::get('/weather/{city}', [CustomerController::class, 'getWeather']);
 
 
 

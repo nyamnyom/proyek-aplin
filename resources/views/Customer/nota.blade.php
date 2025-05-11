@@ -1,28 +1,35 @@
 @extends('Customer.layouts.app')
 
-@section('title', 'Nota Transaksi')
+@section('title','Nota Transaksi')
 
 @section('content')
-<div class="container">
-    <h2>Nota  #{{ $htrans->id }}</h2>
-    <p>Metode Pembayaran: {{ $htrans->payment_method }}</p>
-    @if($htrans->payment_method == 'cash')
-            <b>Catatan:</b> Silahkan berikan nota ini kepada kasir untuk proses pembayaran lebih lanjut.
+<div class="container py-5">
+    <h2>Nota #{{ $htrans->id }}</h2>
+    <p><strong>Metode Pembayaran:</strong> {{ strtoupper($htrans->payment_method) }}</p>
 
+    @if($htrans->payment_method === 'cash')
+        <div class="alert alert-info">Silakan tunjukkan nota ini ke kasir untuk menyelesaikan pembayaran.</div>
+    @elseif($htrans->payment_method === 'debit_card')
+        <div class="alert alert-info">Pembayaran via kartu debit diproses menggunakan mesin EDC.</div>
+    @elseif($htrans->payment_method === 'qris' && isset($qrUrl))
+        <div class="text-center my-4">
+            <h5>Silakan scan QR berikut untuk melakukan pembayaran:</h5>
+            <img src="{{ $qrUrl }}" alt="QR Pembayaran" width="250">
+        </div>
     @endif
-    
-
-    
+  
 
     <hr>
     <h4>Detail Pesanan:</h4>
     <ul>
         @foreach ($dtrans as $item)
-            {{ $item->item_name }} - {{ $item->qty }} x Rp{{ number_format($item->price) }} = Rp{{ number_format($item->subtotal) }}<br>
+            <li>{{ $item->item_name }} — {{ $item->qty }} x Rp{{ number_format($item->price, 0, ',', '.') }} = Rp{{ number_format($item->subtotal, 0, ',', '.') }}</li>
         @endforeach
     </ul>
-    <p>Total: Rp{{ number_format($htrans->total) }}</p>
+
+    <p><strong>Total:</strong> Rp{{ number_format($htrans->total, 0, ',', '.') }}</p>
+
     <hr>
-    <a href="/" class="btn btn-primary">Kembali ke Dine-In</a>
+    <a href="{{ url('/') }}" class="btn btn-primary">&larr; Kembali ke Menu</a>
 </div>
 @endsection

@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use App\Models\Customer;
+use Illuminate\Support\Facades\Http;
+
 use App\Models\Htrans;
 use App\Models\Dtrans;
+use Midtrans\Config;
+use Midtrans\Snap;
+use Midtrans\Transaction;
 
 
 class CustomerController extends Controller
@@ -82,61 +86,108 @@ class CustomerController extends Controller
     
     // Memproses checkout dan metode pembayaran
    // Memproses checkout dan metode pembayaran
-public function process(Request $request)
+public function processCheckout(Request $request)
 {
-    $cart = session('cart');
-    if (!$cart || count($cart) == 0) {
-        return redirect('/Customer/Dine-in')->with('error', 'Tidak ada pesanan.');
+    $cart          = session('cart', []);
+    $paymentMethod = $request->input('payment_method', 'cash');
+
+    if (empty($cart)) {
+        return redirect()->route('customer.dineIn')
+                         ->with('error', 'Tidak ada pesanan.');
     }
 
     // Hitung total
-    $total = 0;
-    foreach ($cart as $item) {
-        $total += $item['price'] * $item['qty'];
-    }
+    $total = array_reduce($cart, fn($sum, $i) => $sum + ($i['price'] * $i['qty']), 0);
 
-    // Simpan Htrans (nota utama)
+    // Simpan Htrans
     $htrans_id = DB::table('htrans')->insertGetId([
-        'total' => $total,
-        'payment_method' => $request->payment_method,
-        'created_at' => now(),
-        'updated_at' => now()
+        'total'          => $total,
+        'payment_method' => $paymentMethod,
+        'created_at'     => now(),
+        'updated_at'     => now(),
     ]);
 
-    // Simpan Dtrans (detail barang)
-    foreach ($cart as $item) {
+    // Simpan Dtrans
+    foreach ($cart as $i) {
         DB::table('dtrans')->insert([
-            'htrans_id' => $htrans_id,
-            'item_name' => $item['name'],
-            'qty' => $item['qty'],
-            'price' => $item['price'],
-            'subtotal' => $item['price'] * $item['qty'],
+            'htrans_id'  => $htrans_id,
+            'item_name'  => $i['name'],
+            'qty'        => $i['qty'],
+            'price'      => $i['price'],
+            'subtotal'   => $i['price'] * $i['qty'],
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
     }
 
-    // Kosongkan cart session
+    // Kosongkan cart
     Session::forget('cart');
 
-    // Redirect ke halaman nota
-    return redirect()->route('checkout.nota', ['id' => $htrans_id]); // <- Ini dia
+    // Jika QRIS → generate QR dan simpan ke session
+    if ($paymentMethod === 'qris') {
+        $orderId  = 'ORDER-' . uniqid();
+        $serverKey = env('MIDTRANS_SERVER_KEY');
+
+        // Panggil API Midtrans
+        $response = Http::withHeaders([
+            'Accept'        => 'application/json',
+            'Authorization' => 'Basic ' . base64_encode($serverKey . ':'),
+            'Content-Type'  => 'application/json',
+        ])->post('https://api.sandbox.midtrans.com/v2/charge', [
+            'payment_type' => 'qris',
+            'transaction_details' => [
+                'order_id'     => $orderId,
+                'gross_amount' => $total,
+            ],
+            'qris' => [
+                'acquirer' => 'gopay'
+            ]
+        ]);
+
+        $result = $response->json();
+
+        if ($response->successful() && isset($result['actions'][0]['url'])) {
+            session(['qrUrl' => $result['actions'][0]['url']]);
+            return redirect()->route('checkout.nota', ['id' => $htrans_id]);
+        } else {
+            return back()->with('error', 'Gagal generate QRIS: ' . json_encode($result));
+        }
+    }
+
+    // Cash/Debit → langsung ke nota tanpa QR
+    return redirect()->route('checkout.nota', ['id' => $htrans_id])
+                     ->with('success', 'Pembayaran berhasil.');
 }
 
     public function nota($id)
     {
-        // Cek apakah transaksi ditemukan
-        $htrans = Htrans::find($id);
-        if (!$htrans) {
-            return redirect()->route('checkout.index')->with('error', 'Nota tidak ditemukan.');
-        }
-    
-        // Ambil data transaksi detail
+        $htrans = Htrans::findOrFail($id);
         $dtrans = Dtrans::where('htrans_id', $id)->get();
-    
-        // Kirim data ke view nota
-        return view('customer.nota', compact('htrans', 'dtrans'));
+
+        // ambil QR URL jika ada, lalu hapus dari session
+        $qrUrl = session('qrUrl');
+        Session::forget('qrUrl');
+
+        return view('Customer.nota', compact('htrans', 'dtrans', 'qrUrl'));
     }
     
+    // getWeather api
+    public function getWeather($city)
+{
+    $apiKey = env('WEATHER_API_KEY');
+    $response = Http::get("https://api.openweathermap.org/data/2.5/weather", [
+        'q' => $city,
+        'appid' => $apiKey,
+        'units' => 'metric', // Celsius
+    ]);
+
+    if ($response->successful()) {
+        return response()->json($response->json());
+    } else {
+        return response()->json(['error' => 'Gagal mengambil data cuaca'], 500);
+    }
+}
+
+
 
 }

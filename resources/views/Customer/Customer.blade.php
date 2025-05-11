@@ -69,6 +69,7 @@
 </head>
 <body class="bg-light">
     <div class="container py-5">
+        
         <div class="row justify-content-center">
             <div class="col-md-8 text-center mb-5">
                 <div class="welcome-card p-5">
@@ -115,5 +116,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 </html>

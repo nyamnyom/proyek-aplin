@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Dine In - Restoran Kami</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #8B0000;
@@ -73,14 +74,18 @@
 </head>
 <body class="bg-light">
     <div class="container py-4">
-        <!-- Back Button -->
-        <div class="mb-3">
-            <a href="/" class="btn btn-outline-secondary">
-                &larr; Kembali
-            </a>
-            <a href="/Checkout" class="btn btn-success">
-                <i class="fas fa-shopping-cart me-1"></i> Checkout
-            </a>
+        <!-- Header Row: Back - Weather - Checkout -->
+        <div class="d-flex flex-column align-items-center mb-3">
+            <div class="d-flex justify-content-between align-items-center w-100 mb-2">
+                <a href="/" class="btn btn-outline-secondary">
+                    &larr; Kembali
+                </a>
+                <div id="weather-widget" class="text-center flex-grow-1 mx-3"></div>
+                <a href="/Checkout" class="btn btn-success">
+                    <i class="fas fa-shopping-cart me-1"></i> Checkout
+                </a>
+            </div>
+            <div id="recommendation-text" class="text-danger fw-semibold text-center"></div>
         </div>
 
         <!-- Welcome -->
@@ -98,7 +103,7 @@
             @foreach($menus as $menu)
             <div class="col-md-4 mb-4 menu-item" data-category="{{ $menu->category }}">
                 <div class="card h-100 shadow-sm">
-                    <img src="{{ $menu->image_url}}" class="menu-img" alt="{{ $menu->name }}">
+                    <img src="{{ $menu->image_url }}" class="menu-img" alt="{{ $menu->name }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $menu->name }}</h5>
                         <p class="card-text text-muted">{{ $menu->description }}</p>
@@ -119,6 +124,7 @@
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Filter menu by category
@@ -133,6 +139,41 @@
                 });
             });
         });
+
+        // Fetch Weather Info
+        document.addEventListener("DOMContentLoaded", function () {
+    fetch('/weather/Lombok')
+        .then(response => response.json())
+        .then(data => {
+            const temp = data.main.temp;
+            const city = data.name;
+            const desc = data.weather[0].description.toLowerCase();
+            const icon = data.weather[0].icon;
+            const weatherBox = `
+                <div class="d-flex align-items-center justify-content-center gap-3">
+                    <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${desc}" style="width: 50px;">
+                    <div>
+                        <strong>${city}</strong> – ${desc}, ${temp}°C
+                    </div>
+                </div>
+            `;
+            document.getElementById('weather-widget').innerHTML = weatherBox;
+
+            // Rekomendasi dinamis berdasarkan cuaca
+            const recText = document.getElementById('recommendation-text');
+            if (temp > 30) {
+                recText.innerHTML = `Wah panas yah hari ini, Rekomendasi: <span class="text-dark">Mie Goreng</span> dan <span class="text-dark">minuman yang segar-segar</span> 🍹`;
+            } else if (Math.round(temp) <= 28 || desc.includes('rain')) {
+                recText.innerHTML = `Wah. cuaca begini enaknya yang hangat-hangat ya, kami rekomendasikan <span class="text-dark">Mie Kuah</span> dan <span class="text-dark">minuman hangat</span> ☕`;
+            } else {
+                recText.innerHTML = `Selamat menikmati hari ini! Pilih menu favoritmu ya 😊`;
+            }
+        })
+        .catch(error => {
+            console.error("Gagal mengambil data cuaca:", error);
+        });
+});
+
     </script>
 </body>
 </html>
