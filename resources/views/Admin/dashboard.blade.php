@@ -6,7 +6,7 @@
   
   <!-- Konten halaman di sini -->
   <!-- Sidebar dan Navbar sudah diasumsikan terpasang -->
-  <div class="container-fluid">
+
     <h3 class="fw-bold">Welcome, Alexander!</h3>
 
     <div class="row g-4">
