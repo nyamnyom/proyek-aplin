@@ -1,6 +1,6 @@
 @extends('Layout.layout-admin')
 
-@section('title', 'Inventaris')
+@section('title', 'Manajemen Menu')
 
 @section('content')
   <!-- Header -->

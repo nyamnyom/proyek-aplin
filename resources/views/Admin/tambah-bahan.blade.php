@@ -1,6 +1,6 @@
 @extends('Layout.layout-admin')
 
-@section('title', 'Edit Bahan')
+@section('title', 'Tambah Bahan')
 
 @section('content')
   <!-- Header -->
