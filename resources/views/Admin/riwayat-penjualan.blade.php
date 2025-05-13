@@ -1,6 +1,6 @@
 @extends('Layout.layout-admin')
 
-@section('title', 'Daftar Event')
+@section('title', 'Riwaya Penjualan')
 
 @section('content')
   <h4 class="fw-bold">Riwayat Penjualan</h4>

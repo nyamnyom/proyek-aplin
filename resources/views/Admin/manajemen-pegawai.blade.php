@@ -1,6 +1,6 @@
 @extends('Layout.layout-admin')
 
-@section('title', 'Daftar Event')
+@section('title', 'Manajemen Pegawai')
 
 @section('content')
   <!-- Header -->
