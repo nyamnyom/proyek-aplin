@@ -3,10 +3,10 @@
 @section('title', 'Wei Hong Restaurant - Sistem Kasir (Pembayaran)')
 
 @section('content')
-<div class="row mx-0">
+<div class="row mx-0" style="height: 100vh; overflow-y: auto;">
                     <!-- Pesanan Section -->
                     <div class="col-md-6">
-                        <div class="main-content">
+                        <div class="main-content" style="height: 100vh; overflow-y: auto;">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">Tambah Pesanan</h4>
                                 <div class="text-muted">
@@ -120,7 +120,7 @@
                     </div>
                     
                     <!-- Pembayaran Section -->
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-5">
                         <div class="main-content">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">Pembayaran</h4>
@@ -235,6 +235,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                 
 @endsection
 {{-- 
