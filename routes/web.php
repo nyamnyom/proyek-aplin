@@ -26,7 +26,6 @@ Route::get('/Customer/nota/{id}', [CustomerController::class, 'nota'])->name('ch
 Route::get('/weather/{city}', [CustomerController::class, 'getWeather']);
 
 
-
 // Admin
 Route::get('/dashboard', [AdminController::class, 'dashboard']);
 Route::get('/daftar-event', [AdminController::class, 'daftar_event']);
