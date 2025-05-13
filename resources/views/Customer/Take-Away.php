@@ -93,91 +93,52 @@
 
         <!-- Category Navigation -->
         <ul class="nav nav-pills category-nav mb-4" id="categoryNav">
-    <li class="nav-item"><a class="nav-link active" href="#" data-category="all">Semua</a></li>
-    <li class="nav-item"><a class="nav-link" href="#" data-category="food">Makanan</a></li>
-    <li class="nav-item"><a class="nav-link" href="#" data-category="drink">Minuman</a></li>
-    <li class="nav-item"><a class="nav-link" href="#" data-category="best-seller">Terlaris</a></li> <!-- Kategori Terlaris -->
-</ul>
+            <li class="nav-item"><a class="nav-link active" href="#" data-category="all">Semua</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-category="food">Makanan</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-category="drink">Minuman</a></li>
+        </ul>
 
         <!-- Menu Items -->
         <div class="row" id="menuContainer">
-    @foreach($menus as $menu)
-    <div class="col-md-4 mb-4 menu-item" 
-     data-category="{{ $menu->category }}" 
-     data-ordered="{{ $menu->total_ordered }}">
-        <div class="card h-100 shadow-sm">
-            <img src="{{ $menu->image_url }}" class="menu-img" alt="{{ $menu->name }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ $menu->name }}</h5>
-                <p class="card-text text-muted">{{ $menu->description }}</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <span class="fw-bold">Rp {{ number_format($menu->price, 0, ',', '.') }}</span>
-                    <!-- Tombol tambah ke cart -->
-                    <form action="/add-to-cart/{{ $menu->id }}" method="POST">
-                        @csrf
-                        <button class="btn btn-primary btn-sm">
-                            <i class="fas fa-cart-plus"></i> Tambah
-                        </button>
-                    </form>
+            @foreach($menus as $menu)
+            <div class="col-md-4 mb-4 menu-item" data-category="{{ $menu->category }}">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ $menu->image_url }}" class="menu-img" alt="{{ $menu->name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $menu->name }}</h5>
+                        <p class="card-text text-muted">{{ $menu->description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Rp {{ number_format($menu->price, 0, ',', '.') }}</span>
+                            <!-- Tombol tambah ke cart -->
+                            <form action="/add-to-cart/{{ $menu->id }}" method="POST">
+                                @csrf
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="fas fa-cart-plus"></i> Tambah
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+            @endforeach
         </div>
-    </div>
-    @endforeach
-</div>
     </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Filter menu by category
-     
-document.addEventListener('DOMContentLoaded', function () {
-    const categoryButtons = document.querySelectorAll('.category-nav [data-category]');
-    const menuContainer = document.getElementById('menuContainer');
-    const originalItems = Array.from(menuContainer.children); // backup asli
-
-    categoryButtons.forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // Atur tombol active
-            categoryButtons.forEach(link => link.classList.remove('active'));
-            this.classList.add('active');
-
-            const category = this.getAttribute('data-category');
-
-            // Kosongkan kontainer menu
-            menuContainer.innerHTML = '';
-
-            let filteredItems;
-
-            if (category === 'all') {
-                filteredItems = originalItems;
-            } else if (category === 'best-seller') {
-                // Urutkan semua berdasarkan total_ordered (descending)
-                filteredItems = [...originalItems].sort((a, b) => {
-                    const aOrdered = parseInt(a.dataset.ordered || '0');
-                    const bOrdered = parseInt(b.dataset.ordered || '0');
-                    return bOrdered - aOrdered;
-                }).slice(0, 10);  // Batasi hanya 10 item teratas
-            } else {
-                // Filter berdasarkan kategori tertentu
-                filteredItems = originalItems.filter(item => item.dataset.category === category);
-            }
-
-            // Tambahkan elemen yang sudah difilter/diurut kembali ke DOM
-            filteredItems.forEach(item => {
-                item.style.display = 'block';
-                menuContainer.appendChild(item);
+        document.querySelectorAll('.category-nav [data-category]').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+                const cat = this.getAttribute('data-category');
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.style.display = (cat === 'all' || item.dataset.category === cat) ? 'block' : 'none';
+                });
             });
         });
-    });
-});
-
-
-
-
 
         // Fetch Weather Info
         document.addEventListener("DOMContentLoaded", function () {

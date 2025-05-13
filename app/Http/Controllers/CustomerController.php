@@ -36,37 +36,46 @@ class CustomerController extends Controller
 
     // Menambahkan item ke dalam cart
     public function addToCart($id)
-    {
-        $menu = DB::table('menus')->where('id', $id)->first();
+{
+    // Ambil menu dan pastikan masih aktif
+    $menu = DB::table('menus')->where('id', $id)->where('is_active', 1)->first();
 
-        if ($menu) {
-            $item = [
-                'id' => $menu->id,
-                'name' => $menu->name,
-                'price' => $menu->price,
-                'qty' => 1,
-            ];
-
-            $cart = session()->get('cart', []);
-            $found = false;
-
-            foreach ($cart as &$cartItem) {
-                if ($cartItem['id'] === $item['id']) {
-                    $cartItem['qty'] += 1;
-                    $found = true;
-                    break;
-                }
-            }
-
-            if (!$found) {
-                $cart[] = $item;
-            }
-
-            session()->put('cart', $cart);
-        }
-
-        return redirect('/Customer/Dine-in');
+    if (!$menu) {
+        return redirect('/Customer/Dine-in')->with('error', 'Menu tidak ditemukan atau tidak aktif.');
     }
+
+    // Buat item cart
+    $item = [
+        'id' => $menu->id,
+        'name' => $menu->name,
+        'price' => $menu->price,
+        'qty' => 1,
+    ];
+
+    $cart = session()->get('cart', []);
+    $found = false;
+
+    foreach ($cart as &$cartItem) {
+        if ($cartItem['id'] === $item['id']) {
+            $cartItem['qty'] += 1;
+            $found = true;
+            break;
+        }
+    }
+
+    if (!$found) {
+        $cart[] = $item;
+    }
+
+    // Simpan cart ke session
+    session()->put('cart', $cart);
+
+    // Tambahkan total_ordered di database
+    DB::table('menus')->where('id', $menu->id)->increment('total_ordered');
+
+    return redirect('/Customer/Dine-in')->with('success', 'Menu berhasil ditambahkan ke keranjang.');
+}
+
 
     // Memperbarui cart (jumlah pesanan)
     public function updateCart(Request $request)
