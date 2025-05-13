@@ -3,7 +3,8 @@
 @section('title', 'Wei Hong Restaurant - Daftar Pesanan')
 
 @section('content')
-<div class="row mx-0" style="display: flex; flex-wrap: nowrap;">
+                <!-- Main Content Area -->
+                <div class="row mx-0">
                     <div class="col-md-8">
                         <div class="main-content">
                             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -210,6 +211,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                 
 @endsection
 {{-- 
@@ -628,5 +630,3 @@
         });
     </script>
     @endsection
-</body>
-</html>
