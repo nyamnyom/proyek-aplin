@@ -1,3 +1,218 @@
+@extends('Layout.layout-kasir')
+
+@section('title', 'Wei Hong Restaurant - Daftar Pesanan')
+
+@section('content')
+<div class="row mx-0" style="display: flex; flex-wrap: nowrap;">
+                    <div class="col-md-8">
+                        <div class="main-content">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="mb-0">Daftar Pesanan</h4>
+                                <div class="text-muted small">
+                                    <a href="#" class="text-decoration-none text-muted">Main Menu</a> / Daftar Pesanan
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="order-tabs">
+                                <div class="order-tab active" data-tab="pending">Pending</div>
+                                <div class="order-tab" data-tab="completed">Selesai</div>
+                                <div class="order-tab" data-tab="cancelled">Dibatalkan</div>
+                            </div>
+                            
+                            <!-- Pending Orders Section -->
+                            <div class="tab-content" id="pending-tab">
+                                <div class="order-item">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fw-bold">Pesanan #34652</div>
+                                        <div class="time-badge">17:04</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small">Nama: <span class="fw-bold">Matthew</span></div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold me-3">Rp 250.000</div>
+                                            <button class="pay-btn complete-btn" data-order-id="34652">Paid</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fw-bold">Pesanan #34653</div>
+                                        <div class="time-badge">17:10</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small">Nama: <span class="fw-bold">Erick</span></div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold me-3">Rp 80.000</div>
+                                            <button class="pay-btn complete-btn" data-order-id="34653">Paid</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fw-bold">Pesanan #34654</div>
+                                        <div class="time-badge">17:14</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small">Nama: <span class="fw-bold">Reva</span></div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold me-3">Rp 350.000</div>
+                                            <button class="pay-btn complete-btn" data-order-id="34654">Paid</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fw-bold">Pesanan #34655</div>
+                                        <div class="time-badge">17:20</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small">Nama: <span class="fw-bold">Jeremy</span></div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold me-3">Rp 310.000</div>
+                                            <button class="pay-btn complete-btn" data-order-id="34655">Paid</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fw-bold">Pesanan #34656</div>
+                                        <div class="time-badge">17:30</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small">Nama: <span class="fw-bold">Valen</span></div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold me-3">Rp 250.000</div>
+                                            <button class="pay-btn complete-btn" data-order-id="34656">Paid</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fw-bold">Pesanan #34657</div>
+                                        <div class="time-badge">17:40</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small">Nama: <span class="fw-bold">Ovidio</span></div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold me-3">Rp 365.000</div>
+                                            <button class="pay-btn complete-btn" data-order-id="34657">Paid</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-item">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fw-bold">Pesanan #34658</div>
+                                        <div class="time-badge">17:44</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="small">Nama: <span class="fw-bold">Jessica</span></div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold me-3">Rp 240.000</div>
+                                            <button class="pay-btn complete-btn" data-order-id="34658">Paid</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Completed Orders Section (Initially Hidden) -->
+                            <div class="tab-content" id="completed-tab" style="display: none;">
+                                <!-- Completed orders will be dynamically added here -->
+                            </div>
+                            
+                            <!-- Cancelled Orders Section (Initially Hidden) -->
+                            <div class="tab-content" id="cancelled-tab" style="display: none;">
+                                <!-- We won't implement this as per your request -->
+                                <p class="text-muted text-center my-5">No cancelled orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Panel - Order Details -->
+                    <div class="col-md-4">
+                        <div class="right-panel" id="order-details">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <div class="fw-bold">Pesanan #34652 | Matthew</div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-secondary date-selector">
+                                        <i class="far fa-calendar me-1"></i> Select 02/12/24
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div class="fw-bold">Menu</div>
+                                    <div class="fw-bold">Qty</div>
+                                </div>
+                                
+                                <div class="menu-item">
+                                    <div>Nasi Semacem Babi</div>
+                                    <div>2</div>
+                                </div>
+                                
+                                <div class="menu-item">
+                                    <div>Nasi Chachu Babi</div>
+                                    <div>1</div>
+                                </div>
+                                
+                                <div class="menu-item">
+                                    <div>Mie Semacem Babi</div>
+                                    <div>3</div>
+                                </div>
+                                
+                                <div class="menu-item">
+                                    <div>Mie Chachu Babi</div>
+                                    <div>1</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 mb-3">
+                                <button class="action-btn" id="complete-action-btn">
+                                    <i class="fas fa-check me-2"></i> Complete
+                                </button>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <button class="action-btn" id="print-btn" style="background-color: #28a745;">
+                                    <i class="fas fa-print me-2"></i> Print Nota
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                
+@endsection
+{{-- 
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -295,12 +510,9 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Bootstrap JS and Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    
+    </div> --}}
+
+    @section('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Tab switching functionality
@@ -415,5 +627,6 @@
             });
         });
     </script>
+    @endsection
 </body>
 </html>
