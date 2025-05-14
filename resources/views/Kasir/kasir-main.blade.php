@@ -8,20 +8,10 @@
         <div class="col-md-8 main-content" style="overflow-y: auto; height: 100vh;margin-right: -20px;">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="mb-0">Tambah Pesanan</h4>
-                <div class="text-muted">
-                    <small>Main Menu / Tambah Pesanan</small>
-                </div>
             </div>
             
             <div class="card mb-4">
-                <div class="card-body">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Cari menu...">
-                        <button class="btn btn-outline-secondary" type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                    
+                <div class="card-body">                    
                     <ul class="nav nav-tabs category-tab" id="menuTabs">
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#makanan">Makanan Berat</a>
@@ -30,10 +20,7 @@
                             <a class="nav-link" data-bs-toggle="tab" href="#minuman">Minuman</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#camilan">Camilan</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#dessert">Dessert</a>
+                            <a class="nav-link" data-bs-toggle="tab" href="#rekomendasi">Rekomendasi</a>
                         </li>
                     </ul>
                     
@@ -127,32 +114,6 @@
         <div class="col-md-4 p-4 bg-light">
             <div class="order-section">
                 <div class="order-header">
-                    <div class="d-flex justify-content-between mb-3">
-                        <div>
-                            <h5 class="mb-0">Pesanan #34562</h5>
-                            <small class="text-muted">Selasa 02/12</small>
-                        </div>
-                        <div>
-                            <i class="fas fa-clock me-1"></i>
-                            <small>10:03</small>
-                        </div>
-                    </div>
-
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="customerName" class="form-label small">Nama</label>
-                            <input type="text" class="form-control form-control-sm" id="customerName" value="Grek">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="tableNumber" class="form-label small">Meja</label>
-                            <div class="input-group input-group-sm">
-                                <input type="number" class="form-control" id="tableNumber" value="1">
-                                <span class="input-group-text">-</span>
-                                <input type="number" class="form-control" value="2">
-                            </div>
-                        </div>
-                    </div>
                     
                     <div class="d-flex justify-content-between text-muted small mb-2">
                         <div>Menu</div>
@@ -164,26 +125,7 @@
                 </div>
                 
                 <div class="order-items">
-                    <div class="order-item">
-                        <div class="d-flex">
-                            <img src="https://cdn.idntimes.com/content-images/community/2019/08/img-20190811-104247-f4de3b2a582fc434265eef7a3e138268.jpg" alt="Menu" class="item-img me-3">
-                            <div class="flex-grow-1">
-                                <div class="fw-bold">Nasi Semacem Babi</div>
-                                <div class="text-muted small">Rp 40.000</div>
-                            </div>
-                            <div class="d-flex align-items-center ms-3">
-                                <input type="number" class="item-qty" value="2">
-                                <div class="text-end ms-3" style="width: 80px;">Rp 80.000</div>
-                            </div>
-                        </div>
-                        <div class="text-end mt-2">
-                            <button class="delete-btn">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <input type="text" class="note-input" value="Jangan tambah pedas">
-                    
+
                     <div class="order-item">
                         <div class="d-flex">
                             <img src="https://awsimages.detik.net.id/community/media/visual/2021/12/24/bakmi-babi-bogor-1.jpeg?w=1200" alt="Menu" class="item-img me-3">
@@ -246,19 +188,9 @@
                 </div>
                 
                 <div class="order-summary">
-                    <div class="d-flex justify-content-between mb-2">
-                        <div class="text-muted">Diskon</div>
-                        <div>Rp 0</div>
-                    </div>
                     <div class="d-flex justify-content-between mb-3">
                         <div class="text-muted">Subtotal</div>
                         <div class="fw-bold">Rp 280.000</div>
-                    </div>
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" id="taxCheck" checked>
-                        <label class="form-check-label" for="taxCheck">
-                            Sudah termasuk pajak
-                        </label>
                     </div>
                     <a href="payment-system">
                     <button class="checkout-btn">

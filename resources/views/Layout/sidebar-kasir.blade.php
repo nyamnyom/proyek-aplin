@@ -21,16 +21,6 @@
                     <i class="fas fa-clipboard-list me-2"></i> Daftar Pesanan
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'promosi-diskon' ? 'active' : '' ?>" href="">
-                    <i class="fas fa-percentage me-2"></i> Promosi dan Diskon
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'pengaturan-sistem' ? 'active' : '' ?>" href="">
-                    <i class="fas fa-cog me-2"></i> Pengaturan Sistem
-                </a>
-            </li>
         </ul>
     </div>
 </div>

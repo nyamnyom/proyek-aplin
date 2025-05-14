@@ -12,12 +12,6 @@
           <div class="content-header">
             <div>
               <h4>Reservasi Meja</h4>
-              <nav>
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Main Menu</a></li>
-                  <li class="breadcrumb-item active">Reservasi Meja</li>
-                </ol>
-              </nav>
             </div>
             <div>
               <button class="btn btn-outline-secondary me-2">Cancel</button>
@@ -29,17 +23,15 @@
             <div class="col-12">
               <div class="reservation-form">
                 <div class="mb-3">
-                  <label class="form-label">Reservasi #567</label>
                   <div class="d-flex gap-2">
                     <div class="input-group">
-                      <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                      <input type="text" class="form-control" value="Senin 02/12" readonly>
+                      <input type="date" class="form-control">
                     </div>
                     <div class="input-group">
-                      <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                      <input type="text" class="form-control" value="15:00" readonly>
+                      <input type="time" class="form-control">
                     </div>
                   </div>
+
                 </div>
                 
                 <div class="mb-3">
@@ -50,144 +42,6 @@
                 <div class="mb-3">
                   <label class="form-label">Nomor HP / Telepon</label>
                   <input type="text" class="form-control" placeholder="Masukkan nomor hp / telepon...">
-                </div>
-                
-                <div class="row align-items-center my-4">
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <label class="form-label">Tanggal Reservasi</label>
-                      <div class="calendar">
-                        <div class="calendar-header">
-                          <span>Maret 2024</span>
-                          <div>
-                            <button class="btn btn-sm btn-outline-secondary me-1">&lt;</button>
-                            <button class="btn btn-sm btn-outline-secondary">&gt;</button>
-                          </div>
-                        </div>
-                        <div class="calendar-days mb-2">
-                          <div>S</div>
-                          <div>M</div>
-                          <div>T</div>
-                          <div>W</div>
-                          <div>T</div>
-                          <div>F</div>
-                          <div>S</div>
-                        </div>
-                        <div class="calendar-days">
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                          <div>1</div>
-                          <div>2</div>
-                          <div>3</div>
-                          <div>4</div>
-                          <div>5</div>
-                          <div>6</div>
-                          <div>7</div>
-                          <div>8</div>
-                          <div>9</div>
-                          <div>10</div>
-                          <div>11</div>
-                          <div class="text-danger">12</div>
-                          <div>13</div>
-                          <div>14</div>
-                          <div>15</div>
-                          <div>16</div>
-                          <div>17</div>
-                          <div>18</div>
-                          <div>19</div>
-                          <div>20</div>
-                          <div class="selected">21</div>
-                          <div>22</div>
-                          <div>23</div>
-                          <div>24</div>
-                          <div>25</div>
-                          <div>26</div>
-                          <div>27</div>
-                          <div>28</div>
-                          <div>29</div>
-                          <div>30</div>
-                          <div>31</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <label class="form-label">Waktu Reservasi</label>
-                      <div class="time-selector">
-                        <div class="clock">
-                          <div class="clock-hand"></div>
-                          <div class="clock-mark">
-                            <div style="top: 10px; left: 70px;">12</div>
-                            <div style="top: 25px; right: 25px;">1</div>
-                            <div style="top: 70px; right: 10px;">2</div>
-                            <div style="bottom: 70px; right: 10px;">3</div>
-                            <div style="bottom: 25px; right: 25px;">4</div>
-                            <div style="bottom: 10px; left: 70px;">5</div>
-                            <div style="bottom: 25px; left: 25px;">6</div>
-                            <div style="bottom: 70px; left: 10px;">7</div>
-                            <div style="top: 70px; left: 10px;">8</div>
-                            <div style="top: 45px; left: 20px;">9</div>
-                            <div style="top: 20px; left: 45px;">10</div>
-                            <div style="top: 10px; right: 45px;">11</div>
-                          </div>
-                        </div>
-                        <div class="text-center mt-3">
-                          <div class="input-group justify-content-center">
-                            <input type="text" class="form-control text-center" style="max-width: 70px;" value="00">
-                            <span class="input-group-text">:</span>
-                            <input type="text" class="form-control text-center" style="max-width: 70px;" value="00">
-                            <div class="time-toggle ms-2">
-                              <button class="active">AM</button>
-                              <button>PM</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <label class="form-label">Nomor Meja</label>
-                      <select class="form-select mb-3">
-                        <option selected>Jumlah 1</option>
-                        <option>Jumlah 2</option>
-                        <option>Jumlah 3</option>
-                        <option>Jumlah 4</option>
-                      </select>
-                      
-                      <div class="table-options">
-                        <div class="table-item reserved">
-                          <div class="table-number">T1</div>
-                          <div class="table-label">Tersedia</div>
-                        </div>
-                        <div class="table-item available">
-                          <div class="table-number">T4</div>
-                          <div class="table-label">Tersedia</div>
-                        </div>
-                        <div class="table-item available">
-                          <div class="table-number">T2</div>
-                          <div class="table-label">Tersedia</div>
-                        </div>
-                        <div class="table-item available">
-                          <div class="table-number">T5</div>
-                          <div class="table-label">Tersedia</div>
-                        </div>
-                        <div class="table-item reserved">
-                          <div class="table-number">T3</div>
-                          <div class="table-label">Tersedia</div>
-                        </div>
-                        <div class="table-item available">
-                          <div class="table-number">T6</div>
-                          <div class="table-label">Tersedia</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

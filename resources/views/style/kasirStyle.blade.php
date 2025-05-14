@@ -13,7 +13,7 @@
     --primary-red: #8B0000;
     --dark-red: #D32F2F;
     --light-red: #F8D7DA;
-    --white: #FFFFFF;
+    --white: #ffffff;
 }
 
 body {
@@ -200,6 +200,22 @@ body {
     padding: 15px 0;
     border-bottom: 1px solid #eee;
     display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.order-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-id {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.order-price {
+    font-weight: bold;
 }
 
 .item-img {
