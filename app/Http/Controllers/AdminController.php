@@ -44,16 +44,18 @@ class AdminController extends Controller
     }
     public function add_user(Request $request) //blomm jadi
     {
-        $validated = $request->validate([
-            'username' => 'required|string',
-            'nama' => 'required|string',
-            'posisi' => 'required|string',
-            'password' => 'required|string|min:6',
+        DB::table('user')->insert([
+            'username' => $request -> username,
+            'nama' => $request -> nama,
+            'posisi' => $request -> posisi,
+            'PASSWORD' => $request -> password,
+            'is_active' => $request->is_active ?? 1,
+            'created_at' => now(),
+            'updated_at' => now()
+
         ]);
 
-        $user = User::create($validated);
-
-        return response()->json(['message' => 'User berhasil dibuat', 'user' => $user]);
+        return response()->json(['message' => 'User berhasil dibuat']);
     }
         public function getDtrans() 
     {
@@ -118,18 +120,18 @@ class AdminController extends Controller
         return response()->json(['message' => 'Menu berhasil ditambahkan', 'menu' => $menu]);
     }
     public function add_promo(Request $request)
-        {
-            DB::table('promo')->insert([
-                'nama_promo' => $request->nama_promo,
-                'deskripsi' => $request->deskripsi,
-                'tanggal_mulai' => $request->tanggal_mulai,
-                'tanggal_selesai' => $request->tanggal_selesai,
-                'is_active' => $request->is_active ?? 1,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        
-            return response()->json(['message' => 'Promo berhasil ditambahkan']);
-        }
+    {
+        DB::table('promo')->insert([
+            'nama_promo' => $request->nama_promo,
+            'deskripsi' => $request->deskripsi,
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'tanggal_selesai' => $request->tanggal_selesai,
+            'is_active' => $request->is_active ?? 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+    
+        return response()->json(['message' => 'Promo berhasil ditambahkan']);
+    }
 
 }
