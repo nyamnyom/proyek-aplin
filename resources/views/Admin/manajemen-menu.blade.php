@@ -36,8 +36,8 @@
                 <td>Rp {{ number_format($menu->price, 0, ',', '.') }}</td>
                 <td><span class="badge bg-{{ $menu->is_active === 1 ? 'success' : 'secondary' }}">{{ $menu->is_active === 1 ? 'Aktif' : 'Nonaktif' }}</span></td>
                 <td>
-                  <button class="btn btn-sm btn-warning me-2" onclick="editMenu(${index})">Edit</button>
-                  <button class="btn btn-sm btn-danger" onclick="deleteMenu(${index})">Hapus</button>
+                    <button class="btn btn-sm btn-warning me-2" onclick="editMenu({{ $index }})">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteMenu({{ $menu->id }})">Hapus</button>
                 </td>
               </tr>
               @php
@@ -52,49 +52,60 @@
 <!-- Modal Tambah/Edit Menu -->
   <div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <form class="modal-content" onsubmit="saveMenu(event)">
+      <form class="modal-content" onsubmit="saveMenu(event)" method="POST">
         <div class="modal-header">
           <h5 class="modal-title" id="menuModalLabel">Tambah Menu</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
           <input type="hidden" id="editIndex">
+          
           <div class="mb-3">
             <label for="namaMenu" class="form-label">Nama Menu</label>
-            <input type="text" class="form-control" id="namaMenu" required>
+            <input type="text" class="form-control" id="namaMenu" name="name" placeholder="Nama Menu" required>
           </div>
+
           <div class="mb-3">
             <label for="kategori" class="form-label">Kategori</label>
-            <select class="form-select" id="kategori" required>
+            <select class="form-select" id="kategori" name="kategori" required>
               <option value="">Pilih Kategori</option>
-              <option>Makanan</option>
-              <option>Minuman</option>
-              <option>Dessert</option>
+              <option value="Makanan">Makanan</option>
+              <option value="Minuman">Minuman</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label for="harga" class="form-label">Harga (Rp)</label>
-            <input type="number" class="form-control" id="harga" required>
+            <input type="number" class="form-control" id="harga" name="harga" placeholder="Harga Menu" min="1000" required>
           </div>
+
           <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-select" id="status" required>
-              <option value="Tersedia">Tersedia</option>
-              <option value="Habis">Habis</option>
-            </select>
+            <label for="desc" class="form-label">Deskripsi</label>
+            <textarea class="form-control" id="desc" name="deskripsi" rows="3"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="image_url" class="form-label">URL Gambar</label>
+            <input type="text" class="form-control" id="image_url" name="image_url">
           </div>
         </div>
+
         <div class="modal-footer">
           <button type="submit" class="btn btn-danger">Simpan</button>
         </div>
       </form>
     </div>
   </div>
+
 @endsection
 
 @section('scripts')
   <script>
-    
+    listMenu = [];
+
+    @foreach ($menus as $menu)
+      listMenu.push(@json($menu));
+    @endforeach
 
     function openForm() {
       document.getElementById("menuModalLabel").textContent = "Tambah Menu";
@@ -102,49 +113,93 @@
       document.getElementById("namaMenu").value = "";
       document.getElementById("kategori").value = "";
       document.getElementById("harga").value = "";
-      document.getElementById("status").value = "Tersedia";
+      document.getElementById("desc").value = "";
+      document.getElementById("image_url").value = "";
     } 
 
     function editMenu(index) {
-      const data = menuList[index];
-      document.getElementById("editIndex").value = index;
-      document.getElementById("namaMenu").value = data.nama;
-      document.getElementById("kategori").value = data.kategori;
-      document.getElementById("harga").value = data.harga;
-      document.getElementById("status").value = data.status;
-      document.getElementById("menuModalLabel").textContent = "Edit Menu";
-      new bootstrap.Modal(document.getElementById("menuModal")).show();
-    } 
+        const data = listMenu[index];
+        document.getElementById("menuModalLabel").textContent = "Edit Menu";
+        document.getElementById("editIndex").value = data.id; // Menggunakan ID dari database
+        document.getElementById("namaMenu").value = data.name;
+        document.getElementById("kategori").value = data.category;
+        document.getElementById("harga").value = data.price;
+        document.getElementById("desc").value = data.description;
+        document.getElementById("image_url").value = data.image_url;
+        new bootstrap.Modal(document.getElementById("menuModal")).show();
+    }
 
-    function deleteMenu(index) {
-      if (confirm("Yakin ingin menghapus menu ini?")) {
-        menuList.splice(index, 1);
-        renderTable();
-      }
-    } 
+    function deleteMenu(id) {
+        if (confirm("Yakin ingin menghapus menu ini?")) {
+            fetch(`/deleteMenu/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(result.message);
+                    location.reload(); // Refresh untuk update data
+                } else {
+                    alert('Gagal menghapus menu');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menghapus menu');
+            });
+        }
+    }
+
 
     function saveMenu(e) {
       e.preventDefault();
       const index = document.getElementById("editIndex").value;
+
       const data = {
-        nama: document.getElementById("namaMenu").value,
+        name: document.getElementById("namaMenu").value,
         kategori: document.getElementById("kategori").value,
         harga: parseInt(document.getElementById("harga").value),
-        status: document.getElementById("status").value
+        deskripsi: document.getElementById("desc").value,
+        image_url: document.getElementById('image_url').value
       };  
 
-      if (index === "") {
-        menuList.push(data);
-      } else {
-        menuList[index] = data;
-      } 
+      const url = index
+        ? `/updateMenu/${index}`
+        : '/insertMenu';
+
+      fetch(url, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => response.json().then(result => ({
+          status: response.status,
+          ok: response.ok,
+          body: result
+        })))
+        .then(({status, ok, body}) => {
+          if (ok) {
+            alert('Menu berhasil disimpan!');
+            location.reload();
+          } else {
+            alert('Gagal menyimpan: ' + (body.message || 'Terjadi kesalahan.'));
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Terjadi kesalahan saat mengirim data.');
+        });
 
       bootstrap.Modal.getInstance(document.getElementById("menuModal")).hide();
-      renderTable();
-    } 
+    }
 
-    // Inisialisasi
-    renderTable();  
 
   </script>
 @endsection

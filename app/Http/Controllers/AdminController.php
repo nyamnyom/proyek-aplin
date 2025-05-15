@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Dtrans;
 use App\Models\Htrans;
+use App\Models\Menu;
 use App\Models\Promo;
 
 use Illuminate\Support\Facades\DB;
@@ -74,5 +75,60 @@ class AdminController extends Controller
         $htrans = Htrans::all(); // ambil semua data 
         $user = User::all(); // ambil semua data 
         return response()->json(['htrans' => $htrans, 'user' => $user]); 
+    }
+
+    public function insertMenu(Request $req){
+        $validated = $req->validate([
+            'name' => 'required|max:255',
+            'kategori' => 'required|in:Makanan,Minuman',
+            'harga' => 'required|integer|min:1000',
+            'image_url' => 'nullable|string',
+            'deskripsi' => 'required|string'
+        ]);
+
+        Menu::create([
+            'name' => $validated['name'],
+            'category' => $validated['kategori'],
+            'price' => $validated['harga'],
+            'description' => $validated['deskripsi'],
+            'image_url' => $validated['image_url'] ?? 'default.jpg',
+        ]);
+
+        return response()->json(['message' => 'Menu berhasil ditambahkan'], 200);
+    }
+    public function updateMenu(Request $req, $id) {
+        $validated = $req->validate([
+            'name' => 'required|max:255',
+            'kategori' => 'required|in:Makanan,Minuman',
+            'harga' => 'required|integer|min:1000',
+            'image_url' => 'nullable|string',
+            'deskripsi' => 'required|string'
+        ]);
+
+        $menu = Menu::findOrFail($id);
+        
+        $menu->update([
+            'name' => $validated['name'],
+            'category' => $validated['kategori'],
+            'price' => $validated['harga'],
+            'description' => $validated['deskripsi'],
+            'image_url' => $validated['image_url'] ?? $menu->image_url,
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Menu berhasil diperbarui']);
+    }
+
+    public function deleteMenu($id) {
+        $menu = Menu::findOrFail($id);
+        
+        // Soft delete dengan mengupdate is_active menjadi 0
+        $menu->update([
+            'is_active' => 0
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Menu berhasil dinonaktifkan'
+        ]);
     }
 }
