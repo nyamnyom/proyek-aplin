@@ -6,7 +6,7 @@
     <div class="row g-0">
       
       <!-- Main Content -->
-      <div class="main-content" style="height: 100vh; overflow-y: auto;">
+      <div class="main-content" style="overflow-y: auto; width: 96.5%">
         <!-- Content Area -->
         <div class="content-area">
           <div class="content-header">

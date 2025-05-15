@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 class AdminController extends Controller
 {
     function dashboard(){
@@ -17,7 +19,8 @@ class AdminController extends Controller
         return view('Admin.inventaris');
     }
     function manajemen_menu(){
-        return view('Admin.manajemen-menu');
+        $menus = DB::table('menus')->get();
+        return view('Admin.manajemen-menu', ['menus' => $menus]);
     }
     function manajemen_pegawai(){
         return view('Admin.manajemen-pegawai');
