@@ -18,6 +18,7 @@ Route::get('/register', [WebController::class, 'register']);
 // Customer
 Route::get('/', [CustomerController::class, 'home']);
 Route::get('/Customer/Dine-in', [CustomerController::class, 'dineIn']);
+Route::get('/Customer/Take-away', [CustomerController::class, 'takeAway']);
 Route::get('/Checkout', [CustomerController::class, 'checkout']);
 Route::post('/add-to-cart/{id}', [CustomerController::class, 'addToCart']);
 Route::get('/checkout', [CustomerController::class, 'checkout'])->name('checkout');

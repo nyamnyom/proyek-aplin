@@ -33,7 +33,12 @@ class CustomerController extends Controller
     {
         return view('Customer.Checkout');
     }
-
+    
+public function takeAway()
+    {
+        $menus = DB::table('menus')->where('is_active', true)->get();
+        return view('Customer.Dine-in', ['menus' => $menus]);
+    }
     // Menambahkan item ke dalam cart
     public function addToCart($id)
 {

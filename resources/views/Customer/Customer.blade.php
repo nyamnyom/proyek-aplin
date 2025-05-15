@@ -104,7 +104,7 @@
                                 <i class="fas fa-shopping-bag fa-5x text-warning mb-4"></i>
                                 <h3 class="card-title text-dark">Take Away</h3>
                                 <p class="card-text">Bawa pulang makanan favorit Anda</p>
-                                <a href="/Customer/take-away" class="btn btn-warning btn-lg mt-3">
+                                <a href="/Customer/Take-away" class="btn btn-warning btn-lg mt-3">
                                     Pilih <i class="fas fa-arrow-right ms-2"></i>
                                 </a>
                             </div>

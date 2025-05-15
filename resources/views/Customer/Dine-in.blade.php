@@ -94,8 +94,8 @@
         <!-- Category Navigation -->
         <ul class="nav nav-pills category-nav mb-4" id="categoryNav">
     <li class="nav-item"><a class="nav-link active" href="#" data-category="all">Semua</a></li>
-    <li class="nav-item"><a class="nav-link" href="#" data-category="food">Makanan</a></li>
-    <li class="nav-item"><a class="nav-link" href="#" data-category="drink">Minuman</a></li>
+    <li class="nav-item"><a class="nav-link" href="#" data-category="Makanan">Makanan</a></li>
+    <li class="nav-item"><a class="nav-link" href="#" data-category="Minuman">Minuman</a></li>
     <li class="nav-item"><a class="nav-link" href="#" data-category="best-seller">Terlaris</a></li> <!-- Kategori Terlaris -->
 </ul>
 
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Fetch Weather Info
         document.addEventListener("DOMContentLoaded", function () {
-    fetch('/weather/Lombok')
+    fetch('/weather/Surabaya')
         .then(response => response.json())
         .then(data => {
             const temp = data.main.temp;
