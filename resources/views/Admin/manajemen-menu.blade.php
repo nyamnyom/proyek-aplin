@@ -28,7 +28,7 @@
           @php
             $count = 1;
           @endphp
-          @foreach ($menus as $menu)
+          @foreach ($menus as $index => $menu)
               <tr>
                 <td>{{$count}}</td>
                 <td>{{$menu->name}}</td>
@@ -101,11 +101,7 @@
 
 @section('scripts')
   <script>
-    listMenu = [];
-
-    @foreach ($menus as $menu)
-      listMenu.push(@json($menu));
-    @endforeach
+    listMenu = @json($menus);
 
     function openForm() {
       document.getElementById("menuModalLabel").textContent = "Tambah Menu";
@@ -132,7 +128,7 @@
     function deleteMenu(id) {
         if (confirm("Yakin ingin menghapus menu ini?")) {
             fetch(`/deleteMenu/${id}`, {
-                method: 'DELETE',
+                method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     'Content-Type': 'application/json'
@@ -157,45 +153,44 @@
 
     function saveMenu(e) {
       e.preventDefault();
-      const index = document.getElementById("editIndex").value;
-
+      const id = document.getElementById("editIndex").value;
+      
       const data = {
-        name: document.getElementById("namaMenu").value,
-        kategori: document.getElementById("kategori").value,
-        harga: parseInt(document.getElementById("harga").value),
-        deskripsi: document.getElementById("desc").value,
-        image_url: document.getElementById('image_url').value
-      };  
+          name: document.getElementById("namaMenu").value,
+          kategori: document.getElementById("kategori").value,
+          harga: parseInt(document.getElementById("harga").value),
+          deskripsi: document.getElementById("desc").value,
+          image_url: document.getElementById('image_url').value,
+          _token: document.querySelector('meta[name="csrf-token"]').content
+      };
 
-      const url = index
-        ? `/updateMenu/${index}`
-        : '/insertMenu';
-
+      // Pastikan URL sesuai
+      const url = id ? `/updateMenu/${id}` : '/insertMenu';
+      
       fetch(url, {
-          method: 'post',
+          method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': data._token
           },
           body: JSON.stringify(data)
-        })
-        .then(response => response.json().then(result => ({
-          status: response.status,
-          ok: response.ok,
-          body: result
-        })))
-        .then(({status, ok, body}) => {
-          if (ok) {
-            alert('Menu berhasil disimpan!');
-            location.reload();
-          } else {
-            alert('Gagal menyimpan: ' + (body.message || 'Terjadi kesalahan.'));
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
           }
-        })
-        .catch(error => {
+          return response.json();
+      })
+      .then(result => {
+          if (result.success) {
+              alert(result.message);
+              location.reload();
+          }
+      })
+      .catch(error => {
           console.error('Error:', error);
-          alert('Terjadi kesalahan saat mengirim data.');
-        });
+          alert('Error: ' + error.message);
+      });
 
       bootstrap.Modal.getInstance(document.getElementById("menuModal")).hide();
     }

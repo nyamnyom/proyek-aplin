@@ -36,7 +36,7 @@
                                         <div class="col-md-4">
                                             <div class="menu-card">
                                                 <div class="menu-image">
-                                                    <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Nasi Semacem Babi">
+                                                    <img src="{{$food->image_url}}" alt="{{$food->name}}">
                                                 </div>
                                                 <div class="menu-details">
                                                     <div class="menu-title">{{$food->name}}</div>
@@ -60,7 +60,7 @@
                                         <div class="col-md-4">
                                             <div class="menu-card">
                                                 <div class="menu-image">
-                                                    <img src="https://nilaigizi.com/assets/images/produk/produk_1578041377.jpg" alt="Es Teh">
+                                                    <img src="{{$drink->image_url}}" alt="{{$drink->name}}">
                                                 </div>
                                                 <div class="menu-details">
                                                     <div class="menu-title">{{$drink->name}}</div>
@@ -84,7 +84,7 @@
                                         <div class="col-md-4">
                                             <div class="menu-card">
                                                 <div class="menu-image">
-                                                    <img src="https://nilaigizi.com/assets/images/produk/produk_1578041377.jpg" alt="Es Teh">
+                                                    <img src="{{$item->image_url}}" alt="{{$item->name}}">
                                                 </div>
                                                 <div class="menu-details">
                                                     <div class="menu-title">{{ $item->name }}</div>

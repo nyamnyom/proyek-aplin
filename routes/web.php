@@ -37,6 +37,8 @@ Route::get('/manajemen-menu', [AdminController::class, 'manajemen_menu']);
 Route::get('/manajemen-pegawai', [AdminController::class, 'manajemen_pegawai']);
 Route::get('/riwayat-penjualan', [AdminController::class, 'riwayat_penjualan']);
 Route::get('/tambah-bahan', [AdminController::class, 'tambah_bahan']);
+
+// Get Data Page Admin
 Route::get('/user', [AdminController::class, 'get_all_user']);
 Route::get('/promo', [AdminController::class, 'get_all_promo']);
 Route::post('/promo', [AdminController::class, 'add_promo']);
@@ -44,10 +46,12 @@ Route::post('/user', [AdminController::class, 'add_user']);
 Route::get('/dtrans', [AdminController::class, 'getDtrans']);
 Route::get('/htrans', [AdminController::class, 'getHtrans']);
 Route::get('/transaction', [AdminController::class, 'getTransaction']);
-Route::get('/menus', [AdminController::class, 'getMenus']);
-Route::post('/menus', [AdminController::class, 'add_menu']);
-Route::put('/menus/{id}', [AdminController::class, 'update_menu']);
-Route::delete('/menus/{id}', [AdminController::class, 'delete_menu']);
+
+// CRUD Admin
+Route::post('/insertMenu', [AdminController::class, 'insertMenu']);
+Route::post('/updateMenu/{id}', [AdminController::class, 'updateMenu']);
+Route::post('/deleteMenu/{id}', [AdminController::class, 'deleteMenu']);
+
 
 // Kasir
 Route::get('/daftar-pesanan', [KasirController::class, 'daftar_pesanan']);

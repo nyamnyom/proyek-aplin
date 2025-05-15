@@ -8,5 +8,5 @@ class Menu extends Model
 {
     protected $table = 'menus';
 
-    protected $fillable = ['name', 'description', 'price', 'category', 'image_url'];
+    protected $fillable = ['name', 'description', 'price', 'category', 'image_url', 'is_active'];
 }
