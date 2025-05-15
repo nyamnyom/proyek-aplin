@@ -26,7 +26,31 @@
       </tr>
     </thead>
     <tbody id="menuTable">
-      <!-- Data akan di-generate oleh JS -->
+      @if ($menus->isEmpty())
+          <div class="alert alert-info">
+              Menu tidak ditemukan
+          </div>
+      @else
+          @php
+            $count = 1;
+          @endphp
+          @foreach ($menus as $menu)
+              <tr>
+                <td>{{$count}}</td>
+                <td>{{$menu->name}}</td>
+                <td>{{$menu->category}}</td>
+                <td>Rp {{ number_format($menu->price, 0, ',', '.') }}</td>
+                <td><span class="badge bg-{{ $menu->is_active === 1 ? 'success' : 'secondary' }}">{{ $menu->is_active === 1 ? 'Aktif' : 'Nonaktif' }}</span></td>
+                <td>
+                  <button class="btn btn-sm btn-warning me-2" onclick="editMenu(${index})">Edit</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteMenu(${index})">Hapus</button>
+                </td>
+              </tr>
+              @php
+                $count++;
+              @endphp
+          @endforeach
+      @endif
     </tbody>
   </table>
 
@@ -76,32 +100,7 @@
 
 @section('scripts')
   <script>
-    let menuList = [
-      { nama: "Nasi Semacem Babi", kategori: "Makanan", harga: 35000, status: "Tersedia" },
-      { nama: "Nasi Chachu Babi", kategori: "Makanan", harga: 38000, status: "Tersedia" },
-      { nama: "Mie Semacem Babi", kategori: "Makanan", harga: 32000, status: "Habis" },
-      { nama: "Mie Chachu Babi", kategori: "Makanan", harga: 36000, status: "Tersedia" }
-    ];  
-
-    function renderTable() {
-      const table = document.getElementById("menuTable");
-      table.innerHTML = "";
-      menuList.forEach((item, index) => {
-        table.innerHTML += `
-          <tr>
-            <td>${index + 1}</td>
-            <td>${item.nama}</td>
-            <td>${item.kategori}</td>
-            <td>Rp ${item.harga.toLocaleString()}</td>
-            <td><span class="badge bg-${item.status === "Tersedia" ? "success" : "secondary"}">${item.status}</span></td>
-            <td>
-              <button class="btn btn-sm btn-warning me-2" onclick="editMenu(${index})">Edit</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteMenu(${index})">Hapus</button>
-            </td>
-          </tr>
-        `;
-      });
-    } 
+    
 
     function openForm() {
       document.getElementById("menuModalLabel").textContent = "Tambah Menu";

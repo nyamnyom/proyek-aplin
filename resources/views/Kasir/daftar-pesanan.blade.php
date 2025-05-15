@@ -4,9 +4,9 @@
 
 @section('content')
     <!-- Main Content Area -->
-    <div class="row mx-0" style=" height: 100vh;">
-        <div class="col-md-8" style="overflow-y: auto; height: 100vh;">
-            <div class="main-content" style="min-height: 100%; padding-right: 15px;">
+    <div class="row mx-0">
+        <div class="col-md-8">
+            <div class="main-content" style="overflow-y: auto; height: 82vh;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h4 class="mb-0">Daftar Pesanan</h4>
                 </div>
@@ -38,7 +38,7 @@
         
         <!-- Right Panel - Order Details -->
         <div class="col-md-4 p-1">
-            <div class="main-content" id="order-details">
+            <div class="main-content" id="order-details" style="overflow-y: auto; height: 82vh;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <div class="fw-bold">Pesanan #34652</div>

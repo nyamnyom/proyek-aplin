@@ -5,7 +5,7 @@
 @section('content')
     <div class="row mx-0" style="display: flex; flex-wrap: nowrap;">
         <!-- Menu Section -->
-        <div class="col-md-8 main-content" style="overflow-y: auto; height: 100vh;margin-right: -20px;">
+        <div class="col-md-7 main-content p-4" style="overflow-y: auto; height: 82vh;">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="mb-0">Tambah Pesanan</h4>
             </div>
@@ -111,8 +111,8 @@
         </div>
         
         <!-- Order Section -->
-        <div class="col-md-4 p-4 bg-light">
-            <div class="order-section">
+        <div class="col-md-5 p-4 bg-light">
+            <div class="order-section me-5" style="height: 82vh">
                 <div class="order-header">
                     
                     <div class="d-flex justify-content-between text-muted small mb-2">

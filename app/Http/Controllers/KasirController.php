@@ -13,8 +13,8 @@ class KasirController extends Controller
         return view('Kasir.payment-system');
     }
     function kasir_main(){
-        $foods = DB::table('menus')->where('is_active', true)->where('category', "food")->get();
-        $drinks = DB::table('menus')->where('is_active', true)->where('category', "drink")->get();
+        $foods = DB::table('menus')->where('is_active', true)->where('category', "Makanan")->get();
+        $drinks = DB::table('menus')->where('is_active', true)->where('category', "Minuman")->get();
         return view('Kasir.kasir-main', ['foods' => $foods, 'drinks' => $drinks]);
     }
     function reservasi_meja(){
