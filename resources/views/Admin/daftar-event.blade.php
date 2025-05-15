@@ -27,7 +27,6 @@
                 <tr><td>Nama</td><td>-</td></tr>
                 <tr><td>Tanggal</td><td>-</td></tr>
                 <tr><td>Deskripsi</td><td>-</td></tr>
-                <tr><td>Diskon</td><td>-</td></tr>
               </tbody>
             </table>
           </div>

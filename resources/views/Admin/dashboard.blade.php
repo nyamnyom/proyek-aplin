@@ -7,29 +7,20 @@
   <!-- Konten halaman di sini -->
   <!-- Sidebar dan Navbar sudah diasumsikan terpasang -->
 
-    <h3 class="fw-bold">Welcome, Alexander!</h3>
+    <h3 class="fw-bold">Welcome, Admin!</h3>
 
     <div class="row g-4">
     <!-- Total Cards -->
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="card shadow-sm p-3">
           <h6 class="text-muted">Total Net Profit</h6>
           <h4 class="text-danger">Rp 5.400.000</h4>
-          <p class="text-success small"><i class="fas fa-arrow-up"></i> 23% lebih banyak dari bulan lalu</p>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="card shadow-sm p-3">
           <h6 class="text-muted">Total Order</h6>
           <h4 class="text-danger">273</h4>
-          <p class="text-danger small"><i class="fas fa-arrow-down"></i> 14% lebih sedikit dari bulan lalu</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card shadow-sm p-3">
-          <h6 class="text-muted">Pengeluaran</h6>
-          <h4 class="text-danger">Rp 2.500.000</h4>
-          <p class="text-success small"><i class="fas fa-arrow-down"></i> -3% lebih rendah dari bulan lalu</p>
         </div>
       </div>
     </div>

@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -28,4 +31,31 @@ class AdminController extends Controller
     function tambah_bahan(){
         return view('Admin.tambah-bahan');
     }
+    public function get_all_user(){
+        $users = User::all();
+        return response()->json($users);
+    }
+    public function add_user(Request $request)
+        {
+            $request->validate([
+                'username' => 'required|string', 
+                'nama' => 'required|string', 
+                'posisi' => 'required', 
+                'password' => 'required|string|min:6',
+                'is_active' => 'boolean'
+            ]);
+
+            $user = User::create([
+                'username' => $request->username,
+                'nama' => $request->nama,
+                'posisi' => $request->posisi,
+                'password' => $request->password,
+                'is_active' => $request->is_active ?? 1,
+            ]);
+
+            return response()->json([
+                'message' => 'User berhasil dibuat',
+                'user' => $user
+            ]);
+        }
 }
