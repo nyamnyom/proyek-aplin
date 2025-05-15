@@ -108,7 +108,7 @@
           <td>${menu.is_active == 1 ? 'Tersedia' : 'Habis'}</td>
           <td>
             <button class="btn btn-sm btn-warning me-2" onclick="editMenu(${menu.id -1})">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteMenu(${menu.id -1})">Hapus</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteMenu(${menu.id})">Hapus</button>
           </td>
         </tr>
       `).join('');
@@ -139,12 +139,28 @@
       new bootstrap.Modal(document.getElementById("menuModal")).show();
     } 
 
-    function deleteMenu(index) {
-      if (confirm("Yakin ingin menghapus menu ini?")) {
-        menuList.splice(index, 1);
-        renderTable();
-      }
-    } 
+    function deleteMenu(id) {
+      if (!confirm("Yakin ingin menghapus menu ini?")) return;
+    
+      fetch(`/menus/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Gagal menghapus menu');
+        return response.json();
+      })
+      .then(data => {
+        alert(data.message);
+        loadData(); // refresh data
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat menghapus');
+      });
+    }
 
     const menuModal = new bootstrap.Modal(document.getElementById("menuModal"));
 

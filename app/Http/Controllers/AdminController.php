@@ -129,5 +129,9 @@ class AdminController extends Controller
     
         return response()->json(['message' => 'Promo berhasil ditambahkan']);
     }
-
+    public function delete_menu($id)
+    {
+        DB::table('menus')->where('id', $id)->delete();
+        return response()->json(['message' => 'Menu berhasil dihapus']);
+    }
 }

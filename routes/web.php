@@ -47,7 +47,7 @@ Route::get('/transaction', [AdminController::class, 'getTransaction']);
 Route::get('/menus', [AdminController::class, 'getMenus']);
 Route::post('/menus', [AdminController::class, 'add_menu']);
 Route::put('/menus/{id}', [AdminController::class, 'update_menu']);
-
+Route::delete('/menus/{id}', [AdminController::class, 'delete_menu']);
 
 // Kasir
 Route::get('/daftar-pesanan', [KasirController::class, 'daftar_pesanan']);
