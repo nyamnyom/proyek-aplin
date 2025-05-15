@@ -4,8 +4,8 @@
 
 @section('content')
   <!-- Header -->
-  <div class="container-fluid py-4">
-    <h4 class="fw-bold">Manajemen Pegawai</h4>
+
+    <h2 class="fw-bold">Manajemen Pegawai</h4>
     <div class="row mt-4">
       <!-- List Pegawai -->
       <div class="col-md-7">
@@ -39,7 +39,6 @@
         </div>
       </div>
     </div>
-  </div>
 
   <!-- Modal Tambah Pegawai (blum)-->
   <div class="modal fade" id="modalPegawai" tabindex="-1" aria-labelledby="modalPegawaiLabel" aria-hidden="true">

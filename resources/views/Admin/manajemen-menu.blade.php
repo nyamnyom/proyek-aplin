@@ -3,12 +3,6 @@
 @section('title', 'Manajemen Menu')
 
 @section('content')
-  <!-- Header -->
-  <div class="mb-4">
-    <h1 class="fw-bold">Manajemen Menu</h1>
-    <small class="text-muted">Main Menu / <span class="text-danger">Laporan Pelanggan</span></small>
-  </div>
-
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">Manajemen Menu</h2>
     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#menuModal" onclick="openForm()">+ Tambah Menu</button>

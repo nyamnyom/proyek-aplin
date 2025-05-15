@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Htrans extends Model
 {
     protected $table = 'htrans';
-    protected $fillable = ['total', 'payment_method'];
+    protected $fillable = ['total', 'payment_method', 'kasir_id'];
 
     // Model Htrans
 }

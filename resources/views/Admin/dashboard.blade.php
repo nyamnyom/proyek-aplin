@@ -13,14 +13,14 @@
     <!-- Total Cards -->
       <div class="col-md-6">
         <div class="card shadow-sm p-3">
-          <h6 class="text-muted">Total Net Profit</h6>
-          <h4 class="text-danger">Rp 5.400.000</h4>
+          <h6 class="text-muted">Total Omzet</h6>
+          <h4 class="text-danger">Rp <span id="total_profit"></span></h4>
         </div>
       </div>
       <div class="col-md-6">
         <div class="card shadow-sm p-3">
           <h6 class="text-muted">Total Order</h6>
-          <h4 class="text-danger">273</h4>
+          <h4 class="text-danger" id="total_order"></h4>
         </div>
       </div>
     </div>
@@ -46,12 +46,8 @@
             <thead class="table-light">
               <tr><th>Nama</th><th>Jabatan</th><th>Status</th></tr>
             </thead>
-            <tbody>
-              <tr><td>Rama Harman</td><td>General Manager</td><td><span class="badge bg-success">Tersedia</span></td></tr>
-              <tr><td>Bhaskara</td><td>Assistant Manager</td><td><span class="badge bg-success">Tersedia</span></td></tr>
-              <tr><td>Prakash Kumar</td><td>Supervisor</td><td><span class="badge bg-success">Tersedia</span></td></tr>
-              <tr><td>Hariawan</td><td>Koki Eksekutif</td><td><span class="badge bg-success">Tersedia</span></td></tr>
-              <tr><td>Rama Harman</td><td>Waiter</td><td><span class="badge bg-success">Tersedia</span></td></tr>
+            <tbody id="employeeList">
+              {{-- pegawai --}}            
             </tbody>
           </table>
         </div>
@@ -70,59 +66,122 @@
     <!-- Popularitas Menu -->
       <div class="col-md-4">
         <div class="card shadow-sm p-3">
-        <h6 class="text-danger">Popularitas</h6>
+          <h6 class="text-danger">Popularitas</h6>
           <table class="table table-sm">
-            <thead><tr><th>Nama Item</th><th>%Sold</th></tr></thead>
-            <tbody>
-              <tr><td>Mie Babi Cincang, Ayam & Charsiu</td><td>32%</td></tr>
-              <tr><td>Mix Daging & Sancam</td><td>25%</td></tr>
-              <tr><td>Es Teh Manis</td><td>18%</td></tr>
-              <tr><td>Bakwan Campur Komplit</td><td>14%</td></tr>
-              <tr><td>Lain - Lain</td><td>11%</td></tr>
+            <thead><tr><th>Nama Item</th><th>Sold</th></tr></thead>
+            <tbody id="popularitas_menu">
+              {{-- qty per menu --}}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-
-    <div class="row g-4 mt-2">
-      <!-- Status Order -->
-      <div class="col-md-6">
-        <div class="card shadow-sm p-3">
-        <h6>Status Order</h6>
-          <table class="table table-sm">
-            <thead class="table-light"><tr><th>Order ID</th><th>Order</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td>#00014978</td><td>1x Mie Babi Cincang, Ayam & Charsiu</td><td><span class="badge bg-secondary">Pending</span></td></tr>
-              <tr><td>#00014979</td><td>1x Sancam 500gr, 2x Es Teh Manis</td><td><span class="badge bg-secondary">Pending</span></td></tr>
-              <tr><td>#00014980</td><td>2x Bakwan Babi Halus, 1x Mie Ayam Putih</td><td><span class="badge bg-secondary">Pending</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Status Inventaris -->
-      <div class="col-md-6">
-        <div class="card shadow-sm p-3">
-        <h6>Status Inventaris</h6>
-          <table class="table table-sm">
-            <thead class="table-light"><tr><th>Nama Item</th><th>Sisa</th><th>Kadaluarsa</th><th>Status</th><th>Reorder</th></tr></thead>
-            <tbody>
-              <tr><td>Daging Babi</td><td>50 Kg</td><td>12 Des 2024</td><td>95%</td><td><span class="text-danger">✔</span></td></tr>
-              <tr><td>Paha Babi</td><td>5 Kg</td><td>05 Des 2024</td><td>75%</td><td><span class="text-danger">✔</span></td></tr>
-              <tr><td>Dada Babi</td><td>50 Kg</td><td>15 Des 2024</td><td>90%</td><td><span class="text-danger">✔</span></td></tr>
-              <tr><td>Jeroan Babi</td><td>50 Kg</td><td>25 Des 2024</td><td>60%</td><td></td></tr>
-              <tr><td>Lemak Babi</td><td>20 Kg</td><td>28 Des 2024</td><td>50%</td><td></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   </div>
 @endsection
 
 @section('scripts')
   <script>
+    function sumQtyByItemNameSorted(data) {
+      const result = {};
+    
+      data.forEach(item => {
+        if (!result[item.item_name]) {
+          result[item.item_name] = 0;
+        }
+        result[item.item_name] += Number(item.qty);
+      });
+    
+      // Ubah hasil ke array lalu urutkan descending berdasarkan qty
+      const sortedArray = Object.entries(result)
+        .sort((a, b) => b[1] - a[1]) // sort by qty descending
+        .map(([item_name, qty]) => ({ item_name, qty }));
+      
+      return sortedArray; // array of { item_name, qty }
+    }
+
+    function loadDtrans() {
+      fetch('/dtrans')
+        .then(res => {
+          if (!res.ok) throw new Error('Fetch error');
+          return res.json();
+        })
+        .then(data => {
+          let totalQty = 0;
+          let totalSubtotal = 0;
+          const list = document.getElementById('popularitas_menu');
+        
+          data.forEach(item => {
+            totalQty += Number(item.qty); // hitung total qty
+            totalSubtotal += Number(item.subtotal); // hitung total qty
+          });
+
+          const totalPerItem = sumQtyByItemNameSorted(data);
+          console.log('Total qty per item:', totalPerItem);
+
+          totalPerItem.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${item.item_name}</td>
+              <td>${item.qty}</td>
+            `;
+            list.appendChild(row);
+          });
+        
+          // Tampilkan total qty ke elemen dengan id totalQtyDisplay (buat di HTML)
+          const totalQtyDisplay = document.getElementById('total_order');
+          if (totalQtyDisplay) {
+            totalQtyDisplay.innerHTML = totalQty;
+          }
+          const totalProfit = document.getElementById('total_profit');
+          if (totalProfit) {
+            totalProfit.innerHTML = totalSubtotal;
+          }
+        })
+        .catch(err => console.error(err));
+    }
+    window.onload = loadDtrans;
+
+
+    function getData() {
+      fetch('/user')
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          return response.json();
+        })
+        .then(usersArray => {
+          const list = document.getElementById('employeeList');
+          if (!list) {
+            console.error('Elemen dengan id "employeeList" tidak ditemukan');
+            return;
+          }
+        
+          list.innerHTML = ''; // kosongkan dulu isi tabel
+        
+          usersArray.forEach(emp => {
+            const row = document.createElement('tr');
+          
+            const statusBadge = emp.is_active == 1
+              ? '<span class="badge bg-success">Aktif</span>'
+              : '<span class="badge bg-secondary">Non Aktif</span>';
+          
+            row.innerHTML = `
+              <td>${emp.nama}</td>
+              <td>${emp.posisi}</td>
+              <td>${statusBadge}</td>
+            `;
+          
+            list.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+        });
+    }
+
+    // Jalankan saat halaman dimuat
+    getData();
+
     const ctxDonut = document.getElementById('donutChart');
     new Chart(ctxDonut, {
       type: 'doughnut',

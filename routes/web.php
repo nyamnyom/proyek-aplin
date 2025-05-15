@@ -38,7 +38,11 @@ Route::get('/manajemen-pegawai', [AdminController::class, 'manajemen_pegawai']);
 Route::get('/riwayat-penjualan', [AdminController::class, 'riwayat_penjualan']);
 Route::get('/tambah-bahan', [AdminController::class, 'tambah_bahan']);
 Route::get('/user', [AdminController::class, 'get_all_user']);
+Route::get('/promo', [AdminController::class, 'get_all_promo']);
 Route::post('/user', [AdminController::class, 'add_user']);
+Route::get('/dtrans', [AdminController::class, 'getDtrans']);
+Route::get('/htrans', [AdminController::class, 'getHtrans']);
+Route::get('/transaction', [AdminController::class, 'getTransaction']);
 
 // Kasir
 Route::get('/daftar-pesanan', [KasirController::class, 'daftar_pesanan']);
