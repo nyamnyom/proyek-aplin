@@ -73,36 +73,31 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="camilan">
+                        <div class="tab-pane fade" id="rekomendasi">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://www.sasa.co.id/medias/page_medias/lumpia-semarang.png" alt="Lumpia">
-                                        </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Lumpia</div>
-                                            <div class="menu-price">Rp 25.000</div>
-                                            <div class="menu-category">15 menit masak</div>
-                                        </div>
+                                @if ($rekomendasi->isEmpty())
+                                    <div class="alert alert-info">
+                                        Belum ada menu rekomendasi
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="dessert">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="menu-card">
-                                        <div class="menu-image">
-                                            <img src="https://rubenbaamez.com/wp-content/uploads/2024/10/Pudding.jpg" alt="Pudding Karamel">
+                                @else
+                                    @foreach ($rekomendasi as $item)
+                                        <div class="col-md-4">
+                                            <div class="menu-card">
+                                                <div class="menu-image">
+                                                    <img src="https://nilaigizi.com/assets/images/produk/produk_1578041377.jpg" alt="Es Teh">
+                                                </div>
+                                                <div class="menu-details">
+                                                    <div class="menu-title">{{ $item->name }}</div>
+                                                    <div class="menu-price">Rp {{ number_format($item->price, 0, ',', '.') }}</div>
+                                                    <div class="menu-category">
+                                                        <span class="badge bg-success">Populer</span>
+                                                        <span class="text-muted small">{{ $item->total_ordered }} terjual</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="menu-details">
-                                            <div class="menu-title">Pudding Karamel</div>
-                                            <div class="menu-price">Rp 15.000</div>
-                                            <div class="menu-category">5 menit sajian</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -230,17 +225,7 @@
                 });
             });
             
-            // Fungsionalitas untuk tombol tab Dine In, To Go, Delivery
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
-            });
-            
+    
             // Fungsionalitas untuk menambahkan item menu ke pesanan
             const menuCards = document.querySelectorAll('.menu-card');
             menuCards.forEach(card => {
