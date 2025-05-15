@@ -130,13 +130,14 @@
 
     function addEmployee(event) {
       event.preventDefault();
-      const username = document.getElementById('usernameInput').value.trim();
-      const name = document.getElementById('namaInput').value.trim();
-      const position = document.getElementById('positionInput').value.trim();
-      const password = document.getElementById('passwordInput').value.trim();
-      if (!username || !password || !name || !position) return alert('Lengkapi semua data!') ;
 
-      const data = { username, nama: name, posisi: position, password };
+      const data = {
+        username : document.getElementById('usernameInput').value,
+        nama : document.getElementById('namaInput').value,
+        posisi : document.getElementById('positionInput').value,
+        password : document.getElementById('passwordInput').value
+      };
+
       fetch('/user', {
         method: 'POST',
         headers: {

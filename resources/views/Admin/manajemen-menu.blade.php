@@ -106,6 +106,50 @@
     @foreach ($menus as $menu)
       listMenu.push(@json($menu));
     @endforeach
+=======
+    let menuList = [];
+
+    function loadData(){
+      fetch('/menus')
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          showMenu(data);
+          menuList = data
+          console.log(data)
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+        });
+    }
+
+    function number_format(number, decimals, dec_point, thousands_sep) {
+      const fixedNumber = Number(number).toFixed(decimals);
+      const parts = fixedNumber.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousands_sep);
+      return parts.join(dec_point);
+    }
+
+    function showMenu(data) {
+      const tableBody = data.map(menu => `
+        <tr>
+          <td>${menu.id}</td>
+          <td>${menu.name}</td>
+          <td>${menu.category}</td>
+          <td>Rp ${number_format(menu.price, 0, ',', '.')}</td>
+          <td>${menu.is_active == 1 ? 'Tersedia' : 'Habis'}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" onclick="editMenu(${menu.id -1})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteMenu(${menu.id -1})">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+      
+      document.getElementById('menuTable').innerHTML = tableBody;
+    }
+>>>>>>> refs/remotes/origin/main
 
     function openForm() {
       document.getElementById("menuModalLabel").textContent = "Tambah Menu";

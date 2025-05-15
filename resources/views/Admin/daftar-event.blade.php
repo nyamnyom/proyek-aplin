@@ -3,7 +3,6 @@
 @section('title', 'Daftar Event')
 
 @section('content')
-
     <h2 class="fw-bold">Daftar Event</h4>
     <div class="mb-3">
       <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addEventModal">
@@ -39,7 +38,7 @@
   <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form id="eventForm">
+        <form id="eventForm" onsubmit="savePromo(event)">
           <div class="modal-header">
             <h5 class="modal-title" id="addEventModalLabel">Tambah Event Baru</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
@@ -50,12 +49,12 @@
               <input type="text" class="form-control" id="eventName" required />
             </div>
             <div class="mb-3">
-              <label for="eventDate" class="form-label">Tanggal Mulai</label>
-              <input type="date" class="form-control" id="tgl_mulai" required />
+              <label for="eventMulai" class="form-label">Tanggal Mulai</label>
+              <input type="date" class="form-control" id="eventMulai" required />
             </div>
             <div class="mb-3">
-              <label for="eventDate" class="form-label">Tanggal Selesai</label>
-              <input type="date" class="form-control" id="tgl_selesai" required />
+              <label for="eventSelesai" class="form-label">Tanggal Selesai</label>
+              <input type="date" class="form-control" id="eventSelesai" required />
             </div>
             <div class="mb-3">
               <label for="eventDesc" class="form-label">Deskripsi</label>
@@ -90,7 +89,6 @@
       list.innerHTML = '';
       events.forEach(event => {
         const item = document.createElement('a');
-        item.href = '#';
         item.className = 'list-group-item list-group-item-action';
         item.onclick = () => showEvent(event);
         item.innerHTML = `<strong>${event.nama_promo}</strong><br/><small>${event.tanggal_mulai}</small>`;
@@ -109,29 +107,32 @@
       `;
     }
 
-    document.getElementById('eventForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const name = document.getElementById('eventName').value.trim();
-      const date = document.getElementById('eventDate').value;
-      const desc = document.getElementById('eventDesc').value.trim();
+    function savePromo() {
+      event.preventDefault(); 
 
-      if (name && date && desc && discount) {
-        const newEvent = {
-          id: 'EVT' + String(events.length + 1).padStart(3, '0'),
-          name,
-          date,
-          desc,
-          discount: discount + '%'
-        };
-        events.push(newEvent);
-        loadEvents();
-        showEvent(newEvent);
-        document.getElementById('eventForm').reset();
-        const modal = bootstrap.Modal.getInstance(document.getElementById('addEventModal'));
-        modal.hide();
-      }
-    });
+      const data = {
+        nama_promo: document.getElementById('eventName').value,
+        deskripsi: document.getElementById('eventDesc').value,
+        tanggal_mulai: document.getElementById('eventMulai').value,
+        tanggal_selesai: document.getElementById('eventSelesai').value,
+        is_active: 1
+      };
+    
+      fetch('/promo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+        loadPromo(); 
+      })
+      .catch(err => console.error(err));
+    }
 
-    loadEvents();
   </script>
 @endsection

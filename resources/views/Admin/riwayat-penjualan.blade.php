@@ -27,7 +27,7 @@
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <h6 class="fw-bold" id="trxDetail">Pilih transaksi</h6>
-            <input type="date" class="form-control form-control-sm w-auto" id="trxDate" disabled />
+            <span class="badge bg-danger" id="trxDate"></span>
           </div>
 
           <table class="table mt-3">
@@ -142,19 +142,16 @@ let transaction = []
     }
 
     function showSaleDetail(id) { //blumm
-      const trx = transaction.find(t => t.id === id);
+      const trx = transaction.find(t => t.id == id);
       if (!trx) return;
     
-      document.getElementById('trxDetail').innerText = `${trx.id} | ${trx.cashier}`;
-      document.getElementById('trxDate').value = trx.date;
-      document.getElementById('trxDate').disabled = false;
+      document.getElementById('trxDetail').innerText = `${trx.id} | ${trx.nama}`;
       document.getElementById('printButton').disabled = false;
     
       const tbody = document.getElementById('detailTable');
       tbody.innerHTML = '';
-      trx.items.forEach(item => {
-        tbody.innerHTML += `<tr><td>${item[0]}</td><td>${item[1]}</td></tr>`;
-      });
+      tbody.innerHTML += `<tr><td>${trx.menu}</td><td>${trx.total}</td></tr>`;
+
     }
 
     renderCash(transaction);
