@@ -76,7 +76,6 @@ class AdminController extends Controller
         $user = User::all(); // ambil semua data 
         return response()->json(['htrans' => $htrans, 'user' => $user]); 
     }
-<<<<<<< HEAD
 
     public function insertMenu(Request $req){
         $validated = $req->validate([
