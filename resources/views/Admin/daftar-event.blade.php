@@ -109,29 +109,6 @@
       `;
     }
 
-    document.getElementById('eventForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const name = document.getElementById('eventName').value.trim();
-      const date = document.getElementById('eventDate').value;
-      const desc = document.getElementById('eventDesc').value.trim();
-
-      if (name && date && desc && discount) {
-        const newEvent = {
-          id: 'EVT' + String(events.length + 1).padStart(3, '0'),
-          name,
-          date,
-          desc,
-          discount: discount + '%'
-        };
-        events.push(newEvent);
-        loadEvents();
-        showEvent(newEvent);
-        document.getElementById('eventForm').reset();
-        const modal = bootstrap.Modal.getInstance(document.getElementById('addEventModal'));
-        modal.hide();
-      }
-    });
-
     loadEvents();
   </script>
 @endsection

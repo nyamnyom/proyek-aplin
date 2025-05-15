@@ -20,31 +20,7 @@
       </tr>
     </thead>
     <tbody id="menuTable">
-      @if ($menus->isEmpty())
-          <div class="alert alert-info">
-              Menu tidak ditemukan
-          </div>
-      @else
-          @php
-            $count = 1;
-          @endphp
-          @foreach ($menus as $menu)
-              <tr>
-                <td>{{$count}}</td>
-                <td>{{$menu->name}}</td>
-                <td>{{$menu->category}}</td>
-                <td>Rp {{ number_format($menu->price, 0, ',', '.') }}</td>
-                <td><span class="badge bg-{{ $menu->is_active === 1 ? 'success' : 'secondary' }}">{{ $menu->is_active === 1 ? 'Aktif' : 'Nonaktif' }}</span></td>
-                <td>
-                  <button class="btn btn-sm btn-warning me-2" onclick="editMenu(${index})">Edit</button>
-                  <button class="btn btn-sm btn-danger" onclick="deleteMenu(${index})">Hapus</button>
-                </td>
-              </tr>
-              @php
-                $count++;
-              @endphp
-          @endforeach
-      @endif
+      
     </tbody>
   </table>
 
@@ -67,9 +43,8 @@
             <label for="kategori" class="form-label">Kategori</label>
             <select class="form-select" id="kategori" required>
               <option value="">Pilih Kategori</option>
-              <option>Makanan</option>
-              <option>Minuman</option>
-              <option>Dessert</option>
+              <option value="Makanan">Makanan</option>
+              <option value="Minuman">Minuman</option>
             </select>
           </div>
           <div class="mb-3">
@@ -79,9 +54,13 @@
           <div class="mb-3">
             <label for="status" class="form-label">Status</label>
             <select class="form-select" id="status" required>
-              <option value="Tersedia">Tersedia</option>
-              <option value="Habis">Habis</option>
+              <option value="1">Tersedia</option>
+              <option value="0">Habis</option>
             </select>
+          </div>
+          <div class="mb-3">
+            <label for="desc" class="form-label">Deskripsi</label>
+            <textarea class="form-control" id="desc" rows="2" required></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -94,7 +73,48 @@
 
 @section('scripts')
   <script>
-    
+    let menuList = [];
+
+    function loadData(){
+      fetch('/menus')
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          showMenu(data);
+          menuList = data
+          console.log(data)
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+        });
+    }
+
+    function number_format(number, decimals, dec_point, thousands_sep) {
+      const fixedNumber = Number(number).toFixed(decimals);
+      const parts = fixedNumber.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousands_sep);
+      return parts.join(dec_point);
+    }
+
+    function showMenu(data) {
+      const tableBody = data.map(menu => `
+        <tr>
+          <td>${menu.id}</td>
+          <td>${menu.name}</td>
+          <td>${menu.category}</td>
+          <td>Rp ${number_format(menu.price, 0, ',', '.')}</td>
+          <td>${menu.is_active == 1 ? 'Tersedia' : 'Habis'}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" onclick="editMenu(${menu.id -1})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteMenu(${menu.id -1})">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+      
+      document.getElementById('menuTable').innerHTML = tableBody;
+    }
 
     function openForm() {
       document.getElementById("menuModalLabel").textContent = "Tambah Menu";
@@ -102,16 +122,18 @@
       document.getElementById("namaMenu").value = "";
       document.getElementById("kategori").value = "";
       document.getElementById("harga").value = "";
-      document.getElementById("status").value = "Tersedia";
+      document.getElementById("status").value = "1";
     } 
 
     function editMenu(index) {
+      console.log(index)
       const data = menuList[index];
       document.getElementById("editIndex").value = index;
-      document.getElementById("namaMenu").value = data.nama;
-      document.getElementById("kategori").value = data.kategori;
-      document.getElementById("harga").value = data.harga;
-      document.getElementById("status").value = data.status;
+      document.getElementById("namaMenu").value = data.name;
+      document.getElementById("kategori").value = data.category;
+      document.getElementById("harga").value = data.price;
+      document.getElementById("status").value = data.is_active;
+      document.getElementById("desc").value = data.description;
       document.getElementById("menuModalLabel").textContent = "Edit Menu";
       new bootstrap.Modal(document.getElementById("menuModal")).show();
     } 
@@ -125,26 +147,41 @@
 
     function saveMenu(e) {
       e.preventDefault();
-      const index = document.getElementById("editIndex").value;
+    
+      const id = document.getElementById('editIndex').value;
       const data = {
-        nama: document.getElementById("namaMenu").value,
-        kategori: document.getElementById("kategori").value,
-        harga: parseInt(document.getElementById("harga").value),
-        status: document.getElementById("status").value
-      };  
+        name: document.getElementById('namaMenu').value,
+        category: document.getElementById('kategori').value,
+        price: document.getElementById('harga').value,
+        is_active: document.getElementById('status').value,
+        description: document.getElementById('desc').value
+      };
+    
+      const url = id ? `/menus/${id}` : '/menus';  // edit vs tambah
+      const method = id ? 'PUT' : 'POST';
+    
+      fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) throw new Error("Gagal menyimpan data");
+        return response.json();
+      })
+      .then(result => {
+        loadData(); // reload data tabel
+        bootstrap.Modal.getInstance(document.getElementById('menuModal')).hide(); // tutup modal
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Terjadi kesalahan saat menyimpan menu.');
+      });
+    }
 
-      if (index === "") {
-        menuList.push(data);
-      } else {
-        menuList[index] = data;
-      } 
-
-      bootstrap.Modal.getInstance(document.getElementById("menuModal")).hide();
-      renderTable();
-    } 
-
-    // Inisialisasi
-    renderTable();  
-
+    loadData()
   </script>
 @endsection

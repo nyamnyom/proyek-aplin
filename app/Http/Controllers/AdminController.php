@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Dtrans;
 use App\Models\Htrans;
 use App\Models\Promo;
+use App\Models\Menus;
 
 use Illuminate\Support\Facades\DB;
 
@@ -69,10 +70,53 @@ class AdminController extends Controller
         $htrans = Htrans::all(); // ambil semua data 
         return response()->json($htrans); 
     }
+    public function getMenus() 
+    {
+        $menus = Menus::all(); // ambil semua data 
+        return response()->json($menus); 
+    }
     public function getTransaction() 
     {
         $htrans = Htrans::all(); // ambil semua data 
         $user = User::all(); // ambil semua data 
         return response()->json(['htrans' => $htrans, 'user' => $user]); 
     }
+    public function getMenu() 
+    {
+        $htrans = Htrans::all(); // ambil semua data 
+        $user = User::all(); // ambil semua data 
+        return response()->json(['htrans' => $htrans, 'user' => $user]); 
+    }
+    public function update(Request $request, $id)
+    {
+        $menu = Menus::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'category' => 'required|string',
+            'price' => 'required|numeric',
+            'is_active' => 'required|boolean',
+            'description' => 'nullable|string'
+        ]);
+
+        $menu->update($validated);
+
+        return response()->json(['message' => 'Menu berhasil diperbarui']);
+    }
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'category' => 'required|string',
+            'price' => 'required|numeric',
+            'is_active' => 'required|boolean',
+            'description' => 'nullable|string'
+        ]);
+
+        $menu = Menus::create($validated);
+
+        return response()->json(['message' => 'Menu berhasil ditambahkan', 'menu' => $menu]);
+    }
+
+
 }

@@ -43,6 +43,10 @@ Route::post('/user', [AdminController::class, 'add_user']);
 Route::get('/dtrans', [AdminController::class, 'getDtrans']);
 Route::get('/htrans', [AdminController::class, 'getHtrans']);
 Route::get('/transaction', [AdminController::class, 'getTransaction']);
+Route::get('/menus', [AdminController::class, 'getMenus']);
+Route::post('/menus', [AdminController::class, 'store']);
+Route::put('/menus/{id}', [AdminController::class, 'update']);
+
 
 // Kasir
 Route::get('/daftar-pesanan', [KasirController::class, 'daftar_pesanan']);
