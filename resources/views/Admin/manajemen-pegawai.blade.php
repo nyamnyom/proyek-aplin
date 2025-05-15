@@ -131,21 +131,42 @@
 
     function addEmployee(event) {
       event.preventDefault();
-      const id = document.getElementById('idInput').value.trim();
+      const username = document.getElementById('usernameInput').value.trim();
       const name = document.getElementById('namaInput').value.trim();
       const position = document.getElementById('positionInput').value.trim();
-      if (!id || !name || !position) return alert('Lengkapi semua data!') ;
+      const password = document.getElementById('passwordInput').value.trim();
+      if (!username || !password || !name || !position) return alert('Lengkapi semua data!') ;
 
-      employees.push({ id, name, position, 1 });
-      loadEmployees();
-      const modal = bootstrap.Modal.getInstance(document.getElementById('modalPegawai'));
-      modal.hide();
-      document.getElementById('idInput').value = '';
-      document.getElementById('namaInput').value = '';
-      document.getElementById('positionInput').value = '';
+      const data = { username, nama: name, posisi: position, password };
+      fetch('/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+      })
+      .then(result => {
+        alert('Data berhasil disimpan');
+        loadEmployees(); // reload list dari server (pastikan ini fetch ulang)
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalPegawai'));
+        modal.hide();
+      
+        // reset form
+        document.getElementById('usernameInput').value = '';
+        document.getElementById('namaInput').value = '';
+        document.getElementById('positionInput').value = '';
+        document.getElementById('passwordInput').value = '';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Gagal menyimpan data');
+      });
     }
-
-    
 
     loadEmployees();
   </script>

@@ -50,7 +50,7 @@ class AdminController extends Controller
                 'nama' => $request->nama,
                 'posisi' => $request->posisi,
                 'password' => $request->password,
-                'is_active' => $request->is_active ?? 1,
+                'is_active' => 1,
             ]);
 
             return response()->json([
