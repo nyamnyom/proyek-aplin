@@ -39,6 +39,7 @@ Route::get('/riwayat-penjualan', [AdminController::class, 'riwayat_penjualan']);
 Route::get('/tambah-bahan', [AdminController::class, 'tambah_bahan']);
 Route::get('/user', [AdminController::class, 'get_all_user']);
 Route::get('/promo', [AdminController::class, 'get_all_promo']);
+Route::post('/promo', [AdminController::class, 'add_promo']);
 Route::post('/user', [AdminController::class, 'add_user']);
 Route::get('/dtrans', [AdminController::class, 'getDtrans']);
 Route::get('/htrans', [AdminController::class, 'getHtrans']);
