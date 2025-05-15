@@ -131,4 +131,18 @@ class AdminController extends Controller
             'message' => 'Menu berhasil dinonaktifkan'
         ]);
     }
+    public function add_promo(Request $request)
+    {
+        DB::table('promo')->insert([
+            'nama_promo' => $request->nama_promo,
+            'deskripsi' => $request->deskripsi,
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'tanggal_selesai' => $request->tanggal_selesai,
+            'is_active' => $request->is_active ?? 1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+    
+        return response()->json(['message' => 'Promo berhasil ditambahkan']);
+    }
 }
