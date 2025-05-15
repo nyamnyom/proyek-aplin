@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\WebController;
+use App\Models\Admin;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -35,6 +36,8 @@ Route::get('/manajemen-menu', [AdminController::class, 'manajemen_menu']);
 Route::get('/manajemen-pegawai', [AdminController::class, 'manajemen_pegawai']);
 Route::get('/riwayat-penjualan', [AdminController::class, 'riwayat_penjualan']);
 Route::get('/tambah-bahan', [AdminController::class, 'tambah_bahan']);
+Route::get('/user', [AdminController::class, 'get_all_user']);
+Route::post('/user', [AdminController::class, 'add_user']);
 
 // Kasir
 Route::get('/daftar-pesanan', [KasirController::class, 'daftar_pesanan']);
