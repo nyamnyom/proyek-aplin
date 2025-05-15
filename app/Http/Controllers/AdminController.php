@@ -39,26 +39,16 @@ class AdminController extends Controller
         return response()->json($users);
     }
     public function add_user(Request $request)
-        {
-            $request->validate([
-                'username' => 'required|string', 
-                'nama' => 'required|string', 
-                'posisi' => 'required', 
-                'password' => 'required|string|min:6',
-                'is_active' => 'boolean'
-            ]);
+    {
+        $validated = $request->validate([
+            'username' => 'required|string',
+            'nama' => 'required|string',
+            'posisi' => 'required|string',
+            'password' => 'required|string|min:6',
+        ]);
 
-            $user = User::create([
-                'username' => $request->username,
-                'nama' => $request->nama,
-                'posisi' => $request->posisi,
-                'password' => $request->password,
-                'is_active' => 1,
-            ]);
+        $user = User::create($validated);
 
-            return response()->json([
-                'message' => 'User berhasil dibuat',
-                'user' => $user
-            ]);
-        }
+        return response()->json(['message' => 'User berhasil dibuat', 'user' => $user]);
+    }
 }

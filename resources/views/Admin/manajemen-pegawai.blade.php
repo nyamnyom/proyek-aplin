@@ -168,6 +168,5 @@
       });
     }
 
-    loadEmployees();
   </script>
 @endsection
