@@ -89,35 +89,31 @@ class AdminController extends Controller
         $user = User::all(); // ambil semua data 
         return response()->json(['htrans' => $htrans, 'user' => $user]); 
     }
-    public function update(Request $request, $id)
+    public function update_menu(Request $request, $id)
     {
-        $menu = Menus::findOrFail($id);
-
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'category' => 'required|string',
-            'price' => 'required|numeric',
-            'is_active' => 'required|boolean',
-            'description' => 'nullable|string'
+        DB::table('menus')->where('id', $id)->update([
+            'name' => $request->name,
+            'category' => $request->category,
+            'description' => $request->description,
+            'price' => $request->price,
+            'is_active' => $request->is_active ?? 1,
+            'updated_at' => now()
         ]);
-
-        $menu->update($validated);
 
         return response()->json(['message' => 'Menu berhasil diperbarui']);
     }
-    public function store(Request $request)
+    public function add_menu(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'category' => 'required|string',
-            'price' => 'required|numeric',
-            'is_active' => 'required|boolean',
-            'description' => 'nullable|string'
+        DB::table('menus')->insert([
+            'name' => $request->name,
+            'category' => $request->category,
+            'description' => $request->description,
+            'price' => $request->price,
+            'is_active' => $request->is_active ?? 1,
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
-
-        $menu = Menus::create($validated);
-
-        return response()->json(['message' => 'Menu berhasil ditambahkan', 'menu' => $menu]);
+        return response()->json(['message' => 'Menu berhasil ditambahkan']);
     }
     public function add_promo(Request $request)
     {

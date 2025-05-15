@@ -152,23 +152,25 @@ function saveMenu(event) {
   event.preventDefault();
 
   const id = document.getElementById("editId").value;
-  const nama = document.getElementById("namaMenu").value;
-  const kategori = document.getElementById("kategori").value;
-  const harga = Number(document.getElementById("harga").value);
-  const status = document.getElementById("status").value;
-  const deskripsi = document.getElementById("desc").value;  // fix id textarea
+  const name = document.getElementById("namaMenu").value;
+  const category = document.getElementById("kategori").value;
+  const price = Number(document.getElementById("harga").value);
+  const is_active = document.getElementById("status").value;
+  const description = document.getElementById("desc").value; 
 
   console.log('Saving menu id:', id);
 
   const data = {
-    name: nama,
-    category: kategori,
-    price: harga,
-    is_active: status,
-    description: deskripsi
+    name: name,
+    category: category,
+    price: price,
+    is_active: is_active,
+    description: description
   };
 
-  fetch(`/menus/${id}`, {
+const url = id ? `/menus/${id}` : `/menus`; // benar-benar tanpa slash di akhir
+
+  fetch(url, {
     method: id ? 'PUT' : 'POST',
     headers: {
       'Content-Type': 'application/json',
