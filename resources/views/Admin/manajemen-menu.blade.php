@@ -34,7 +34,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="editIndex">
+          <input type="hidden" id="editId">
           <div class="mb-3">
             <label for="namaMenu" class="form-label">Nama Menu</label>
             <input type="text" class="form-control" id="namaMenu" required>
@@ -118,17 +118,18 @@
 
     function openForm() {
       document.getElementById("menuModalLabel").textContent = "Tambah Menu";
-      document.getElementById("editIndex").value = "";
+      document.getElementById("editId").value = "";
       document.getElementById("namaMenu").value = "";
       document.getElementById("kategori").value = "";
       document.getElementById("harga").value = "";
-      document.getElementById("status").value = "1";
+      document.getElementById("status").value = 1;
+      document.getElementById("desc").value = "";
     } 
 
     function editMenu(index) {
       console.log(index)
       const data = menuList[index];
-      document.getElementById("editIndex").value = index;
+      document.getElementById("editId").value = data.id;
       document.getElementById("namaMenu").value = data.name;
       document.getElementById("kategori").value = data.category;
       document.getElementById("harga").value = data.price;
@@ -145,42 +146,50 @@
       }
     } 
 
-    function saveMenu(e) {
-      e.preventDefault();
-    
-      const id = document.getElementById('editIndex').value;
-      const data = {
-        name: document.getElementById('namaMenu').value,
-        category: document.getElementById('kategori').value,
-        price: document.getElementById('harga').value,
-        is_active: document.getElementById('status').value,
-        description: document.getElementById('desc').value
-      };
-    
-      const url = id ? `/menus/${id}` : '/menus';  // edit vs tambah
-      const method = id ? 'PUT' : 'POST';
-    
-      fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => {
-        if (!response.ok) throw new Error("Gagal menyimpan data");
-        return response.json();
-      })
-      .then(result => {
-        loadData(); // reload data tabel
-        bootstrap.Modal.getInstance(document.getElementById('menuModal')).hide(); // tutup modal
-      })
-      .catch(err => {
-        console.error(err);
-        alert('Terjadi kesalahan saat menyimpan menu.');
-      });
-    }
+    const menuModal = new bootstrap.Modal(document.getElementById("menuModal"));
+
+function saveMenu(event) {
+  event.preventDefault();
+
+  const id = document.getElementById("editId").value;
+  const nama = document.getElementById("namaMenu").value;
+  const kategori = document.getElementById("kategori").value;
+  const harga = Number(document.getElementById("harga").value);
+  const status = document.getElementById("status").value;
+  const deskripsi = document.getElementById("desc").value;  // fix id textarea
+
+  console.log('Saving menu id:', id);
+
+  const data = {
+    name: nama,
+    category: kategori,
+    price: harga,
+    is_active: status,
+    description: deskripsi
+  };
+
+  fetch(`/menus/${id}`, {
+    method: id ? 'PUT' : 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Gagal menyimpan data');
+    return response.json();
+  })
+  .then(result => {
+    menuModal.hide();
+    loadData();
+  })
+  .catch(error => {
+    console.error('Detail error:', error);
+    alert('Gagal menyimpan data');
+  });
+}
+
 
     loadData()
   </script>
