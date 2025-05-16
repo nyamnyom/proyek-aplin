@@ -120,74 +120,15 @@
                 </div>
                 
                 <div class="order-items">
-
-                    <div class="order-item">
-                        <div class="d-flex">
-                            <img src="https://awsimages.detik.net.id/community/media/visual/2021/12/24/bakmi-babi-bogor-1.jpeg?w=1200" alt="Menu" class="item-img me-3">
-                            <div class="flex-grow-1">
-                                <div class="fw-bold">Mie Chachu Babi</div>
-                                <div class="text-muted small">Rp 40.000</div>
-                                <input type="text" class="note-input" placeholder="Order Note...">
-                            </div>
-                            <div class="d-flex align-items-center ms-3">
-                                <input type="number" class="item-qty" value="1">
-                                <div class="text-end ms-3" style="width: 80px;">Rp 40.000</div>
-                            </div>
-                        </div>
-                        <div class="text-end mt-2">
-                            <button class="delete-btn">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
                     
-                    <div class="order-item">
-                        <div class="d-flex">
-                            <img src="https://awsimages.detik.net.id/community/media/visual/2021/12/24/bakmi-babi-bogor-1.jpeg?w=1200" alt="Menu" class="item-img me-3">
-                            <div class="flex-grow-1">
-                                <div class="fw-bold">Mie Semacem Babi</div>
-                                <div class="text-muted small">Rp 40.000</div>
-                                <input type="text" class="note-input" placeholder="Order Note...">
-                            </div>
-                            <div class="d-flex align-items-center ms-3">
-                                <input type="number" class="item-qty" value="3">
-                                <div class="text-end ms-3" style="width: 80px;">Rp 120.000</div>
-                            </div>
-                        </div>
-                        <div class="text-end mt-2">
-                            <button class="delete-btn">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="order-item">
-                        <div class="d-flex">
-                            <img src="https://awsimages.detik.net.id/community/media/visual/2021/12/24/bakmi-babi-bogor-1.jpeg?w=1200" alt="Menu" class="item-img me-3">
-                            <div class="flex-grow-1">
-                                <div class="fw-bold">Mie Chachu Babi</div>
-                                <div class="text-muted small">Rp 40.000</div>
-                                <input type="text" class="note-input" placeholder="Order Note...">
-                            </div>
-                            <div class="d-flex align-items-center ms-3">
-                                <input type="number" class="item-qty" value="1">
-                                <div class="text-end ms-3" style="width: 80px;">Rp 40.000</div>
-                            </div>
-                        </div>
-                        <div class="text-end mt-2">
-                            <button class="delete-btn">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="order-summary">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="text-muted">Subtotal</div>
-                        <div class="fw-bold">Rp 280.000</div>
+                        <div class="fw-bold">Rp 0</div>
                     </div>
-                    <a href="payment-system">
+                    <a href="/payment-system">
                     <button class="checkout-btn">
                         Lanjutkan Pembayaran
                     </button>
@@ -199,7 +140,9 @@
 @endsection
     
 @section('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        
         // Menambahkan fungsionalitas dasar untuk tab
         document.addEventListener('DOMContentLoaded', function() {
             const menuTabs = document.querySelectorAll('#menuTabs .nav-link');
@@ -225,7 +168,6 @@
                 });
             });
             
-    
             // Fungsionalitas untuk menambahkan item menu ke pesanan
             const menuCards = document.querySelectorAll('.menu-card');
             menuCards.forEach(card => {
@@ -270,6 +212,7 @@
                                         <div class="fw-bold">${menuTitle}</div>
                                         <div class="text-muted small">${menuPrice}</div>
                                         <input type="text" class="note-input" placeholder="Order Note...">
+                                        
                                     </div>
                                     <div class="d-flex align-items-center ms-3">
                                         <input type="number" class="item-qty" value="1" min="1">
@@ -355,6 +298,46 @@
                 // Update subtotal di ringkasan pesanan
                 document.querySelector('.order-summary .fw-bold').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
             }
+
+            // $('.checkout-btn').on('click', function() {
+            //     const orderItems = document.querySelectorAll('.order-item');
+            //     let orderDetails = [];
+                
+            //     orderItems.forEach(item => {
+            //         const title = item.querySelector('.fw-bold').textContent;
+            //         const qty = item.querySelector('.item-qty').value;
+            //         const note = item.querySelector('.note-input').value;
+                    
+            //         orderDetails.push({
+            //             title: title,
+            //             qty: qty,
+            //             note: note
+            //         });
+            //     });
+                
+                
+            //     // Kirim data pesanan ke server atau lakukan tindakan lain
+            //     $.ajax({
+            //         url: '/checkout',
+            //         method: 'POST',
+            //         data: {
+            //             orderDetails: orderDetails,
+            //             _token: '{{ csrf_token() }}'
+            //         },
+            //         success: function(response) {
+            //             console.log('Pesanan berhasil:', response);
+            //             // Simpan data di localStorage (opsional)
+            //             localStorage.setItem('items', JSON.stringify(response.data));
+            //             console.log(orderDetails);
+            //             // Redirect
+            //             // window.location.href = response.redirect;
+            //         },
+            //         error: function(xhr, status, error) {
+            //             console.error('Terjadi kesalahan:', error);
+            //         }
+            //     });
+
+            });
         });
     </script>
 @endsection

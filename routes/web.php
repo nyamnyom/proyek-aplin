@@ -6,6 +6,7 @@ use App\Http\Controllers\KasirController;
 use App\Http\Controllers\WebController;
 use App\Models\Admin;
 use App\Models\Customer;
+use App\Models\Kasir;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -55,6 +56,16 @@ Route::post('/deleteMenu/{id}', [AdminController::class, 'deleteMenu']);
 
 // Kasir
 Route::get('/daftar-pesanan', [KasirController::class, 'daftar_pesanan']);
-Route::get('/payment-system', [KasirController::class, 'payment_system']);
+// Route::get('/payment-system', [KasirController::class, 'payment_system']);
+Route::get('/payment-system', [KasirController::class, 'payment_system'])->name('payment.system');
+
+Route::post('/checkout', [KasirController::class, 'checkout']);
+// Route::post('/payment-system', [KasirController::class, 'checkout']);
+// ->name('kasir.checkout');
 Route::get('/kasir-main', [KasirController::class, 'kasir_main']);
 Route::get('/reservasi-meja', [KasirController::class, 'reservasi_meja']);
+
+Route::post('/insertTransaction', [KasirController::class, 'insertTransaction']);
+
+Route::post('/insert-reservasi', [KasirController::class, 'insert_reservasi'])->name('kasir.insertReservasi');
+

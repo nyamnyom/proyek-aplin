@@ -4,146 +4,125 @@
 
 @section('content')
 <div class="row mx-0">
-                    <!-- Pesanan Section -->
-                    <div class="col-md-6">
-                        <div class="main-content" style="height: 82vh; overflow-y: auto;">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h4 class="mb-0">Detail Pesanan</h4>
+        <!-- Pesanan Section -->
+        <div class="col-md-6">
+            <div class="main-content" style="height: 82vh; overflow-y: auto;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0">Detail Pesanan</h4>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between text-muted small mb-2">
+                        <div>Menu</div>
+                        <div class="d-flex">
+                            <div style="width: 40px; text-align: center;">Qty</div>
+                            <div style="width: 80px; text-align: right;">Harga</div>
+                        </div>
+                    </div>
+                    
+                    <div class="order-items">
+                        @foreach ($items as $item)
+                        <div class="order-item d-flex align-items-center">
+                            <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Menu" class="item-img me-3">
+                            <div class="flex-grow-1">
+                                <div class="fw-bold">Nasi Semacem Babi</div>
+                                <div class="text-muted small">Rp 40.000</div>
                             </div>
-                            
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between text-muted small mb-2">
-                                    <div>Menu</div>
-                                    <div class="d-flex">
-                                        <div style="width: 40px; text-align: center;">Qty</div>
-                                        <div style="width: 80px; text-align: right;">Harga</div>
-                                    </div>
+                            <div class="ms-3 me-3 text-center">
+                                <input type="number" class="item-qty" value="2">
+                            </div>
+                            <div class="me-2" style="width: 80px; text-align: right;">
+                                <span>Rp 80.000</span>
+                            </div>
+                            <button class="delete-btn">
+                                <i class="fas fa-times small"></i>
+                            </button>
+                        </div>
+                        @endforeach
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal</span>
+                            <span class="fw-bold">Rp 240.000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pembayaran Section -->
+        <div class="col-md-6 mb-5">
+            <div class="main-content" style="height: 82vh; overflow-y: auto">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0">Pembayaran</h4>
+                </div>
+                
+                <div class="payment-details mt-4">
+                    <h6 class="mb-3">Rincian Pembayaran</h6>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small">Payment Method</label>
+                        <div class="payment-method-container">
+                            <div class="payment-method active">
+                                <div class="text-center">
+                                    <i class="fas fa-money-bill-wave fa-2x"></i>
                                 </div>
-                                
-                                <div class="order-items">
-                                    <div class="order-item d-flex align-items-center">
-                                        <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Menu" class="item-img me-3">
-                                        <div class="flex-grow-1">
-                                            <div class="fw-bold">Nasi Semacem Babi</div>
-                                            <div class="text-muted small">Rp 40.000</div>
-                                        </div>
-                                        <div class="ms-3 me-3 text-center">
-                                            <input type="number" class="item-qty" value="2">
-                                        </div>
-                                        <div class="me-2" style="width: 80px; text-align: right;">
-                                            <span>Rp 80.000</span>
-                                        </div>
-                                        <button class="delete-btn">
-                                            <i class="fas fa-times small"></i>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="order-item d-flex align-items-center">
-                                        <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Menu" class="item-img me-3">
-                                        <div class="flex-grow-1">
-                                            <div class="fw-bold">Nasi Chachu Babi</div>
-                                            <div class="text-muted small">Rp 40.000</div>
-                                        </div>
-                                        <div class="ms-3 me-3 text-center">
-                                            <input type="number" class="item-qty" value="1">
-                                        </div>
-                                        <div class="me-2" style="width: 80px; text-align: right;">
-                                            <span>Rp 40.000</span>
-                                        </div>
-                                        <button class="delete-btn">
-                                            <i class="fas fa-times small"></i>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="order-item d-flex align-items-center">
-                                        <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Menu" class="item-img me-3">
-                                        <div class="flex-grow-1">
-                                            <div class="fw-bold">Mie Semacem Babi</div>
-                                            <div class="text-muted small">Rp 40.000</div>
-                                        </div>
-                                        <div class="ms-3 me-3 text-center">
-                                            <input type="number" class="item-qty" value="3">
-                                        </div>
-                                        <div class="me-2" style="width: 80px; text-align: right;">
-                                            <span>Rp 120.000</span>
-                                        </div>
-                                        <button class="delete-btn">
-                                            <i class="fas fa-times small"></i>
-                                        </button>
-                                    </div>
+                                <div class="small mt-1">Cash</div>
+                            </div>
+                            <div class="payment-method">
+                                <div class="text-center">
+                                    <i class="fas fa-credit-card fa-2x"></i>
                                 </div>
-                                
-                                <div class="mt-4">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Subtotal</span>
-                                        <span class="fw-bold">Rp 240.000</span>
-                                    </div>
+                                <div class="small mt-1">QRIS</div>
+                            </div>
+                            <div class="payment-method">
+                                <div class="text-center">
+                                    <i class="fas fa-building-columns fa-2x"></i>
                                 </div>
+                                <div class="small mt-1">Bank</div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Pembayaran Section -->
-                    <div class="col-md-6 mb-5">
-                        <div class="main-content" style="height: 82vh; overflow-y: auto">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h4 class="mb-0">Pembayaran</h4>
-                            </div>
-                            
-                            <div class="payment-details mt-4">
-                                <h6 class="mb-3">Rincian Pembayaran</h6>
-                                
-                                <div class="mb-3">
-                                    <label class="form-label small">Payment Method</label>
-                                    <div class="payment-method-container">
-                                        <div class="payment-method active">
-                                            <div class="text-center">
-                                                <i class="fas fa-money-bill-wave fa-2x"></i>
-                                            </div>
-                                            <div class="small mt-1">Cash</div>
-                                        </div>
-                                        <div class="payment-method">
-                                            <div class="text-center">
-                                                <i class="fas fa-credit-card fa-2x"></i>
-                                            </div>
-                                            <div class="small mt-1">QRIS</div>
-                                        </div>
-                                        <div class="payment-method">
-                                            <div class="text-center">
-                                                <i class="fas fa-building-columns fa-2x"></i>
-                                            </div>
-                                            <div class="small mt-1">Bank</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <label for="paymentAmount" class="form-label small">Jumlah Pembayaran (Cash)</label>
-                                    <input type="text" class="form-control" id="paymentAmount" value="250.000">
-                                </div>
-                            </div>
-                            
-                            <div class="payment-summary">
-                                <div class="d-flex justify-content-between">
-                                    <span class="fw-bold">Total</span>
-                                    <span class="fw-bold">Rp 240.000</span>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between">
-                                    <span>Diterima</span>
-                                    <span>Rp 250.000</span>
-                                </div>
-                            </div>
-                            
-                            <div class="d-flex justify-content-end mt-4">
-                                <button class="cancel-btn me-2">Cancel</button>
-                                <button class="confirm-btn">Selesaikan Pembayaran</button>
-                            </div>
-                        </div>
+                    <div class="mb-3">
+                        <label for="paymentAmount" class="form-label small">Jumlah Pembayaran (Cash)</label>
+                        <input type="text" class="form-control" id="paymentAmount" value="0">
                     </div>
                 </div>
+                
+                <div class="payment-summary">
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Total</span>
+                        <span class="fw-bold">Rp 240.000</span>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Diterima</span>
+                        <span>Rp 250.000</span>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end mt-4">
+                    <button class="cancel-btn me-2">Cancel</button>
+                    <a href=""><button class="confirm-btn">Selesaikan Pembayaran</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hidden input untuk data transaksi -->
+        <form id="payment-form">
+            @csrf
+            <!-- Untuk HTRANS -->
+            <input type="hidden" name="payment_method" id="input-payment-method">
+            <input type="hidden" name="total" id="input-total">
+
+            <!-- Untuk DTRANS, akan diisi dengan JavaScript -->
+            <div id="dtrans-inputs"></div>
+        </form>
                 
 @endsection
 
@@ -224,6 +203,9 @@
         // Fungsi untuk mengupdate subtotal
         function updateSubtotal() {
             let subtotal = 0;
+            if (document.querySelector('.order-items') === null) {
+                return;
+            }
             document.querySelectorAll('.order-item').forEach(item => {
                 const totalText = item.querySelector('div[style*="text-align: right"] span').textContent;
                 const total = parseInt(totalText.replace(/\D/g, '')) || 0;
@@ -238,9 +220,7 @@
                 `Rp ${subtotal.toLocaleString('id-ID')}`;
             
             // Update total keseluruhan
-            const discount = parseInt(document.querySelector('.d-flex.justify-content-between:nth-child(2) span:last-child').textContent.replace(/\D/g, '')) || 0;
-            const tax = parseInt(document.querySelector('.payment-summary .d-flex.justify-content-between:nth-child(3) span:last-child').textContent.replace(/\D/g, '')) || 0;
-            const grandTotal = subtotal - discount + tax;
+           const grandTotal = subtotal;
             
             document.querySelector('.payment-summary .d-flex.justify-content-between:last-child span:last-child').textContent = 
                 `Rp ${grandTotal.toLocaleString('id-ID')}`;
@@ -261,13 +241,33 @@
                 return;
             }
             
-            // Proses pembayaran
-            alert('Pembayaran berhasil diselesaikan!');
-            
-            // Reset form atau redirect ke halaman baru
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
+            // Ambil metode pembayaran aktif
+            const selectedMethod = document.querySelector('.payment-method.active .small').textContent;
+            document.getElementById('input-payment-method').value = selectedMethod;
+
+            // Ambil total
+            document.getElementById('input-total').value = total;
+
+            // Ambil semua item dan masukkan sebagai hidden input
+            const dtransInputsContainer = document.getElementById('dtrans-inputs');
+            dtransInputsContainer.innerHTML = ''; // Kosongkan dulu
+
+            document.querySelectorAll('.order-item').forEach((item, index) => {
+            const itemName = item.querySelector('.fw-bold').textContent.trim();
+            const qty = item.querySelector('.item-qty').value;
+            const priceText = item.querySelector('.text-muted.small').textContent;
+            const price = parseInt(priceText.replace(/\D/g, '')) || 0;
+            const subtotal = qty * price;
+
+            dtransInputsContainer.innerHTML += `
+            <input type="hidden" name="items[${index}][item_name]" value="${itemName}">
+            <input type="hidden" name="items[${index}][qty]" value="${qty}">
+            <input type="hidden" name="items[${index}][price]" value="${price}">
+            <input type="hidden" name="items[${index}][subtotal]" value="${subtotal}">
+            `;
+            });
+
+            document.getElementById('payment-form').submit();
         });
         
         // Fungsionalitas untuk tombol Cancel
