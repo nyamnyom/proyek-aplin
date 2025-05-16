@@ -30,11 +30,10 @@
       <div class="col-md-6">
         <div class="card shadow-sm p-3">
           <div class="d-flex justify-content-between">
-            <h6>Bagan Waktu</h6>
-            <span class="badge bg-light text-dark">15 Nov</span>
+            <h6>Ringkasan Penjualan Berdasarkan Kategori</h6>
+            <span id="donutDate" class="badge bg-light text-dark fw-bold"></span>
           </div>
         <canvas id="donutChart"></canvas>
-        <p class="text-muted small">Garis waktu pelanggan mengunjungi toko</p>
         </div>
       </div>
 
@@ -58,7 +57,7 @@
       <!-- Chart Dummy -->
       <div class="col-md-8">
         <div class="card shadow-sm p-3">
-          <h6>Perbandingan Penjualan Bulan Lalu dan Bulan Ini</h6>
+          <h5 id="chartTitle" class="card-title">Rekap Penjualan Harian Bulan Ini</h6>
           <canvas id="lineChart"></canvas>
         </div>
       </div>
@@ -179,49 +178,153 @@
         });
     }
 
-    // Jalankan saat halaman dimuat
     getData();
 
-    const ctxDonut = document.getElementById('donutChart');
-    new Chart(ctxDonut, {
-      type: 'doughnut',
-      data: {
-        labels: ['11.00 - 14.30', '14.30 - 17.30', '17.30 - 21.00'],
-        datasets: [{
-          data: [44, 18, 38],
-          backgroundColor: ['#f4c430', '#ff595e', '#198754']
-        }]
-      },
-      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
+    function getQtyPerCategory(menus, dtrans) {
+      const categoryTotals = {};
 
-    const ctxLine = document.getElementById('lineChart');
-    new Chart(ctxLine, {
-      type: 'line',
-      data: {
-        labels: ['24', '25', '26', '27', '28', '29', '30'],
-        datasets: [
-          {
-            label: 'Penjualan Bulan Ini',
-            data: [5.1, 4.9, 5.0, 5.3, 6.0, 5.8, 5.5],
-            borderColor: 'green',
-            tension: 0.3
-          },
-          {
-            label: 'Penjualan Bulan Lalu',
-            data: [4.6, 4.7, 4.8, 4.9, 4.8, 4.9, 4.6],
-            borderColor: 'orange',
-            tension: 0.3
+      dtrans.forEach(d => {
+        // Temukan menu yang sesuai dengan item_name
+        const menu = menus.find(m => m.name === d.item_name);
+        if (menu) {
+          const category = menu.category;
+          if (!categoryTotals[category]) {
+            categoryTotals[category] = 0;
           }
-        ]
-      },
-      options: {
-        scales: {
-          y: { beginAtZero: false },
-          x: { title: { display: true, text: 'Tanggal' } }
+          categoryTotals[category] += d.qty;
         }
-      }
-    });
+      });
+      console.log(categoryTotals)
+      return categoryTotals;
+    }
+
+    function dateDonut(){
+      const donutDate = document.getElementById('donutDate');
+      const today = new Date();
+      const options = { day: '2-digit', month: 'short' }; 
+      donutDate.textContent = today.toLocaleDateString('id-ID', options);
+    }
+
+    function dateChart() {
+      const now = new Date();
+      const monthYear = now.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
+      document.getElementById('chartTitle').textContent = `Rekap Penjualan Harian Bulan ${monthYear}`;
+    }
+
+    function donat() {
+      fetch('/menu')
+        .then(res => {
+          if (!res.ok) throw new Error('Gagal fetch menus');
+          return res.json();
+        })
+        .then(menus => {
+          return fetch('/dtrans')
+            .then(res => {
+              if (!res.ok) throw new Error('Gagal fetch dtrans');
+              return res.json();
+            })
+            .then(dtrans => {
+              const result = getQtyPerCategory(menus, dtrans);
+              console.log(result);
+              generateDonat(result);
+              dateDonut();
+              dateChart()
+            });
+        })
+        .catch(err => console.error('Error:', err));
+    }
+
+    donat();
+
+    function generateDonat(data){
+      const ctxDonut = document.getElementById('donutChart');
+      const labels = Object.keys(data);
+      const datas = Object.values(data);
+      new Chart(ctxDonut, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: datas,
+            backgroundColor: ['#f4c430', '#ff595e']
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      });
+    }
+
+    function groupTotalPerDate(data) {
+      const totals = {};
+
+      data.forEach(item => {
+        const date = item.created_at.slice(0, 10); // 'YYYY-MM-DD'
+        totals[date] = (totals[date] || 0) + item.total;
+      });
+    
+      return totals;
+    }
+
+    function line() {
+      fetch('/htrans')
+        .then(res => res.json())
+        .then(htrans => {
+          const today = new Date();
+          const currentYear = today.getFullYear();
+          const currentMonth = String(today.getMonth() + 1).padStart(2, '0'); // bulan dari 0-11
+        
+          // Filter hanya data bulan ini
+          const filtered = htrans.filter(item => {
+            const [year, month] = item.created_at.slice(0, 7).split('-');
+            return year == currentYear && month == currentMonth;
+          });
+        
+          const totalsByDate = groupTotalPerDate(filtered);
+          const labels = Object.keys(totalsByDate).sort();
+          const dataTotals = labels.map(date => totalsByDate[date]);
+        
+          const ctxLine = document.getElementById('lineChart');
+          new Chart(ctxLine, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Total Penjualan per Tanggal',
+                data: dataTotals,
+                borderColor: 'green',
+                tension: 0.3
+              }]
+            },
+            options: {
+              scales: {
+                x: {
+                  type: 'time',
+                  time: {
+                    unit: 'day',
+                    tooltipFormat: 'yyyy-MM-dd',
+                    displayFormats: { day: 'dd' }
+                  },
+                  title: {
+                    display: true,
+                    text: 'Tanggal'
+                  }
+                },
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: 'Total Penjualan'
+                  }
+                }
+              },
+              plugins: {
+                legend: { position: 'top' }
+              }
+            }
+          });
+        });
+    }
+
+    line()
   </script>
 @endsection
 
