@@ -106,7 +106,7 @@ let transaction = []
       data.forEach(t => {
         if (t.nama != ''){
           list.innerHTML += `
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="showSaleDetail('${t.id}')">
+            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="showPesanan('${t.id}')">
               <div>
                 <strong>${t.id}</strong><br />
                 <small>Nama Kasir: ${t.nama}</small>
@@ -127,7 +127,7 @@ let transaction = []
       data.forEach(t => {
         if (t.nama == ''){
           list.innerHTML += `
-            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="showSaleDetail('${t.id}')">
+            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="showPesanan('${t.id}')">
               <div>
                 <strong>${t.id}</strong><br />
               </div>
@@ -141,17 +141,37 @@ let transaction = []
       });
     }
 
-    function showSaleDetail(id) { //blumm
-      const trx = transaction.find(t => t.id == id);
+    function showPesanan(id){
+      fetch('/dtrans')
+      .then(res => {
+        if (!res.ok) throw new Error('Fetch error');
+        return res.json();
+      })
+      .then(data => {
+        console.log(data)
+        showSaleDetail(id,data);
+
+      })
+      .catch(err => console.error(err));
+    }
+
+
+    function showSaleDetail(id, data) { 
+      const trx = data
+        .filter(t => t.htrans_id == id)
+        .sort((a, b) => b.subtotal - a.subtotal);
+      const ts = transaction.find(t => t.id == id);
+      console.log(trx)
       if (!trx) return;
     
-      document.getElementById('trxDetail').innerText = `${trx.id} | ${trx.nama}`;
+      document.getElementById('trxDetail').innerText = `${ts.id} | ${ts.nama}`;
       document.getElementById('printButton').disabled = false;
     
       const tbody = document.getElementById('detailTable');
       tbody.innerHTML = '';
-      tbody.innerHTML += `<tr><td>${trx.menu}</td><td>${trx.total}</td></tr>`;
-
+      trx.forEach(t => {
+        tbody.innerHTML += `<tr><td>${t.item_name}</td><td>${t.qty}</td></tr>`;
+      });
     }
 
     renderCash(transaction);
