@@ -42,6 +42,10 @@ class AdminController extends Controller
         $users = User::all();
         return response()->json($users);
     }
+    public function get_menu(){
+        $menu = Menu::all();
+        return response()->json($menu);
+    }
     public function add_user(Request $request) //blomm jadi
     {
         $validated = $request->validate([

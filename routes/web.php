@@ -32,18 +32,16 @@ Route::get('/weather/{city}', [CustomerController::class, 'getWeather']);
 // Admin
 Route::get('/dashboard', [AdminController::class, 'dashboard']);
 Route::get('/daftar-event', [AdminController::class, 'daftar_event']);
-Route::get('/edit-bahan', [AdminController::class, 'edit_bahan']);
-Route::get('/inventaris', [AdminController::class, 'inventaris']);
 Route::get('/manajemen-menu', [AdminController::class, 'manajemen_menu']);
 Route::get('/manajemen-pegawai', [AdminController::class, 'manajemen_pegawai']);
 Route::get('/riwayat-penjualan', [AdminController::class, 'riwayat_penjualan']);
-Route::get('/tambah-bahan', [AdminController::class, 'tambah_bahan']);
 
 // Get Data Page Admin
 Route::get('/user', [AdminController::class, 'get_all_user']);
 Route::get('/promo', [AdminController::class, 'get_all_promo']);
 Route::post('/promo', [AdminController::class, 'add_promo']);
 Route::post('/user', [AdminController::class, 'add_user']);
+Route::get('/menu', [AdminController::class, 'get_menu']);
 Route::get('/dtrans', [AdminController::class, 'getDtrans']);
 Route::get('/htrans', [AdminController::class, 'getHtrans']);
 Route::get('/transaction', [AdminController::class, 'getTransaction']);
