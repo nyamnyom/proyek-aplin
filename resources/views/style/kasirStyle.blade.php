@@ -49,6 +49,10 @@ body {
     font-weight: bold;
 }
 
+.logout {
+    color: red;
+}
+
 .logo {
     width: 40px;
     height: 40px;
@@ -60,19 +64,6 @@ body {
     color: white;
     font-weight: bold;
     margin-right: 10px;
-}
-
-/* Search Bar */
-.search-bar {
-    border-radius: 20px;
-    border: 1px solid #ddd;
-}
-
-.search-box {
-    border-radius: 20px;
-    border: 1px solid #ddd;
-    padding: 5px 15px;
-    width: 300px;
 }
 
 /* Main Content */
@@ -612,8 +603,9 @@ body {
 .menu-item {
     display: flex;
     justify-content: space-between;
-    padding: 5px 0;
-    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #ccc;
 }
 
 /* Responsive Adjustments */

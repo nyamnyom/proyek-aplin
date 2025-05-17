@@ -9,7 +9,7 @@
                 </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item logout" href="/">Logout</a></li>
+                <li><a class="dropdown-item logout" href="/login">Logout</a></li>
             </ul>
         </div>
     </div>

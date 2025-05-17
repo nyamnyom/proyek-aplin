@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 class KasirController extends Controller
 {
     function daftar_pesanan(){
-        return view('Kasir.daftar-pesanan');
+        $htrans = DB::table('htrans')->get();
+        return view('Kasir.daftar-pesanan', ['htrans' => $htrans]);
     }
     function payment_system(){
         // Ambil data dari session/localStorage, atau testing dummy
@@ -31,13 +32,13 @@ class KasirController extends Controller
     
     function checkout(Request $request){
         // dd($request->input('orderDetails'));
-    $items = $request->input('orderDetails'); // pakai nama field yang benar dari AJAX
+        $items = $request->input('orderDetails'); // pakai nama field yang benar dari AJAX
 
-    return response()->json([
-        'message' => 'Sukses',
-        'redirect' => route('payment.system'),
-        'data' => $items,
-    ]);
+        return response()->json([
+            'message' => 'Sukses',
+            'redirect' => route('payment.system'),
+            'data' => $items,
+        ]);
     }
 
     function insertTransaction(Request $request) {

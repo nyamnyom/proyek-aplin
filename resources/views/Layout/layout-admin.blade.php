@@ -13,7 +13,7 @@
         <div class="row">
             @include('Layout.sidebar-admin')
 
-            <div class="col-md-10 offset-md-2 p-4 pt-2">
+            <div class="col-md-10 offset-md-2 p-4 pt-2" style="height: 100vh; overflow: hidden;">
                 @include('Layout.navbar-admin')
 
                 <div class="container-fluid" style="overflow-y: auto; height: 79.5vh">

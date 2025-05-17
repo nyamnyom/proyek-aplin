@@ -8,7 +8,7 @@
                         <div class="small fw-bold">Admin</div>
                     </div>
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item logout" href="/">Logout</a></li>
                 </ul>
             </div>

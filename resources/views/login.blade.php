@@ -106,7 +106,7 @@
         <div class="logo">WH</div>
         <h5 class="fw-bold mt-2">Wei Hong Restaurant</h5>
     </div>
-    <p>User Login</p>
+    <p>Cashier Login</p>
     
     <input type="text" id="username" class="form-control mb-2" placeholder="Username" />
     
@@ -115,46 +115,19 @@
     </div>
 
     <button class="btn btn-black w-100 mb-3" onclick="login()">Login</button>
-    
-    <div class="divider">or continue with</div>
-    
-    <button class="btn btn-google w-100 mb-3 d-flex align-items-center justify-content-center">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" width="20" class="me-2" />
-      Google
-    </button>
-
-    <small>
-        Haven’t create an account yet? <a href="register">Register account</a>
-    </small>
   </div>
 
   <script>
-    const users = [
-      {
-        username: 'admin',
-        password: 'admin',
-        location: 'dashboard'
-      },
-      {
-        username: 'kasir',
-        password: 'kasir',
-        location: 'kasir-main'
-      },
-      {
-        username: 'customer',
-        password: 'customer',
-        location: 'home'
-      }
-    ];
+    const users = @json($users);
 
     function login() {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
 
       const user = users.find(u => u.username === username && u.password === password);
 
       if (user) {
-        window.location.href = user.location;
+        window.location.href = 'kasir-main';
       } else {
         alert("Username atau password salah!");
       }

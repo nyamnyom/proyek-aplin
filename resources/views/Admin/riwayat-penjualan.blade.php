@@ -7,14 +7,23 @@
   <div class="row mt-4">
     <!-- List Penjualan -->
     <div class="col-md-7">
-      <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-          <a class="nav-link active" href="#" id="cash" onclick="setActiveAndRender(event, renderCash, transaction)">Cash</a>
+      <ul class="nav nav-tabs mb-3" id="salesTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="cashier-tab" data-bs-toggle="tab" href="#cashier-pane" role="tab">Cashier</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" id="qris" onclick="setActiveAndRender(event, renderQris, transaction)">Qris</a>        
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="selfService-tab" data-bs-toggle="tab" href="#selfService-pane" role="tab">Self Service</a>
         </li>
       </ul>
+
+      <div class="tab-content" id="salesTabContent">
+        <div class="tab-pane fade show active" id="cashier-pane" role="tabpanel">
+          <div class="list-group" id="cashierList"></div>
+        </div>
+        <div class="tab-pane fade" id="selfService-pane" role="tabpanel">
+          <div class="list-group" id="selfServiceList"></div>
+        </div>
+      </div>
 
       <div class="list-group" id="salesList">
         <!-- List akan diisi oleh JavaScript -->
@@ -53,7 +62,7 @@
 
 @section('scripts')
   <script>
-let transaction = []
+    let transaction = []
     function setActiveAndRender(event, renderFunc, data) {
       event.preventDefault();
 
@@ -83,28 +92,25 @@ let transaction = []
 
     function loadHistory() {
       fetch('/transaction')
-        .then(res => {
-          if (!res.ok) throw new Error('Fetch error');
-          return res.json();
-        })
+        .then(res => res.json())
         .then(data => {
           const htrans = data.htrans;
           const user = data.user;
 
           transaction = combineTransactionWithUser(htrans, user);
-          renderCash(transaction);
-          console.log(combineTransactionWithUser(htrans, user))
+          renderCashier(transaction);
+          renderSelfService(transaction);
         })
         .catch(err => console.error(err));
     }
 
     loadHistory();
 
-    function renderCash(data) {
-      const list = document.getElementById('salesList');
+    function renderCashier(data) {
+      const list = document.getElementById('cashierList');
       list.innerHTML = '';
       data.forEach(t => {
-        if (t.nama != ''){
+        if (t.nama != '') {
           list.innerHTML += `
             <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="showPesanan('${t.id}')">
               <div>
@@ -120,12 +126,12 @@ let transaction = []
         }
       });
     }
-    
-    function renderQris(data) {
-      const list = document.getElementById('salesList');
+
+    function renderSelfService(data) {
+      const list = document.getElementById('selfServiceList');
       list.innerHTML = '';
       data.forEach(t => {
-        if (t.nama == ''){
+        if (t.nama == '') {
           list.innerHTML += `
             <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="showPesanan('${t.id}')">
               <div>
@@ -140,6 +146,7 @@ let transaction = []
         }
       });
     }
+
 
     function showPesanan(id){
       fetch('/dtrans')
@@ -163,8 +170,8 @@ let transaction = []
       const ts = transaction.find(t => t.id == id);
       console.log(trx)
       if (!trx) return;
-    
-      document.getElementById('trxDetail').innerText = `${ts.id} | ${ts.nama}`;
+      
+      document.getElementById('trxDetail').innerText = ts.nama ? `ID : ${ts.id}\n\nKasir : ${ts.nama}` : `ID : ${ts.id}`;
       document.getElementById('printButton').disabled = false;
     
       const tbody = document.getElementById('detailTable');
@@ -174,6 +181,6 @@ let transaction = []
       });
     }
 
-    renderCash(transaction);
+    renderCashier(transaction);
   </script>
 @endsection
