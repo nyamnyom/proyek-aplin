@@ -86,37 +86,62 @@ class AdminController extends Controller
             'name' => 'required|max:255',
             'kategori' => 'required|in:Makanan,Minuman',
             'harga' => 'required|integer|min:1000',
-            'image_url' => 'nullable|string',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'deskripsi' => 'required|string'
         ]);
+
+        $extension = $req->file('image')->getClientOriginalExtension();
+        $cleanName = preg_replace('/[^a-z0-9]+/', '_', strtolower($req->name));
+        $fileName = "{$cleanName}.{$extension}";
+
+        // Simpan ke public/images
+        $req->file('image')->move(public_path('uploads'), $fileName);
 
         Menu::create([
             'name' => $validated['name'],
             'category' => $validated['kategori'],
             'price' => $validated['harga'],
             'description' => $validated['deskripsi'],
-            'image_url' => $validated['image_url'] ?? 'default.jpg',
+            'image_url' => 'uploads/' . $fileName,
         ]);
 
         return response()->json(['message' => 'Menu berhasil ditambahkan'], 200);
     }
+
     public function updateMenu(Request $req, $id) {
         $validated = $req->validate([
             'name' => 'required|max:255',
             'kategori' => 'required|in:Makanan,Minuman',
             'harga' => 'required|integer|min:1000',
-            'image_url' => 'nullable|string',
+            'image' => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
             'deskripsi' => 'required|string'
         ]);
 
         $menu = Menu::findOrFail($id);
+        $imagePath = $menu->image_url;
+
+        if ($req->hasFile('image')) {
+            // Hapus gambar lama
+            if (file_exists(public_path($menu->image_url))) {
+                unlink(public_path($menu->image_url));
+            }
+
+            // Buat nama file baru dari title
+            $extension = $req->file('image')->getClientOriginalExtension();
+            $cleanName = preg_replace('/[^a-z0-9]+/', '-', strtolower($req->name));
+            $newFilename = "{$cleanName}.{$extension}";
+
+            // Simpan file baru
+            $req->file('image')->move(public_path('images'), $newFilename);
+            $imagePath = 'images/' . $newFilename;
+        }
         
         $menu->update([
             'name' => $validated['name'],
             'category' => $validated['kategori'],
             'price' => $validated['harga'],
             'description' => $validated['deskripsi'],
-            'image_url' => $validated['image_url'] ?? $menu->image_url,
+            'image_url' => $imagePath,
         ]);
 
         return response()->json(['success' => true, 'message' => 'Menu berhasil diperbarui']);
@@ -135,6 +160,7 @@ class AdminController extends Controller
             'message' => 'Menu berhasil dinonaktifkan'
         ]);
     }
+
     public function add_promo(Request $request)
     {
         DB::table('promo')->insert([

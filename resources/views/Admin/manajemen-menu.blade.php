@@ -85,8 +85,8 @@
           </div>
 
           <div class="mb-3">
-            <label for="image_url" class="form-label">URL Gambar</label>
-            <input type="text" class="form-control" id="image_url" name="image_url">
+            <label for="image" class="form-label">Gambar Menu</label>
+            <input type="file" class="form-control" id="image" name="image">
           </div>
         </div>
 
@@ -110,7 +110,7 @@
       document.getElementById("kategori").value = "";
       document.getElementById("harga").value = "";
       document.getElementById("desc").value = "";
-      document.getElementById("image_url").value = "";
+      document.getElementById("image").value = "";
     } 
 
     function editMenu(index) {
@@ -121,7 +121,7 @@
         document.getElementById("kategori").value = data.category;
         document.getElementById("harga").value = data.price;
         document.getElementById("desc").value = data.description;
-        document.getElementById("image_url").value = data.image_url;
+        document.getElementById("image").value = "";
         new bootstrap.Modal(document.getElementById("menuModal")).show();
     }
 
@@ -154,37 +154,37 @@
     function saveMenu(e) {
       e.preventDefault();
       const id = document.getElementById("editIndex").value;
-      
-      const data = {
-          name: document.getElementById("namaMenu").value,
-          kategori: document.getElementById("kategori").value,
-          harga: parseInt(document.getElementById("harga").value),
-          deskripsi: document.getElementById("desc").value,
-          image_url: document.getElementById('image_url').value,
-          _token: document.querySelector('meta[name="csrf-token"]').content
-      };
 
-      // Pastikan URL sesuai
+      const formData = new FormData();
+      formData.append("name", document.getElementById("namaMenu").value);
+      formData.append("kategori", document.getElementById("kategori").value);
+      formData.append("harga", document.getElementById("harga").value);
+      formData.append("deskripsi", document.getElementById("desc").value);
+
+      const imageFile = document.getElementById("image").files[0];
+      if (imageFile) {
+          formData.append("image", imageFile);
+      }
+
       const url = id ? `/updateMenu/${id}` : '/insertMenu';
-      
+
       fetch(url, {
           method: 'POST',
           headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': data._token
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
           },
-          body: JSON.stringify(data)
+          body: formData
       })
       .then(response => {
-          if (!response.ok) {
-              throw new Error('Network response was not ok');
-          }
+          if (!response.ok) throw new Error('Network response was not ok');
           return response.json();
       })
       .then(result => {
           if (result.success) {
               alert(result.message);
               location.reload();
+          } else {
+              alert(result.message || 'Terjadi kesalahan');
           }
       })
       .catch(error => {

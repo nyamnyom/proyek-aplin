@@ -36,7 +36,7 @@
                                         <div class="col-md-4">
                                             <div class="menu-card">
                                                 <div class="menu-image">
-                                                    <img src="{{$food->image_url}}" alt="{{$food->name}}">
+                                                    <img src="{{asset($food->image_url)}}" alt="{{$food->name}}">
                                                 </div>
                                                 <div class="menu-details">
                                                     <div class="menu-title">{{$food->name}}</div>
@@ -60,7 +60,7 @@
                                         <div class="col-md-4">
                                             <div class="menu-card">
                                                 <div class="menu-image">
-                                                    <img src="{{$drink->image_url}}" alt="{{$drink->name}}">
+                                                    <img src="{{asset($drink->image_url)}}" alt="{{$drink->name}}">
                                                 </div>
                                                 <div class="menu-details">
                                                     <div class="menu-title">{{$drink->name}}</div>
@@ -84,7 +84,7 @@
                                         <div class="col-md-4">
                                             <div class="menu-card">
                                                 <div class="menu-image">
-                                                    <img src="{{$item->image_url}}" alt="{{$item->name}}">
+                                                    <img src="{{asset($item->image_url)}}" alt="{{$item->name}}">
                                                 </div>
                                                 <div class="menu-details">
                                                     <div class="menu-title">{{ $item->name }}</div>

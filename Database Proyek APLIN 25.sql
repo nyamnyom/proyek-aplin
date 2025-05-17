@@ -16,8 +16,8 @@ CREATE TABLE menus (
 );
 
 INSERT INTO menus (`name`, `description`, price, category, image_url, total_ordered) VALUES
-('Nasi Goreng Spesial', 'Nasi goreng spesial dengan telur dan daging', 25000, 'Makanan', 'nasi_goreng.jpg', 1),
-('Ayam Bakar Madu', 'Ayam bakar dengan bumbu madu special', 35000, 'Makanan', 'ayam_bakar.jpg', 1),
+('Nasi Goreng Spesial', 'Nasi goreng spesial dengan telur dan daging', 25000, 'Makanan', 'nasi_goreng_spesial.jpg', 1),
+('Ayam Bakar Madu', 'Ayam bakar dengan bumbu madu special', 35000, 'Makanan', 'ayam_bakar_madu.jpeg', 1),
 ('Nasi Semacem Babi', 'Nasi dengan daging babi semacem', 50000, 'Makanan', 'nasi_semacem_babi.jpg', 1),
 ('Mie Chachu Babi', 'Mie dengan daging babi chachu', 45000, 'Makanan', 'mie_chachu_babi.jpg', 1),
 ('Mie Semacem Babi', 'Mie dengan daging babi semacem', 40000, 'Makanan', 'mie_semacem_babi.jpg', 1),
