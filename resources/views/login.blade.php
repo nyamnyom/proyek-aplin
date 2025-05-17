@@ -6,6 +6,7 @@
   <title>Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -107,30 +108,46 @@
         <h5 class="fw-bold mt-2">Wei Hong Restaurant</h5>
     </div>
     <p>Cashier Login</p>
-    
-    <input type="text" id="username" class="form-control mb-2" placeholder="Username" />
-    
-    <div class="input-group mb-2">
-      <input type="password" id="password" class="form-control" placeholder="Password" />
-    </div>
-
-    <button class="btn btn-black w-100 mb-3" onclick="login()">Login</button>
+    <form method="post" onsubmit="return login(event)">
+      @csrf
+      <input type="text" id="username" class="form-control mb-2" placeholder="Username" />
+      
+      <div class="input-group mb-2">
+        <input type="password" id="password" class="form-control" placeholder="Password" />
+      </div>
+  
+      <button class="btn btn-black w-100 mb-3" type="submit">Login</button>
+    </form>
   </div>
 
   <script>
     const users = @json($users);
 
-    function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+    function login(e) {
+      e.preventDefault();
 
-      const user = users.find(u => u.username === username && u.password === password);
+      const data = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      };
 
-      if (user) {
-        window.location.href = 'kasir-main';
-      } else {
-        alert("Username atau password salah!");
-      }
+      fetch('/validation', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          window.location.href = result.redirect;
+        } else {
+          alert(result.message);
+        }
+      })
+      .catch(err => console.error(err));
     }
   </script>
 </body>

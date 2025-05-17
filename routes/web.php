@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Session;
 
 // Login Register
 Route::get('/login', [WebController::class, 'login']);
-Route::get('/register', [WebController::class, 'register']);
+Route::get('/logout', [WebController::class, 'logout']);
+Route::post('/validation', [WebController::class, 'validation']);
 
 
 // Customer
