@@ -68,3 +68,5 @@ Route::post('/insertTransaction', [KasirController::class, 'insertTransaction'])
 
 Route::post('/insert-reservasi', [KasirController::class, 'insert_reservasi'])->name('kasir.insertReservasi');
 
+// ini yang baru 
+Route::post('/set-session-order', [KasirController::class, 'setSessionOrder'])->name('kasir.setSessionOrder');

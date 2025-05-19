@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Session;
 
 class KasirController extends Controller
 {
@@ -14,8 +12,7 @@ class KasirController extends Controller
         return view('Kasir.daftar-pesanan', ['htrans' => $htrans]);
     }
     function payment_system(){
-        // Ambil data dari session/localStorage, atau testing dummy
-        $items = []; // Sementara kosong atau bisa ambil dari session kalau kamu simpan sebelumnya
+        $items = Session::get('order_items', []);
         return view('Kasir.payment-system', compact('items'));
     }
 
@@ -30,51 +27,6 @@ class KasirController extends Controller
         return view('Kasir.reservasi-meja');
     }
     
-    function checkout(Request $request){
-        // dd($request->input('orderDetails'));
-        $items = $request->input('orderDetails'); // pakai nama field yang benar dari AJAX
-
-        return response()->json([
-            'message' => 'Sukses',
-            'redirect' => route('payment.system'),
-            'data' => $items,
-        ]);
-    }
-
-    function insertTransaction(Request $request) {
-        DB::beginTransaction();
-        try {
-            // Simpan htrans
-            $htransId = DB::table('htrans')->insertGetId([
-                'payment_method' => $request->payment_method,
-                'total' => $request->total,
-                'kasir_id' => $request->kasir_id,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-
-            // Simpan dtrans
-            foreach ($request->items as $item) {
-                DB::table('dtrans')->insert([
-                    'htrans_id' => $htransId,
-                    'item_name' => $item['item_name'],
-                    'qty' => $item['qty'],
-                    'price' => $item['price'],
-                    'subtotal' => $item['subtotal'],
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
-            }
-
-            DB::commit();
-            return response()->json(['message' => 'Transaksi berhasil']);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['error' => 'Terjadi kesalahan saat menyimpan transaksi'], 500);
-        }
-        
-    }
-
     function insert_reservasi(Request $request) {
         $request->validate([
             'nama_pelanggan' => 'required|string|max:100',
@@ -110,4 +62,13 @@ class KasirController extends Controller
 
         return redirect('/reservasi-meja')->with('success', 'Reservasi berhasil disimpan!');
     }
+
+    public function setSessionOrder(Request $request)
+    {
+        $orderItems = $request->input('order_items'); // array dari JavaScript
+        Session::put('order_items', $orderItems);
+
+        return response()->json(['success' => true]);
+    }
+    
 }

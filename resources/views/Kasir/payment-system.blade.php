@@ -12,39 +12,29 @@
                 </div>
                 
                 <div class="mb-4">
-                    <div class="d-flex justify-content-between text-muted small mb-2">
-                        <div>Menu</div>
-                        <div class="d-flex">
-                            <div style="width: 40px; text-align: center;">Qty</div>
-                            <div style="width: 80px; text-align: right;">Harga</div>
-                        </div>
-                    </div>
-                    
                     <div class="order-items">
                         @foreach ($items as $item)
-                        <div class="order-item d-flex align-items-center">
-                            <img src="https://nibble-images.b-cdn.net/nibble/original_images/nasi-campur-babi-di-jakarta-01.jpg" alt="Menu" class="item-img me-3">
-                            <div class="flex-grow-1">
-                                <div class="fw-bold">Nasi Semacem Babi</div>
-                                <div class="text-muted small">Rp 40.000</div>
+                            <div>
+                                <strong class="fw-bold">{{ $item['name'] }}</strong><br>
+                                <div class="text-muted small">Harga: Rp {{ number_format($item['price'], 0, ',', '.') }}</div>
+                                <div class="mb-2">Catatan: {{ $item['note'] ?? '-' }}</div>
+                                <div class="form-control item-qty">{{ $item['qty'] }}</div>
+                                <div class="text-end mt-2">Total: <span class="item-total fw-bold">Rp {{ number_format($item['qty'] * $item['price'], 0, ',', '.') }}</span></div>
+                                <hr>
                             </div>
-                            <div class="ms-3 me-3 text-center">
-                                <input type="number" class="item-qty" value="2">
-                            </div>
-                            <div class="me-2" style="width: 80px; text-align: right;">
-                                <span>Rp 80.000</span>
-                            </div>
-                            <button class="delete-btn">
-                                <i class="fas fa-times small"></i>
-                            </button>
-                        </div>
                         @endforeach
                     </div>
                     
                     <div class="mt-4">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal</span>
-                            <span class="fw-bold">Rp 240.000</span>
+                            @php
+                                $subtotal = 0;
+                                foreach ($items as $item) {
+                                    $subtotal += $item['qty'] * $item['price'];
+                                }
+                            @endphp
+                            <span class="fw-bold">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
                         </div>
                     </div>
                 </div>
@@ -92,9 +82,11 @@
                 </div>
                 
                 <div class="payment-summary">
-                    <div class="d-flex justify-content-between">
-                        <span class="fw-bold">Total</span>
-                        <span class="fw-bold">Rp 240.000</span>
+                    <div class="payment-summary">
+                        <div class="d-flex justify-content-between">
+                            <span class="fw-bold">Total</span>
+                            <span class="fw-bold">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
+                        </div>
                     </div>
                 </div>
                 
@@ -129,16 +121,6 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Fungsionalitas untuk tombol tab Dine In, To Go, Delivery
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        tabButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                tabButtons.forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
         
         // Fungsionalitas untuk metode pembayaran
         const paymentMethods = document.querySelectorAll('.payment-method');
@@ -167,16 +149,6 @@
             }
             
             this.value = value;
-        });
-        
-        // Fungsionalitas untuk tombol hapus item
-        const deleteButtons = document.querySelectorAll('.delete-btn');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const orderItem = this.closest('.order-item');
-                orderItem.remove();
-                updateSubtotal();
-            });
         });
         
         // Fungsionalitas untuk input jumlah
