@@ -70,5 +70,40 @@ class KasirController extends Controller
 
         return response()->json(['success' => true]);
     }
+
     
+    public function insertTransaction(Request $request)
+    {
+        $paymentMethod = $request->input('payment_method');
+        $total = $request->input('total');
+        $kasirId = 1; // Ubah sesuai session user login jika tersedia
+
+        // Insert ke htrans
+        $htransId = DB::table('htrans')->insertGetId([
+            'payment_method' => $paymentMethod,
+            'total' => $total,
+            'kasir_id' => $kasirId,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Insert ke dtrans
+        foreach ($request->input('items') as $item) {
+            DB::table('dtrans')->insert([
+                'htrans_id' => $htransId,
+                'item_name' => $item['item_name'],
+                'qty' => $item['qty'],
+                'price' => $item['price'],
+                'subtotal' => $item['subtotal'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        // Kosongkan session order_items setelah transaksi berhasil
+        Session::forget('order_items');
+
+        return redirect('/daftar-pesanan')->with('success', 'Pembayaran berhasil disimpan!');
+    }
+
 }
