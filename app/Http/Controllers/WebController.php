@@ -16,7 +16,10 @@ class WebController extends Controller
         $users = DB::table('user')->where('username', $request->username)->where('password', $request->password)->first();
 
         if (!$users){
-            return redirect('/login')->with('error', 'User tidak ditemukan');
+            return response()->json([
+                'success' => false,
+                'message' => 'Username atau password salah.'
+            ]);
         }
 
         session()->put('userActive', $users->nama);

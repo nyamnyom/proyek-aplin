@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin')</title>
     @include('style.adminStyle')
+    @yield('styles')
 </head>
 <body>
     <div class="container-fluid">

@@ -34,7 +34,7 @@
                                         <div class="col-md-4">
                                             <div class="menu-card">
                                                 <div class="menu-image">
-                                                    <img src="{{ asset($food->image_url) }}" alt="{{ $food->name }}">
+                                                    <img src="{{ asset($food->image_url) }}" alt="{{ $food->name }}" onerror="this.onerror=null;this.src='{{ asset('default_food.png') }}';">
                                                 </div>
                                                 <div class="menu-details">
                                                     <div class="menu-title">{{ $food->name }}</div>
@@ -56,7 +56,7 @@
                                         <div class="col-md-4">
                                             <div class="menu-card">
                                                 <div class="menu-image">
-                                                    <img src="{{ asset($drink->image_url) }}" alt="{{ $drink->name }}">
+                                                    <img src="{{ asset($drink->image_url) }}" alt="{{ $drink->name }}" onerror="this.onerror=null;this.src='{{ asset('default_food.png') }}';">
                                                 </div>
                                                 <div class="menu-details">
                                                     <div class="menu-title">{{ $drink->name }}</div>
@@ -78,7 +78,7 @@
                                         <div class="col-md-4">
                                             <div class="menu-card">
                                                 <div class="menu-image">
-                                                    <img src="{{ asset($item->image_url) }}" alt="{{ $item->name }}">
+                                                    <img src="{{ asset($item->image_url) }}" alt="{{ $item->name }}" onerror="this.onerror=null;this.src='{{ asset('default_food.png') }}';">
                                                 </div>
                                                 <div class="menu-details">
                                                     <div class="menu-title">{{ $item->name }}</div>

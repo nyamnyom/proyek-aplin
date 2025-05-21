@@ -2,6 +2,16 @@
 
 @section('title', 'Manajemen Menu')
 
+@section('styles')
+  <style>
+    .menu_img{
+      border-radius: 100%;
+      height: 40px;
+      width: 40px;
+    }
+  </style>
+@endsection
+
 @section('content')
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">Manajemen Menu</h2>
@@ -12,6 +22,7 @@
     <thead class="table-light">
       <tr>
         <th>No</th>
+        <th>Gambar Menu</th>
         <th>Nama Menu</th>
         <th>Kategori</th>
         <th>Harga</th>
@@ -31,6 +42,7 @@
           @foreach ($menus as $index => $menu)
               <tr>
                 <td>{{$count}}</td>
+                <td><img src="{{asset($menu->image_url)}}" class="menu_img" alt="{{$menu->name}}" onerror="this.onerror=null;this.src='{{ asset('default_food.png') }}';"></td>
                 <td>{{$menu->name}}</td>
                 <td>{{$menu->category}}</td>
                 <td>Rp {{ number_format($menu->price, 0, ',', '.') }}</td>

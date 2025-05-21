@@ -106,7 +106,7 @@
      data-category="{{ $menu->category }}" 
      data-ordered="{{ $menu->total_ordered }}">
         <div class="card h-100 shadow-sm">
-            <img src="{{ asset($menu->image_url) }}" class="menu-img" alt="{{ $menu->name }}">
+            <img src="{{ asset($menu->image_url) }}" class="menu-img" alt="{{ $menu->name }}" onerror="this.onerror=null;this.src='{{ asset('default_food.png') }}';">
             <div class="card-body">
                 <h5 class="card-title">{{ $menu->name }}</h5>
                 <p class="card-text text-muted">{{ $menu->description }}</p>
