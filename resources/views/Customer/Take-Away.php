@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Fetch Weather Info
         document.addEventListener("DOMContentLoaded", function () {
-    fetch('/weather/Jakarta')
+    fetch('/weather/Surabaya')
         .then(response => response.json())
         .then(data => {
             const temp = data.main.temp;
