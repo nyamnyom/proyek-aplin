@@ -6,7 +6,7 @@
     <div class="row g-0">
       
       <!-- Main Content -->
-      <div class="main-content" style="overflow-y: auto; width: 96.5%">
+      <div class="main-content" style="overflow-y: auto; max-height: calc(100vh - 100px); width: 96.5%">
         <!-- Content Area -->
         <div class="content-area">
           <div class="content-header">
@@ -17,6 +17,12 @@
               {{ session('success') }}
             </div>
           @endif
+          @if(session('error'))
+            <div class="alert alert-danger">
+              {{ session('error') }}
+            </div>
+          @endif
+
           <form method="POST" action="{{ route('kasir.insertReservasi') }}">
             @csrf
             <div class="mb-3">
@@ -57,7 +63,34 @@
 
             <button type="submit" class="btn btn-danger">Simpan Reservasi</button>
           </form>
-          
+
+          <div class="mt-4">
+            <h5>Daftar Reservasi</h5>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Waktu</th>
+                  <th>Nama Pelanggan</th>
+                  <th>Nomor Telepon</th>
+                  <th>Nomor Meja</th>
+                  <th>Jumlah Tamu</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($reservasi as $item)
+                  <tr>
+                    <td>{{ $item->tanggal_reservasi }}</td>
+                    <td>{{ $item->waktu_reservasi }}</td>
+                    <td>{{ $item->nama_pelanggan }}</td>
+                    <td>{{ $item->nomor_telepon }}</td>
+                    <td>{{ $item->nomor_meja }}</td>
+                    <td>{{ $item->jumlah_tamu }}</td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+
         </div>
       </div>
     </div>

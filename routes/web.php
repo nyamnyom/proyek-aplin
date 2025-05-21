@@ -62,6 +62,7 @@ Route::post('/checkout', [KasirController::class, 'checkout']);
 Route::get('/kasir-main', [KasirController::class, 'kasir_main']);
 Route::get('/reservasi-meja', [KasirController::class, 'reservasi_meja']);
 
+
 Route::post('/insertTransaction', [KasirController::class, 'insertTransaction']);
 
 Route::post('/insert-reservasi', [KasirController::class, 'insert_reservasi'])->name('kasir.insertReservasi');

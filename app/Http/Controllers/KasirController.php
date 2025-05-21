@@ -23,11 +23,13 @@ class KasirController extends Controller
         return view('Kasir.kasir-main', ['foods' => $foods, 'drinks' => $drinks, 'rekomendasi' => $rekomendasi]);
 
     }
-    function reservasi_meja(){
-        return view('Kasir.reservasi-meja');
+    
+    function reservasi_meja() {
+        $reservasi = DB::table('reservasi_meja')->orderBy('tanggal_reservasi', 'desc')->get();
+        return view('Kasir.reservasi-meja', compact('reservasi'));
     }
     
-    function insert_reservasi(Request $request) {
+    public function insert_reservasi(Request $request) {
         $request->validate([
             'nama_pelanggan' => 'required|string|max:100',
             'nomor_telepon' => 'required|string|max:20',
@@ -36,6 +38,16 @@ class KasirController extends Controller
             'nomor_meja' => 'required|string|max:5',
             'jumlah_tamu' => 'required|integer',
         ]);
+
+        // Ambil kapasitas meja
+        $kapasitasMeja = DB::table('meja')
+            ->where('nomor_meja', $request->nomor_meja)
+            ->value('kapasitas');
+
+        // Validasi jika jumlah tamu melebihi kapasitas meja
+        if ($request->jumlah_tamu > $kapasitasMeja) {
+            return back()->with('error', 'Jumlah tamu melebihi kapasitas meja.')->withInput();
+        }
 
         // Cek apakah meja sudah dipesan di tanggal & waktu yang sama
         $cek = DB::table('reservasi_meja')
@@ -48,7 +60,7 @@ class KasirController extends Controller
             return back()->with('error', 'Meja sudah dipesan pada waktu tersebut.')->withInput();
         }
 
-        // Jika aman, insert
+        // Insert data reservasi
         DB::table('reservasi_meja')->insert([
             'nama_pelanggan' => $request->nama_pelanggan,
             'nomor_telepon' => $request->nomor_telepon,
