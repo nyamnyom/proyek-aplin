@@ -155,11 +155,9 @@
         });
 
         // Tombol print (dummy)
-        document.getElementById('print-btn').addEventListener('click', function () {
-            alert('Printing receipt...');
-        });
+        
     });
-
+    
     function showPesanan(id) {
         fetch('/dtrans')
             .then(res => {
@@ -181,7 +179,16 @@
 
         // Update title pesanan
         document.getElementById('order-title').innerText = `Pesanan #${id}`;
-
+const printBtn = document.getElementById('print-btn');
+printBtn.setAttribute('data-id', id);
+document.getElementById('print-btn').addEventListener('click', function () {
+    const id = this.getAttribute('data-id');
+    if (id) {
+        window.open(`/Kasir/nota/${id}`, '_blank');
+    } else {
+        alert('Silakan pilih pesanan terlebih dahulu.');
+    }
+});
         // Tampilkan waktu berdasarkan created_at
         const firstItem = trx[0];
         const time = new Date(firstItem.created_at);

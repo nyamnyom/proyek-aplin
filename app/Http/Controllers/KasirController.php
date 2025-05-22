@@ -1,9 +1,13 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Models\Dtrans;
+use App\Models\Htrans;
 use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
 
 class KasirController extends Controller
 {
@@ -82,7 +86,17 @@ class KasirController extends Controller
 
         return response()->json(['success' => true]);
     }
+    public function nota($id)
+    {
+        $htrans = Htrans::findOrFail($id);
+        $dtrans = Dtrans::where('htrans_id', $id)->get();
 
+        // ambil QR URL jika ada, lalu hapus dari session
+        $qrUrl = session('qrUrl');
+        Session::forget('qrUrl');
+
+        return view('Kasir.nota', compact('htrans', 'dtrans', 'qrUrl'));
+    }
     
     public function insertTransaction(Request $request)
     {
@@ -98,7 +112,7 @@ class KasirController extends Controller
             'created_at' => now(),
             'updated_at' => now()
         ]);
-
+        
         // Insert ke dtrans
         foreach ($request->input('items') as $item) {
             DB::table('dtrans')->insert([
@@ -114,7 +128,35 @@ class KasirController extends Controller
 
         // Kosongkan session order_items setelah transaksi berhasil
         Session::forget('order_items');
+if ($paymentMethod === 'QRIS') {
+        $orderId  = 'ORDER-' . uniqid();
+        $serverKey = env('MIDTRANS_SERVER_KEY');
 
+        // Panggil API Midtrans
+        $response = Http::withHeaders([
+            'Accept'        => 'application/json',
+            'Authorization' => 'Basic ' . base64_encode($serverKey . ':'),
+            'Content-Type'  => 'application/json',
+        ])->post('https://api.sandbox.midtrans.com/v2/charge', [
+            'payment_type' => 'qris',
+            'transaction_details' => [
+                'order_id'     => $orderId,
+                'gross_amount' => $total,
+            ],
+            'qris' => [
+                'acquirer' => 'gopay'
+            ]
+        ]);
+
+        $result = $response->json();
+
+        if ($response->successful() && isset($result['actions'][0]['url'])) {
+            session(['qrUrl' => $result['actions'][0]['url']]);
+            return redirect()->route('Kasir.nota', ['id' => $htransId]);
+        } else {
+            return back()->with('error', 'Gagal generate QRIS: ' . json_encode($result));
+        }
+    }
         return redirect('/daftar-pesanan')->with('success', 'Pembayaran berhasil disimpan!');
     }
 

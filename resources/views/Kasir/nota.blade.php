@@ -11,7 +11,7 @@
         <div class="alert alert-info">Silakan tunjukkan nota ini ke kasir untuk menyelesaikan pembayaran.</div>
     @elseif($htrans->payment_method === 'debit_card')
         <div class="alert alert-info">Pembayaran via kartu debit diproses menggunakan mesin EDC.</div>
-    @elseif($htrans->payment_method === 'qris' && isset($qrUrl))
+    @elseif($htrans->payment_method === 'QRIS' && isset($qrUrl))
         <div class="text-center my-4">
             <h5>Silakan scan QR berikut untuk melakukan pembayaran:</h5>
            
@@ -31,6 +31,6 @@
     <p><strong>Total:</strong> Rp{{ number_format($htrans->total, 0, ',', '.') }}</p>
 
     <hr>
-    <a href="{{ url('/') }}" class="btn btn-primary">&larr; Kembali ke Menu</a>
+    <a href="{{ url('/daftar-pesanan') }}" class="btn btn-primary">&larr; Kembali ke Menu</a>
 </div>
 @endsection
