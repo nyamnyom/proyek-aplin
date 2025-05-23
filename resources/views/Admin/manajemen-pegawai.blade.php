@@ -40,7 +40,7 @@
       </div>
     </div>
 
-  <!-- Modal Tambah Pegawai (blum)-->
+  <!-- Modal Tambah Pegawai-->
   <div class="modal fade" id="modalPegawai" tabindex="-1" aria-labelledby="modalPegawaiLabel" aria-hidden="true">
     <div class="modal-dialog">
       <form class="modal-content" onsubmit="addEmployee(event)">
@@ -152,8 +152,8 @@
       })
       .then(result => {
         alert('Data berhasil disimpan');
-        loadEmployees(); // reload list dari server (pastikan ini fetch ulang)
-        const modal = bootstrap.Modal.getInstance(document.getElementById('modalPegawai'));
+        getData(); // reload list dari server (pastikan ini fetch ulang)
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPegawai'));
         modal.hide();
       
         // reset form
