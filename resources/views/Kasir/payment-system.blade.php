@@ -156,7 +156,9 @@
 
         // Tombol batal
         document.querySelector('.cancel-btn').addEventListener('click', () => {
-            if (confirm('Yakin ingin membatalkan pembayaran?')) location.reload();
+            if (confirm('Yakin ingin membatalkan pembayaran?')) {
+                window.location.href = 'kasir-main'; // Ganti dengan URL halaman sebenarnya
+            }
         });
     });
 </script>

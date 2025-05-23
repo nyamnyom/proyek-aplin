@@ -57,12 +57,20 @@ Route::post('/deleteMenu/{id}', [AdminController::class, 'deleteMenu']);
 // Kasir
 Route::get('/daftar-pesanan', [KasirController::class, 'daftar_pesanan']);
 Route::get('/payment-system', [KasirController::class, 'payment_system'])->name('payment.system');
-Route::post('/checkout', [KasirController::class, 'checkout']);
+// Route::post('/checkout', [KasirController::class, 'checkout']);
 Route::get('/kasir-main', [KasirController::class, 'kasir_main']);
 Route::get('/reservasi-meja', [KasirController::class, 'reservasi_meja']);
+
 Route::post('/insertTransaction', [KasirController::class, 'insertTransaction']);
+
+
 Route::post('/insert-reservasi', [KasirController::class, 'insert_reservasi'])->name('kasir.insertReservasi');
+Route::post('/kasir/reservasi/update', [KasirController::class, 'updateReservasi'])->name('kasir.updateReservasi');
+Route::get('/kasir/reservasi/delete/{id}', [KasirController::class, 'deleteReservasi'])->name('kasir.deleteReservasi');
+
 // ini yang baru 
 Route::post('/set-session-order', [KasirController::class, 'setSessionOrder'])->name('kasir.setSessionOrder');
 Route::get('/Kasir/nota/{id}', [KasirController::class, 'nota'])->name('Kasir.nota');
 Route::post('/payment-system', [KasirController::class, 'insertTransaction'])->name('payment.submit');
+
+

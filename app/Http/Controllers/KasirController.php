@@ -128,7 +128,7 @@ class KasirController extends Controller
 
         // Kosongkan session order_items setelah transaksi berhasil
         Session::forget('order_items');
-if ($paymentMethod === 'QRIS') {
+        if ($paymentMethod === 'QRIS') {
         $orderId  = 'ORDER-' . uniqid();
         $serverKey = env('MIDTRANS_SERVER_KEY');
 
@@ -160,4 +160,62 @@ if ($paymentMethod === 'QRIS') {
         return redirect('/daftar-pesanan')->with('success', 'Pembayaran berhasil disimpan!');
     }
 
+    public function updateReservasi(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+            'nama_pelanggan' => 'required|string|max:100',
+            'nomor_telepon' => 'required|string|max:20',
+            'tanggal_reservasi' => 'required|date',
+            'waktu_reservasi' => 'required',
+            'nomor_meja' => 'required|string|max:5',
+            'jumlah_tamu' => 'required|integer',
+        ]);
+
+        $kapasitasMeja = DB::table('meja')
+            ->where('nomor_meja', $request->nomor_meja)
+            ->value('kapasitas');
+
+        if ($request->jumlah_tamu > $kapasitasMeja) {
+            return back()->with('error', 'Jumlah tamu melebihi kapasitas meja.')->withInput();
+        }
+
+        // Cek jika waktu dan meja bentrok dengan reservasi lain
+        $cek = DB::table('reservasi_meja')
+            ->where('tanggal_reservasi', $request->tanggal_reservasi)
+            ->where('waktu_reservasi', $request->waktu_reservasi)
+            ->where('nomor_meja', $request->nomor_meja)
+            ->where('id', '!=', $request->id)
+            ->first();
+
+        if ($cek) {
+            return back()->with('error', 'Meja sudah dipesan pada waktu tersebut.')->withInput();
+        }
+
+        DB::table('reservasi_meja')
+            ->where('id', $request->id)
+            ->update([
+                'nama_pelanggan' => $request->nama_pelanggan,
+                'nomor_telepon' => $request->nomor_telepon,
+                'tanggal_reservasi' => $request->tanggal_reservasi,
+                'waktu_reservasi' => $request->waktu_reservasi,
+                'nomor_meja' => $request->nomor_meja,
+                'jumlah_tamu' => $request->jumlah_tamu,
+                'updated_at' => now(),
+            ]);
+
+        return redirect('/reservasi-meja')->with('success', 'Reservasi berhasil diperbarui!');
+    }
+
+    public function deleteReservasi($id)
+    {
+        DB::table('reservasi_meja')->where('id', $id)->delete();
+        return redirect('/reservasi-meja')->with('success', 'Reservasi berhasil dihapus.');
+    }
+
+    public function showReservasi()
+    {
+        $reservasi = DB::table('reservasi_meja')->get();
+        return view('kasir.reservasi-meja', compact('reservasi'));
+    }
 }

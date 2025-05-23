@@ -3,10 +3,10 @@
 @section('title', 'Daftar Event')
 
 @section('content')
-    <h2 class="fw-bold">Daftar Event</h4>
+    <h2 class="fw-bold">Daftar Promo</h4>
     <div class="mb-3">
       <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addEventModal">
-        <i class="bi bi-plus-circle"></i> Tambah Event
+        <i class="bi bi-plus-circle"></i> Tambah Promo
       </button>
     </div>
     <div class="row mt-4">
@@ -20,7 +20,7 @@
       <div class="col-md-5">
         <div class="card">
           <div class="card-body">
-            <h6 class="fw-bold" id="eventTitle">Pilih Event</h6>
+            <h6 class="fw-bold" id="eventTitle">Pilih Promo</h6>
             <table class="table mt-3">
               <tbody id="eventDetail">
                 <tr><td>Nama</td><td>-</td></tr>
@@ -40,12 +40,12 @@
       <div class="modal-content">
         <form id="eventForm" onsubmit="savePromo(event)">
           <div class="modal-header">
-            <h5 class="modal-title" id="addEventModalLabel">Tambah Event Baru</h5>
+            <h5 class="modal-title" id="addEventModalLabel">Tambah Promo Baru</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label for="eventName" class="form-label">Nama Event</label>
+              <label for="eventName" class="form-label">Nama Promo</label>
               <input type="text" class="form-control" id="eventName" required />
             </div>
             <div class="mb-3">

@@ -10,7 +10,7 @@
             <li class="nav-item mb-2"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'manajemen-menu' ? 'active' : '' ?>" href="manajemen-menu"><i class="bi bi-egg-fried"></i> Manajemen Menu</a></li>
             <li class="nav-item mb-2"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'riwayat-penjualan' ? 'active' : '' ?>" href="riwayat-penjualan"><i class="fas fa-list-alt"></i> Riwayat Penjualan</a></li>
             <li class="nav-item mb-2"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'manajemen-pegawai' ? 'active' : '' ?>" href="manajemen-pegawai"><i class="bi bi-people-fill"></i> Manajemen Pegawai</a></li>
-            <li class="nav-item mb-2"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'daftar-event' ? 'active' : '' ?>" href="daftar-event"><i class="fas fa-calendar"></i> Daftar Event</a></li>
+            <li class="nav-item mb-2"><a class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'daftar-event' ? 'active' : '' ?>" href="daftar-event"><i class="fas fa-calendar"></i> Daftar Promo</a></li>
         </ul>
     </div>
 </div>
