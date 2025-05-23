@@ -129,7 +129,19 @@
       .then(res => res.json())
       .then(data => {
         alert(data.message);
+
+        //refresh table
         loadPromo(); 
+
+        //hide modal
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('addEventModal'));
+        modal.hide();
+
+        //reset form
+        document.getElementById('eventName').value = '';
+        document.getElementById('eventMulai').value = '';
+        document.getElementById('eventSelesai').value = '';
+        document.getElementById('eventDesc').value = '';
       })
       .catch(err => console.error(err));
     }

@@ -49,6 +49,7 @@
               {{-- pegawai --}}            
             </tbody>
           </table>
+          <div class="mt-3 d-flex justify-content-center" id="paginationControls"></div>
         </div>
       </div>
     </div>
@@ -141,44 +142,122 @@
     }
     window.onload = loadDtrans;
 
+  function getData() {
+    fetch('/user')
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+      })
+      .then(usersArray => {
+        window.employees = usersArray || []; // Simpan di global
+        loadEmployees(1); // Panggil render halaman pertama
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+      });
+  }
 
-    function getData() {
-      fetch('/user')
-        .then(response => {
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-          return response.json();
-        })
-        .then(usersArray => {
-          const list = document.getElementById('employeeList');
-          if (!list) {
-            console.error('Elemen dengan id "employeeList" tidak ditemukan');
-            return;
-          }
-        
-          list.innerHTML = ''; // kosongkan dulu isi tabel
-        
-          usersArray.forEach(emp => {
-            const row = document.createElement('tr');
-          
-            const statusBadge = emp.is_active == 1
-              ? '<span class="badge bg-success">Aktif</span>'
-              : '<span class="badge bg-secondary">Non Aktif</span>';
-          
-            row.innerHTML = `
-              <td>${emp.nama}</td>
-              <td>${emp.posisi}</td>
-              <td>${statusBadge}</td>
-            `;
-          
-            list.appendChild(row);
-          });
-        })
-        .catch(error => {
-          console.error('Fetch error:', error);
-        });
+    let currentPage = 1;
+    const itemsPerPage = 5;
+
+    function loadEmployees(page = 1) {
+      const list = document.getElementById('employeeList');
+      const pagination = document.getElementById('paginationControls');
+
+      if (!list || !window.employees) return;
+
+      currentPage = page;
+      list.innerHTML = '';
+
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const employeesToShow = window.employees.slice(start, end);
+
+      employeesToShow.forEach(emp => {
+        const row = document.createElement('tr');
+        const statusBadge = emp.is_active == 1
+          ? '<span class="badge bg-success">Aktif</span>'
+          : '<span class="badge bg-secondary">Non Aktif</span>';
+
+        row.innerHTML = `
+          <td>${emp.nama}</td>
+          <td>${emp.posisi}</td>
+          <td>${statusBadge}</td>
+        `;
+        list.appendChild(row);
+      });
+
+      // Tambahkan baris kosong jika kurang dari 5
+      const emptyRows = itemsPerPage - employeesToShow.length;
+      for (let i = 0; i < emptyRows; i++) {
+        const emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = `
+          <td>&nbsp;</td>
+          <td></td>
+          <td></td>
+        `;
+        list.appendChild(emptyRow);
+      }
+
+      renderPagination(window.employees.length);
     }
 
-    getData();
+  function renderPagination(totalItems) {
+    const pagination = document.getElementById('paginationControls');
+    if (!pagination) return;
+
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    pagination.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.className = `btn btn-sm me-1 ${i === currentPage ? 'btn-primary' : 'btn-outline-primary'}`;
+      btn.innerText = i;
+      btn.onclick = () => loadEmployees(i);
+      pagination.appendChild(btn);
+    }
+  }
+
+  getData()
+
+
+    // function getData() {
+    //   fetch('/user')
+    //     .then(response => {
+    //       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    //       return response.json();
+    //     })
+    //     .then(usersArray => {
+    //       const list = document.getElementById('employeeList');
+    //       if (!list) {
+    //         console.error('Elemen dengan id "employeeList" tidak ditemukan');
+    //         return;
+    //       }
+        
+    //       list.innerHTML = ''; // kosongkan dulu isi tabel
+        
+    //       usersArray.forEach(emp => {
+    //         const row = document.createElement('tr');
+          
+    //         const statusBadge = emp.is_active == 1
+    //           ? '<span class="badge bg-success">Aktif</span>'
+    //           : '<span class="badge bg-secondary">Non Aktif</span>';
+          
+    //         row.innerHTML = `
+    //           <td>${emp.nama}</td>
+    //           <td>${emp.posisi}</td>
+    //           <td>${statusBadge}</td>
+    //         `;
+          
+    //         list.appendChild(row);
+    //       });
+    //     })
+    //     .catch(error => {
+    //       console.error('Fetch error:', error);
+    //     });
+    // }
+
+    // getData();
 
     function getQtyPerCategory(menus, dtrans) {
       const categoryTotals = {};

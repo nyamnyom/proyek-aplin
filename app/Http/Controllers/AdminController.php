@@ -52,7 +52,7 @@ class AdminController extends Controller
             'username' => 'required|string',
             'nama' => 'required|string',
             'posisi' => 'required|string',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string',
         ]);
 
         $user = User::create($validated);
