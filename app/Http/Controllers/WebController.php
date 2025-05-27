@@ -13,7 +13,10 @@ class WebController extends Controller
         return view('login', ['users' => $users]);
     }
     function validation(Request $request){
-        $users = DB::table('user')->where('username', $request->username)->where('password', $request->password)->first();
+        $users = DB::table('user')
+            ->where('username', $request->username)
+            ->where('password', $request->password)
+            ->first();
 
         if (!$users){
             return response()->json([
@@ -22,12 +25,18 @@ class WebController extends Controller
             ]);
         }
 
-        session()->put('userActive', $users->nama);
+        // Simpan ID dan nama user
+        session()->put('userActive', [
+            'id' => $users->id,
+            'nama' => $users->nama
+        ]);
+
         return response()->json([
             'success' => true,
             'redirect' => '/kasir-main'
         ]);
     }
+
     function logout(){
         // Kosongkan cart
         Session::forget('userActive');

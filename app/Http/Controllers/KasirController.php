@@ -102,7 +102,9 @@ class KasirController extends Controller
     {
         $paymentMethod = $request->input('payment_method');
         $total = $request->input('total');
-        $kasirId = 1; // Ubah sesuai session user login jika tersedia
+
+        // Ambil ID kasir dari session, fallback ke 0 jika tidak login
+        $kasirId = session('userActive.id', 0);
 
         // Insert ke htrans
         $htransId = DB::table('htrans')->insertGetId([
@@ -124,6 +126,10 @@ class KasirController extends Controller
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
+            
+            DB::table('menus')
+            ->where('name', $item['item_name'])
+            ->increment('total_ordered', $item['qty']);
         }
 
         // Kosongkan session order_items setelah transaksi berhasil

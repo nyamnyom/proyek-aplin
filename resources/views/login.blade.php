@@ -137,6 +137,7 @@
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
           },
+        credentials: 'same-origin',
         body: JSON.stringify(data)
       })
       .then(res => res.json())
@@ -152,4 +153,3 @@
   </script>
 </body>
 </html>
-
