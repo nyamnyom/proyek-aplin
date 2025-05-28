@@ -118,7 +118,7 @@ CREATE TABLE promo (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE kode_promo (
+CREATE TABLE transaksi_promo (
   id INT AUTO_INCREMENT PRIMARY KEY,
   kasir_id INT,
   promo_id INT,
