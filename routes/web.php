@@ -62,7 +62,7 @@ Route::get('/kasir-main', [KasirController::class, 'kasir_main']);
 Route::get('/reservasi-meja', [KasirController::class, 'reservasi_meja']);
 
 Route::post('/insertTransaction', [KasirController::class, 'insertTransaction']);
-
+Route::post('/siap-saji/{id}', [KasirController::class, 'updateStatusPesanan']);
 
 Route::post('/insert-reservasi', [KasirController::class, 'insert_reservasi'])->name('kasir.insertReservasi');
 Route::post('/kasir/reservasi/update', [KasirController::class, 'updateReservasi'])->name('kasir.updateReservasi');

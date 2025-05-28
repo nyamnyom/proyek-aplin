@@ -12,15 +12,24 @@ use Illuminate\Support\Facades\Http;
 class KasirController extends Controller
 {
     function daftar_pesanan(){
+        if (!session()->has('userActive')) {
+            return redirect('/login');
+        }
         $htrans = DB::table('htrans')->get();
         return view('Kasir.daftar-pesanan', ['htrans' => $htrans]);
     }
     function payment_system(){
+        if (!session()->has('userActive')) {
+            return redirect('/login');
+        }
         $items = Session::get('order_items', []);
         return view('Kasir.payment-system', compact('items'));
     }
 
     function kasir_main(){
+        if (!session()->has('userActive')) {
+            return redirect('/login');
+        }
         $foods = DB::table('menus')->where('is_active', true)->where('category', "Makanan")->get();
         $drinks = DB::table('menus')->where('is_active', true)->where('category', "Minuman")->get();
         $rekomendasi = DB::table('menus')->where('is_active', true)->orderBy('total_ordered', 'desc')->get();
@@ -29,6 +38,9 @@ class KasirController extends Controller
     }
     
     function reservasi_meja() {
+        if (!session()->has('userActive')) {
+            return redirect('/login');
+        }
         $reservasi = DB::table('reservasi_meja')->orderBy('tanggal_reservasi', 'desc')->get();
         return view('Kasir.reservasi-meja', compact('reservasi'));
     }
@@ -223,5 +235,18 @@ class KasirController extends Controller
     {
         $reservasi = DB::table('reservasi_meja')->get();
         return view('kasir.reservasi-meja', compact('reservasi'));
+    }
+
+    public function updateStatusPesanan($htransId)
+    {
+        $updated = DB::table('htrans')
+                    ->where('id', $htransId)
+                    ->update(['status_ready' => 1]);
+
+        if ($updated) {
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false], 500);
+        }
     }
 }

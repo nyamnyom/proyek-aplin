@@ -44,6 +44,7 @@ CREATE TABLE htrans (
     payment_method VARCHAR(50),
     total INT NOT NULL,
     kasir_id INT,
+    status_ready INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -109,6 +110,7 @@ CREATE TABLE promo (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nama_promo VARCHAR(100) NOT NULL,
     deskripsi TEXT,
+    kode_promo VARCHAR(100) NOT NULL,
     tanggal_mulai DATE NOT NULL,
     tanggal_selesai DATE NOT NULL,
     is_active TINYINT(1) DEFAULT 1,

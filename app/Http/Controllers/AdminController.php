@@ -10,6 +10,7 @@ use App\Models\Menu;
 use App\Models\Promo;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -54,6 +55,9 @@ class AdminController extends Controller
             'posisi' => 'required|string',
             'password' => 'required|string',
         ]);
+
+        // Hash password
+        $validated['password'] = Hash::make($validated['password']);
 
         $user = User::create($validated);
 

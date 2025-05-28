@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class WebController extends Controller
@@ -13,12 +14,13 @@ class WebController extends Controller
         return view('login', ['users' => $users]);
     }
     function validation(Request $request){
+        // Ambil user berdasarkan username saja dulu
         $users = DB::table('user')
             ->where('username', $request->username)
-            ->where('password', $request->password)
             ->first();
 
-        if (!$users){
+        // Cek apakah user ditemukan dan password cocok
+        if (!$users || !Hash::check($request->password, $users->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Username atau password salah.'

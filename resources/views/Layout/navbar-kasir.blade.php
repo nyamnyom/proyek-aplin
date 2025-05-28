@@ -5,7 +5,7 @@
             <a class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                 <img src="https://img.freepik.com/premium-photo/fun-unique-cartoon-profile-picture-that-represents-your-style-personality_1283595-14223.jpg" alt="Profile" class="profile-img" style="width: 40px; height: 40px; border-radius: 50%;">
                 <div class="ms-2 text-start">
-                    <div class="small fw-bold">{{ session('userActive')->nama ?? 'Guest' }}</div>
+                    <div class="small fw-bold">{{ session('userActive')['nama'] ?? 'Guest' }}</div>
                     <div class="text-muted small">Kasir</div>
                 </div>
             </a>

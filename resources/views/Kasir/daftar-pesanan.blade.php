@@ -87,24 +87,42 @@
                     <h4 class="mb-0">Daftar Pesanan</h4>
                 </div>
                 
+                <!-- Tab Buttons -->
+                <div class="mb-3">
+                    <button class="btn btn-outline-primary me-2 active" id="tab-dimasak">Sedang Dimasak</button>
+                    <button class="btn btn-outline-primary" id="tab-siapSaji">Siap Saji</button>
+                </div>
+
                 <!-- Orders Section -->
-                @if ($htrans->isEmpty())
-                    <div class="alert alert-info">
-                        Belum ada transaksi
-                    </div>
-                @else
+                <div id="pesanan-dimasak">
                     @foreach ($htrans as $item)
-                        <div class="tab-content mb-2" id="pending-tab" onclick="showPesanan({{$item->id}})">
-                            <div class="order-item" data-order-id="{{$item->id}}">
-                                <div class="order-left">
-                                    <div class="order-id">Pesanan #{{$item->id}}</div>
-                                    <div class="order-time">Time : {{ date('H:i', strtotime($item->created_at)) }}</div>
-                                </div>
-                                <div class="order-price">Rp {{ number_format($item->total, 0, ',', '.') }}</div>
+                        @if ($item->status_ready == 0)
+                        <div class="order-item" data-order-id="{{$item->id}}">
+                            <div class="order-left">
+                                <div class="order-id">Pesanan #{{$item->id}}</div>
+                                <div class="order-time">Time : {{ date('d/m/Y H:i', strtotime($item->created_at)) }}</div>
                             </div>
+                            <button class="btn btn-success btn-siap-saji" id="siapSaji-btn" data-id="{{ $item->id }}">
+                                <i class="fas fa-utensils me-2"></i> Siap Saji
+                            </button>
                         </div>
+                        @endif
                     @endforeach
-                @endif
+                </div>
+
+                <div id="pesanan-siap" style="display: none;">
+                    @foreach ($htrans as $item)
+                        @if ($item->status_ready == 1)
+                        <div class="order-item" data-order-id="{{$item->id}}">
+                            <div class="order-left">
+                                <div class="order-id">Pesanan #{{$item->id}}</div>
+                                <div class="order-time">Time : {{ date('d/m/Y H:i', strtotime($item->created_at)) }}</div>
+                            </div>
+                            <div class="order-price">Rp {{ number_format($item->total, 0, ',', '.') }}</div>
+                        </div>
+                        @endif
+                    @endforeach
+                </div>
                 
             </div>
         </div>
@@ -134,8 +152,9 @@
                 </div>
                 
                 <div class="mb-3">
-                    <button class="action-btn" id="print-btn" style="background-color: #28a745;">
-                        <i class="fas fa-print me-2"></i> Print Nota
+                    <div class="buttonSiap"></div>
+                    <button class="action-btn btn" id="print-btn" style="background-color: #0d6efd">
+                        <i class="fas fa-print me-2"></i> <b>Print Nota</b>
                     </button>
                 </div>
             </div>
@@ -146,18 +165,66 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Ambil semua elemen order-item dan tambahkan event click
+        // Tab switching logic
+        const tabDimasak = document.getElementById('tab-dimasak');
+        const tabSiapSaji = document.getElementById('tab-siapSaji');
+        const dimasakSection = document.getElementById('pesanan-dimasak');
+        const siapSajiSection = document.getElementById('pesanan-siap');
+        const btnSiapSaji = document.getElementById('siapSaji-btn');
+
+        tabDimasak.addEventListener('click', () => {
+            tabDimasak.classList.add('active');
+            tabSiapSaji.classList.remove('active');
+            dimasakSection.style.display = 'block';
+            siapSajiSection.style.display = 'none';
+            btnSiapSaji.style.display = 'block';
+        });
+
+        tabSiapSaji.addEventListener('click', () => {
+            tabSiapSaji.classList.add('active');
+            tabDimasak.classList.remove('active');
+            siapSajiSection.style.display = 'block';
+            dimasakSection.style.display = 'none';
+            btnSiapSaji.style.display = 'none';
+        });
+
+        // fungsi klik pesanan
         document.querySelectorAll('.order-item').forEach(item => {
             item.addEventListener('click', function () {
                 const orderId = this.getAttribute('data-order-id');
-                showPesanan(orderId); // fungsi untuk fetch detail
+                showPesanan(orderId);
+
+                // update tombol Siap Saji dengan id pesanan aktif
+                if (btnSiapSaji) {
+                btnSiapSaji.setAttribute('data-id', orderId);
+                }
             });
         });
 
-        // Tombol print (dummy)
-        
+        document.querySelectorAll('.btn-siap-saji').forEach(button => {
+            button.addEventListener('click', function () {
+                const orderId = this.getAttribute('data-id');
+                fetch(`/siap-saji/${orderId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Pesanan ditandai sebagai siap saji!');
+                        location.reload(); // Atau ubah status tombol
+                    } else {
+                        alert('Gagal memperbarui pesanan.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
     });
-    
+
     function showPesanan(id) {
         fetch('/dtrans')
             .then(res => {
@@ -179,16 +246,16 @@
 
         // Update title pesanan
         document.getElementById('order-title').innerText = `Pesanan #${id}`;
-const printBtn = document.getElementById('print-btn');
-printBtn.setAttribute('data-id', id);
-document.getElementById('print-btn').addEventListener('click', function () {
-    const id = this.getAttribute('data-id');
-    if (id) {
-        window.open(`/Kasir/nota/${id}`, '_blank');
-    } else {
-        alert('Silakan pilih pesanan terlebih dahulu.');
-    }
-});
+        const printBtn = document.getElementById('print-btn');
+        printBtn.setAttribute('data-id', id);
+        document.getElementById('print-btn').addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            if (id) {
+                window.open(`/Kasir/nota/${id}`, '_blank');
+            } else {
+                alert('Silakan pilih pesanan terlebih dahulu.');
+            }
+        });
         // Tampilkan waktu berdasarkan created_at
         const firstItem = trx[0];
         const time = new Date(firstItem.created_at);
