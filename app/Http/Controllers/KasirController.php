@@ -249,4 +249,15 @@ class KasirController extends Controller
             return response()->json(['success' => false], 500);
         }
     }
+
+    public function cekKodePromo(Request $request)
+    {
+        $kode = $request->query('kode');
+
+        $exists = DB::table('promo')
+            ->where('kode_promo', $kode)
+            ->exists();
+
+        return response()->json(['exists' => $exists]);
+    }
 }

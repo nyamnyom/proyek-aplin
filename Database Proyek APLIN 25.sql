@@ -87,7 +87,7 @@ CREATE TABLE `user` (
 );
 
 INSERT INTO `user` (username, nama, posisi, PASSWORD) VALUES
-('kasir', 'Alexander Brick', 'Kasir', 'kasir');
+('kasir', 'Alexander Brick', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe');
 
 
 CREATE TABLE meja (
@@ -116,4 +116,14 @@ CREATE TABLE promo (
     is_active TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE kode_promo (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  kasir_id INT,
+  promo_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (kasir_id) REFERENCES `user`(id),
+  FOREIGN KEY (promo_id) REFERENCES promo(id)
 );

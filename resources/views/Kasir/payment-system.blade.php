@@ -49,6 +49,11 @@
                 <label for="paymentAmount" class="form-label small">Jumlah Pembayaran (Cash)</label>
                 <input type="text" class="form-control" id="paymentAmount" value="0">
             </div>
+            <div class="mb-3">
+                <label for="kodePromo" class="form-label small">Kode Promo</label>
+                <input type="text" class="form-control" id="kodePromo">
+                <div id="promo-feedback" class="form-text text-danger"></div>
+            </div>
 
             <div class="mb-3 d-flex justify-content-between fw-bold" id="change-container" style="display: none;">
                 <span>Kembalian</span>
@@ -148,6 +153,11 @@
             if (paid < total) {
                 return alert('Jumlah pembayaran kurang dari total tagihan!');
             }
+            
+            const kodePromos = document.getElementById('promo-feedback').textContent;
+            if (kodePromos != "") {
+                return alert('Kode promo tidak ditemukan');
+            }
 
             document.getElementById('input-payment-method').value = activeMethod;
             document.getElementById('input-total').value = total;
@@ -159,6 +169,28 @@
             if (confirm('Yakin ingin membatalkan pembayaran?')) {
                 window.location.href = 'kasir-main'; // Ganti dengan URL halaman sebenarnya
             }
+        });
+
+        document.getElementById('kodePromo').addEventListener('input', function () {
+            const kode = this.value;
+            if (kode.length === 0) {
+                document.getElementById('promo-feedback').innerText = '';
+                return;
+            }
+
+            fetch(`/cek-kode-promo?kode=${kode}`)
+            .then(response => response.json())
+            .then(data => {
+                const feedback = document.getElementById('promo-feedback');
+                if (data.exists) {
+                    feedback.innerText = '';
+                } else {
+                    feedback.innerText = 'Kode promo tidak ditemukan';
+                }
+            })
+            .catch(err => {
+                console.error('Gagal cek promo:', err);
+            });
         });
     });
 </script>
