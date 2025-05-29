@@ -77,6 +77,7 @@
     @csrf
     <input type="hidden" name="payment_method" id="input-payment-method">
     <input type="hidden" name="total" id="input-total">
+    <input type="hidden" name="kode_promo" id="input-kode-promo">
     <div id="dtrans-inputs">
         @foreach ($items as $index => $item)
             <input type="hidden" name="items[{{ $index }}][item_name]" value="{{ $item['name'] }}">
@@ -150,6 +151,14 @@
             const activeMethod = document.querySelector('.payment-method.active .small').textContent;
             const paid = activeMethod === 'Cash' ? (parseInt(paymentInput.value.replace(/\./g, '')) || 0) : total;
 
+            const confirmBtn = document.querySelector('.confirm-btn');
+
+            // Ambil nilai jumlah item dari Blade
+            const itemCount = {{ count($items) }};
+            if (itemCount === 0) {
+                return alert('Tidak ada pesanan yang dipilih!');
+            }
+
             if (paid < total) {
                 return alert('Jumlah pembayaran kurang dari total tagihan!');
             }
@@ -159,8 +168,10 @@
                 return alert('Kode promo tidak ditemukan');
             }
 
+
             document.getElementById('input-payment-method').value = activeMethod;
             document.getElementById('input-total').value = total;
+            document.getElementById('input-kode-promo').value = document.getElementById('kodePromo').value;
             document.getElementById('payment-form').submit();
         });
 

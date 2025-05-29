@@ -166,8 +166,8 @@
                                     <input type="text" class="note-input" placeholder="Order Note...">
                                 </div>
                                 <div class="d-flex align-items-center ms-3">
-                                    <input type="number" class="item-qty" value="1" min="1">
-                                    <div class="text-end ms-3" style="width: 80px;">${menuPrice}</div>
+                                    <input type="number" class="item-qty form-control" value="1" min="1" style="width: 65px; text-align: center;">
+                                    <div class="text-end ms-3" style="min-width: 90px;">${menuPrice}</div>
                                 </div>
                             </div>
                             <div class="text-end mt-2">

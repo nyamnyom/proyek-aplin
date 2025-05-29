@@ -102,7 +102,7 @@
                                 <div class="order-id">Pesanan #{{$item->id}}</div>
                                 <div class="order-time">Time : {{ date('d/m/Y H:i', strtotime($item->created_at)) }}</div>
                             </div>
-                            <button class="btn btn-success btn-siap-saji" id="siapSaji-btn" data-id="{{ $item->id }}">
+                            <button class="btn btn-success btn-siap-saji mt-2" id="siapSaji-btn" data-id="{{ $item->id }}">
                                 <i class="fas fa-utensils me-2"></i> Siap Saji
                             </button>
                         </div>

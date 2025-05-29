@@ -3,11 +3,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Dtrans;
 use App\Models\Htrans;
+use App\Models\Promo;
 use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class KasirController extends Controller
 {
@@ -114,6 +116,8 @@ class KasirController extends Controller
     {
         $paymentMethod = $request->input('payment_method');
         $total = $request->input('total');
+        $kodePromo = $request->input('kode_promo') ?? null;
+        Log::info('Kode promo yang diterima:', [$kodePromo]);
 
         // Ambil ID kasir dari session, fallback ke 0 jika tidak login
         $kasirId = session('userActive.id', 0);
@@ -142,6 +146,21 @@ class KasirController extends Controller
             DB::table('menus')
             ->where('name', $item['item_name'])
             ->increment('total_ordered', $item['qty']);
+        }
+
+        // Insert ke transaksi_promo jika pakai promo
+        if ($kodePromo != null){
+            $cekPromo = Promo::where('kode_promo', $kodePromo)->first();
+
+            if ($cekPromo) {
+                $promoId = $cekPromo->id;
+
+                DB::table('transaksi_promo')->insert([
+                    'kasir_id' => $kasirId,
+                    'promo_id' => $promoId,
+                    'created_at' => now()
+                ]);
+            }
         }
 
         // Kosongkan session order_items setelah transaksi berhasil
