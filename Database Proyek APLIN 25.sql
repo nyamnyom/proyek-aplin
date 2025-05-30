@@ -165,14 +165,15 @@ CREATE TABLE promo (
 INSERT INTO promo (nama_promo, deskripsi, kode_promo, tanggal_mulai, tanggal_selesai, is_active)
 VALUES 
 ('Diskon Awal Tahun', 'Promo spesial untuk menyambut tahun baru.', 'NEWYEAR2025', '2025-01-01', '2025-01-15', 0),
+('Ramadhan Sale', 'Promo spesial selama bulan Ramadhan.', 'RAMADHAN25', '2025-03-10', '2025-04-10', 0),
+('Diskon Akhir Tahun', 'Tutup tahun dengan hemat.', 'YEAREND2025', '2025-12-15', '2025-12-31', 0),
+('Promo Hari Spesial', 'Hanya berlaku hari ini!', 'SPECIALDAY', '2025-06-01', '2025-06-01', 1),
+('Promo Kemerdekaan', 'Rayakan kemerdekaan dengan promo menarik.', 'MERDEKA45', '2025-08-10', '2025-08-20', 0),
+('Promo Akhir Pekan', 'Hemat di akhir pekan.', 'WEEKEND20', '2025-05-30', '2025-06-02', 1),
+('Diskon Ulang Tahun', 'Rayakan ulang tahun dengan diskon.', 'BIRTHDAY25', '2025-05-28', '2025-06-10', 1),
 ('Promo Valentine', 'Diskon 20% untuk pasangan!', 'LOVE20', '2025-02-10', '2025-02-15', 0),
-('Ramadhan Sale', 'Promo spesial selama bulan Ramadhan.', 'RAMADHAN25', '2025-03-10', '2025-04-10', 1),
-('Diskon Lebaran', 'Potongan harga besar-besaran untuk Lebaran.', 'LEBARAN30', '2025-04-15', '2025-04-30', 1),
-('Mid Year Sale', 'Diskon tengah tahun hingga 50%.', 'MIDYEAR50', '2025-06-01', '2025-06-15', 1),
-('Promo Kemerdekaan', 'Rayakan kemerdekaan dengan promo menarik.', 'MERDEKA45', '2025-08-10', '2025-08-20', 1),
-('Promo Halloween', 'Diskon seram tapi hemat.', 'HALLOWEEN20', '2025-10-25', '2025-10-31', 0),
-('Diskon Akhir Tahun', 'Tutup tahun dengan hemat.', 'YEAREND2025', '2025-12-15', '2025-12-31', 1);
-
+('Promo Flash Sale', 'Promo kilat diskon gede.', 'FLASH50', '2025-06-01', '2025-06-05', 1),
+('Promo Belanja 1', 'Promo spesial belanja hemat.', 'SHOPHEMAT', '2025-05-20', '2025-06-15', 1);
 
 CREATE TABLE transaksi_promo (
   id INT AUTO_INCREMENT PRIMARY KEY,

@@ -180,4 +180,25 @@ class AdminController extends Controller
     
         return response()->json(['message' => 'Promo berhasil ditambahkan']);
     }
+
+    public function update_promo(Request $request, $id)
+    {
+        $promo = DB::table('promo')->where('id', $id)->first();
+    
+        if (!$promo) {
+            return response()->json(['message' => 'Promo tidak ditemukan'], 404);
+        }
+    
+        DB::table('promo')->where('id', $id)->update([
+            'nama_promo' => $request->nama_promo,
+            'kode_promo' => $request->kode_promo,
+            'deskripsi' => $request->deskripsi,
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'tanggal_selesai' => $request->tanggal_selesai,
+            'is_active' => $request->is_active ?? $promo->is_active,
+            'updated_at' => now()
+        ]);
+    
+        return response()->json(['message' => 'Promo berhasil diperbarui']);
+    }
 }

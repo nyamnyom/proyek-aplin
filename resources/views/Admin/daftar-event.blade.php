@@ -29,6 +29,9 @@
                 <tr><td>Deskripsi</td><td>-</td></tr>
               </tbody>
             </table>
+            <button class="btn btn-danger" id="editPromo" disabled>
+              <i class="fas fa-pencil"></i> Edit Promo
+            </button>
           </div>
         </div>
       </div>
@@ -44,6 +47,7 @@
             <h5 class="modal-title" id="addEventModalLabel">Tambah Promo Baru</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
           </div>
+          <input type="text" class="form-control" id="eventId" hidden />
           <div class="modal-body">
             <div class="mb-3">
               <label for="eventName" class="form-label">Nama Promo</label>
@@ -93,30 +97,127 @@
     function loadEvents(events) {
       const list = document.getElementById('eventList');
       list.innerHTML = '';
+    
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+    
       events.forEach(event => {
-        const item = document.createElement('a');
-        item.className = 'list-group-item list-group-item-action';
-        item.onclick = () => showEvent(event);
-        item.innerHTML = `<strong>${event.nama_promo}</strong><br/><small>${event.tanggal_mulai}</small>`;
-        list.appendChild(item);
+        const startDate = new Date(event.tanggal_mulai);
+        startDate.setHours(0, 0, 0, 0);
+      
+        const endDate = new Date(event.tanggal_selesai);
+        endDate.setHours(0, 0, 0, 0);
+      
+        if (endDate < today || startDate > today) {
+          if (event.is_active === 1) {
+            fetch(`/promo/${event.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              },
+              body: JSON.stringify({ ...event, is_active: 0 })
+            })
+            .then(res => res.json())
+            .then(data => {
+              console.log(`Promo ${event.nama_promo} diupdate is_active=0 karena sudah berlalu atau belum mulai`);
+            })
+            .catch(err => console.error('Error updating promo is_active:', err));
+          }
+        } else { //set promo aktif
+          if (event.is_active == 0) {
+            fetch(`/promo/${event.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              },
+              body: JSON.stringify({ ...event, is_active: 1 })
+            })
+            .then(res => res.json())
+            .then(data => {
+              console.log(`Promo ${event.nama_promo} diupdate is_active=1 karena sedang aktif`);
+            })
+            .catch(err => console.error('Error updating promo is_active:', err));
+          }
+        }
+      
+        showPromo(event, list)
       });
     }
 
     window.onload = loadPromo;
 
+    function showPromo(event, list){
+      const item = document.createElement('a');
+      item.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-start flex-column';
+
+      const header = document.createElement('div');
+      header.className = 'd-flex justify-content-between w-100';
+
+      const promoTitle = document.createElement('strong');
+      promoTitle.textContent = event.nama_promo;
+
+      const badge = document.createElement('span');
+
+      if (event.is_active) {
+        promoTitle.classList.add('text-dark'); // Nama promo aktif
+        badge.className = 'badge bg-success';
+        badge.textContent = 'Aktif';
+      } else {
+        promoTitle.classList.add('text-secondary'); // Nama promo tidak aktif
+        badge.className = 'badge bg-secondary';
+        badge.textContent = 'Tidak Aktif';
+      }
+
+      header.appendChild(promoTitle);
+      header.appendChild(badge);
+
+      item.appendChild(header);
+
+      const tanggal = document.createElement('small');
+      tanggal.className = 'text-muted';
+      tanggal.textContent = event.tanggal_mulai;
+      item.appendChild(tanggal)
+
+      item.onclick = () => showEvent(event);
+      list.appendChild(item);
+    }
+
     function showEvent(event) {
-      document.getElementById('eventTitle').innerText = event.nama_promo;
-      document.getElementById('eventDetail').innerHTML = `
-        <tr><td>Kode Promo</td><td>${event.kode_promo}</td></tr>
-        <tr><td>Tanggal Mulai</td><td>${event.tanggal_mulai}</td></tr>
-        <tr><td>Tanggal Selesai</td><td>${event.tanggal_selesai}</td></tr>
-        <tr><td>Deskripsi</td><td>${event.deskripsi}</td></tr>
-      `;
+        document.getElementById('eventTitle').innerText = event.nama_promo;
+        document.getElementById('eventDetail').innerHTML = `
+          <tr><td>Kode Promo</td><td>${event.kode_promo}</td></tr>
+          <tr><td>Tanggal Mulai</td><td>${event.tanggal_mulai}</td></tr>
+          <tr><td>Tanggal Selesai</td><td>${event.tanggal_selesai}</td></tr>
+          <tr><td>Deskripsi</td><td>${event.deskripsi}</td></tr>
+        `;
+        document.getElementById('editPromo').disabled = false;
+        document.getElementById('editPromo').onclick = () => {
+          document.getElementById('eventId').value = event.id || '';
+          document.getElementById('eventName').value = event.nama_promo;
+          document.getElementById('eventKode').value = event.kode_promo;
+          document.getElementById('eventMulai').value = event.tanggal_mulai;
+          document.getElementById('eventSelesai').value = event.tanggal_selesai;
+          document.getElementById('eventDesc').value = event.deskripsi;
+
+          document.getElementById('eventName').setAttribute('readonly', true);
+          document.getElementById('eventId').setAttribute('readonly', true); // walau hidden, supaya aman
+  
+          document.getElementById('eventKode').removeAttribute('readonly');
+          document.getElementById('eventMulai').removeAttribute('readonly');
+          document.getElementById('eventSelesai').removeAttribute('readonly');
+          document.getElementById('eventDesc').removeAttribute('readonly');
+
+          const modal = new bootstrap.Modal(document.getElementById('addEventModal'));
+          modal.show();
+        };
     }
 
     function savePromo() {
       event.preventDefault(); 
 
+      const eventId = document.getElementById('eventId').value;
       const tanggalMulai = new Date(document.getElementById('eventMulai').value);
       const tanggalSelesai = new Date(document.getElementById('eventSelesai').value);
       const today = new Date();
@@ -127,19 +228,20 @@
         return;
       }
 
-      const isActive = tanggalSelesai < today ? 0 : 1;
-
       const data = {
         nama_promo: document.getElementById('eventName').value,
         kode_promo: document.getElementById('eventKode').value,
         deskripsi: document.getElementById('eventDesc').value,
         tanggal_mulai: document.getElementById('eventMulai').value,
         tanggal_selesai: document.getElementById('eventSelesai').value,
-        is_active: isActive
+        is_active: 1
       };
+
+      const method = eventId ? 'PUT' : 'POST';
+      const url = eventId ? `/promo/${eventId}` : '/promo';
     
-      fetch('/promo', {
-        method: 'POST',
+      fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -158,6 +260,7 @@
         modal.hide();
 
         //reset form
+        document.getElementById('eventId').value = '';
         document.getElementById('eventName').value = '';
         document.getElementById('eventKode').value = '';
         document.getElementById('eventMulai').value = '';
