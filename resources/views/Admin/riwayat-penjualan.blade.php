@@ -83,12 +83,76 @@
           id: h.id,
           nama: user ? user.nama : '',
           created_at: h.created_at,
-          total: h.total
+          total: h.total,
+          payment_method: h.payment_method
         };
       });
 
       return combined;
     }
+
+    function printReceipt(trx, ts) {
+      console.log(ts)
+      const total = trx.reduce((sum, item) => sum + item.subtotal, 0);
+      const totalQty = trx.reduce((sum, item) => sum + item.qty, 0);
+
+      const itemsHtml = trx.map(item => `
+        <p>${item.item_name}<br>
+        <span>${item.qty} × ${item.price.toLocaleString('id-ID')} = Rp ${(item.qty * item.price).toLocaleString('id-ID')}</span></p>
+      `).join("");
+        
+      const htmlContent = `
+        <html>
+          <head>
+            <title>Nota Pembelian</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <style>
+              body { font-family: monospace; background: #fff; padding: 20px; }
+              .receipt-box { border: 1px solid #000; padding: 20px; max-width: 400px; margin: auto; }
+              .receipt-header { text-align: center; margin-bottom: 15px; }
+              .receipt-line { border-top: 1px dashed #000; margin: 10px 0; }
+              .total-box { border-top: 2px solid #000; padding-top: 10px; }
+              .text-center { text-align: center; }
+            </style>
+          </head>
+          <body>
+            <div class="receipt-box">
+              <div class="receipt-header">
+                <h2>WH</h2>
+                <p>Jl. Raya Wonorejo Permai No.rk 3, Wonorejo,<br> Kec. Rungkut, Surabaya, Jawa Timur 60296<br>
+                No. Telp 0813-3683-3882</p>
+              </div>
+              <div class="receipt-line"></div>
+              <p><strong>Tanggal:</strong> ${ts.created_at}<br>
+                <strong>Kasir:</strong> ${ts.nama ?? '-'}<br>
+                <strong>Metode Bayar:</strong> ${ts.payment_method}
+              </p>
+              <div class="receipt-line"></div>
+              ${itemsHtml}
+              <div class="receipt-line"></div>
+              <p><strong>Total QTY:</strong> ${totalQty}</p>
+              <div class="total-box">
+                <p class="fw-bold">Total: Rp ${total.toLocaleString('id-ID')}</p>
+                <p>Bayar: Rp ${total.toLocaleString('id-ID')}</p>
+                <p>Kembali: Rp 0</p>
+              </div>
+              <div class="text-center">
+                <p>Terimakasih Atas Kunjungan Anda</p>
+              </div>
+            </div>
+            <script>
+              window.onload = () => window.print();
+            <\/script>
+          </body>
+        </html>
+      `;
+        
+      const receiptWindow = window.open("", "_blank", "width=500,height=700");
+      receiptWindow.document.open();
+      receiptWindow.document.write(htmlContent);
+      receiptWindow.document.close();
+    }
+
 
     function loadHistory() {
       fetch('/transaction')
@@ -173,6 +237,7 @@
       
       document.getElementById('trxDetail').innerText = ts.nama ? `ID : ${ts.id}\n\nKasir : ${ts.nama}` : `ID : ${ts.id}`;
       document.getElementById('printButton').disabled = false;
+      document.getElementById('printButton').onclick = () => printReceipt(trx, ts);
     
       const tbody = document.getElementById('detailTable');
       tbody.innerHTML = '';

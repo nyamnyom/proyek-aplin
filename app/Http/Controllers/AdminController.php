@@ -169,6 +169,7 @@ class AdminController extends Controller
     {
         DB::table('promo')->insert([
             'nama_promo' => $request->nama_promo,
+            'kode_promo' => $request->kode_promo,
             'deskripsi' => $request->deskripsi,
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_selesai' => $request->tanggal_selesai,

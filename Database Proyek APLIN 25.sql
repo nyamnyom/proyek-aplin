@@ -49,9 +49,19 @@ CREATE TABLE htrans (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT INTO htrans (total, kasir_id, payment_method) VALUES
-(310000, 1, 'cash'),
-(78000, NULL, 'qris');
+INSERT INTO htrans (total, kasir_id, payment_method, created_at) VALUES
+(310000, 1, 'cash', '2024-06-01 10:15:00'),
+(78000, NULL, 'qris', '2024-06-02 09:30:00'),
+(96000, NULL, 'qris', '2024-06-03 13:45:00'),
+(175000, 1, 'cash', '2024-06-04 12:00:00'),
+(111000, NULL, 'qris', '2024-06-05 14:20:00'),
+(50000, 2, 'cash', '2024-06-06 15:10:00'),
+(139000, NULL, 'qris', '2024-06-07 08:55:00'),
+(91000, 2, 'cash', '2024-06-08 17:25:00'),
+(65000, NULL, 'qris', '2024-06-09 19:00:00'),
+(179000, 3, 'cash', '2024-06-10 11:05:00'),
+(74000, NULL, 'qris', '2024-06-11 16:30:00'),
+(101000, 1, 'cash', '2024-06-12 18:15:00');
 
 CREATE TABLE dtrans (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -72,8 +82,37 @@ INSERT INTO dtrans (htrans_id, item_name, qty, price, subtotal) VALUES
 (1, 'Mie Chachu Babi', 1, 45000, 45000),
 (2, 'Es Teh', 3, 6000, 18000),
 (2, 'Ayam Bakar Madu', 1, 35000, 35000),
-(2, 'Nasi Goreng Spesial', 1, 25000, 25000);
-
+(2, 'Nasi Goreng Spesial', 1, 25000, 25000),
+(3, 'Es Teh', 2, 6000, 12000),
+(3, 'Mie Chachu Babi', 2, 45000, 90000),
+(4, 'Ayam Bakar Madu', 2, 35000, 70000),
+(4, 'Nasi Semacem Babi', 2, 50000, 100000),
+(4, 'Es Teh', 1, 6000, 6000),
+(5, 'Mie Semacem Babi', 1, 40000, 40000),
+(5, 'Nasi Goreng Spesial', 2, 25000, 50000),
+(5, 'Es Teh', 3, 6000, 18000),
+(5, 'Mie Chachu Babi', 1, 45000, 45000),
+(6, 'Ayam Bakar Madu', 1, 35000, 35000),
+(6, 'Es Teh', 1, 6000, 6000),
+(6, 'Nasi Goreng Spesial', 1, 25000, 25000),
+(7, 'Mie Semacem Babi', 2, 40000, 80000),
+(7, 'Es Teh', 2, 6000, 12000),
+(7, 'Nasi Semacem Babi', 1, 50000, 50000),
+(8, 'Mie Chachu Babi', 1, 45000, 45000),
+(8, 'Es Teh', 1, 6000, 6000),
+(8, 'Ayam Bakar Madu', 1, 35000, 35000),
+(9, 'Nasi Goreng Spesial', 2, 25000, 50000),
+(9, 'Es Teh', 1, 6000, 6000),
+(9, 'Mie Semacem Babi', 1, 40000, 40000),
+(10, 'Nasi Semacem Babi', 3, 50000, 150000),
+(10, 'Es Teh', 2, 6000, 12000),
+(10, 'Mie Chachu Babi', 1, 45000, 45000),
+(11, 'Mie Semacem Babi', 1, 40000, 40000),
+(11, 'Es Teh', 1, 6000, 6000),
+(11, 'Ayam Bakar Madu', 1, 35000, 35000),
+(12, 'Mie Chachu Babi', 2, 45000, 90000),
+(12, 'Es Teh', 2, 6000, 12000),
+(12, 'Nasi Goreng Spesial', 1, 25000, 25000);
 
 CREATE TABLE `user` (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -86,9 +125,14 @@ CREATE TABLE `user` (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT INTO `user` (username, nama, posisi, PASSWORD) VALUES
-('kasir', 'Alexander Brick', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe');
-
+INSERT INTO `user` (username, nama, posisi, password) VALUES
+('kasir1', 'Alexander Brick', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe'),
+('kasir2', 'Dewi Sartika', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe'),
+('kasir3', 'Budi Santoso', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe'),
+('kasir4', 'Rina Wijaya', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe'),
+('kasir5', 'Agus Pratama', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe'),
+('admin1', 'Sari Lestari', 'Admin', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe'),
+('admin2', 'Joko Widodo', 'Admin', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe');
 
 CREATE TABLE meja (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -117,6 +161,18 @@ CREATE TABLE promo (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+INSERT INTO promo (nama_promo, deskripsi, kode_promo, tanggal_mulai, tanggal_selesai, is_active)
+VALUES 
+('Diskon Awal Tahun', 'Promo spesial untuk menyambut tahun baru.', 'NEWYEAR2025', '2025-01-01', '2025-01-15', 0),
+('Promo Valentine', 'Diskon 20% untuk pasangan!', 'LOVE20', '2025-02-10', '2025-02-15', 0),
+('Ramadhan Sale', 'Promo spesial selama bulan Ramadhan.', 'RAMADHAN25', '2025-03-10', '2025-04-10', 1),
+('Diskon Lebaran', 'Potongan harga besar-besaran untuk Lebaran.', 'LEBARAN30', '2025-04-15', '2025-04-30', 1),
+('Mid Year Sale', 'Diskon tengah tahun hingga 50%.', 'MIDYEAR50', '2025-06-01', '2025-06-15', 1),
+('Promo Kemerdekaan', 'Rayakan kemerdekaan dengan promo menarik.', 'MERDEKA45', '2025-08-10', '2025-08-20', 1),
+('Promo Halloween', 'Diskon seram tapi hemat.', 'HALLOWEEN20', '2025-10-25', '2025-10-31', 0),
+('Diskon Akhir Tahun', 'Tutup tahun dengan hemat.', 'YEAREND2025', '2025-12-15', '2025-12-31', 1);
+
 
 CREATE TABLE transaksi_promo (
   id INT AUTO_INCREMENT PRIMARY KEY,

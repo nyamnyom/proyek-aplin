@@ -23,8 +23,9 @@
             <h6 class="fw-bold" id="eventTitle">Pilih Promo</h6>
             <table class="table mt-3">
               <tbody id="eventDetail">
-                <tr><td>Nama</td><td>-</td></tr>
-                <tr><td>Tanggal</td><td>-</td></tr>
+                <tr><td>Kode Promo</td><td>-</td></tr>
+                <tr><td>Tanggal Mulai</td><td>-</td></tr>
+                <tr><td>Tanggal Selesai</td><td>-</td></tr>
                 <tr><td>Deskripsi</td><td>-</td></tr>
               </tbody>
             </table>
@@ -47,6 +48,10 @@
             <div class="mb-3">
               <label for="eventName" class="form-label">Nama Promo</label>
               <input type="text" class="form-control" id="eventName" required />
+            </div>
+            <div class="mb-3">
+              <label for="eventName" class="form-label">Kode Promo</label>
+              <input type="text" class="form-control" id="eventKode" required />
             </div>
             <div class="mb-3">
               <label for="eventMulai" class="form-label">Tanggal Mulai</label>
@@ -79,6 +84,7 @@
           return res.json();
         })
         .then(data => {
+          console.log(data)
           loadEvents(data);
         })
         .catch(err => console.error(err));
@@ -101,6 +107,7 @@
     function showEvent(event) {
       document.getElementById('eventTitle').innerText = event.nama_promo;
       document.getElementById('eventDetail').innerHTML = `
+        <tr><td>Kode Promo</td><td>${event.kode_promo}</td></tr>
         <tr><td>Tanggal Mulai</td><td>${event.tanggal_mulai}</td></tr>
         <tr><td>Tanggal Selesai</td><td>${event.tanggal_selesai}</td></tr>
         <tr><td>Deskripsi</td><td>${event.deskripsi}</td></tr>
@@ -110,12 +117,25 @@
     function savePromo() {
       event.preventDefault(); 
 
+      const tanggalMulai = new Date(document.getElementById('eventMulai').value);
+      const tanggalSelesai = new Date(document.getElementById('eventSelesai').value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (tanggalSelesai < tanggalMulai) {
+        alert("Tanggal promo tidak valid!");
+        return;
+      }
+
+      const isActive = tanggalSelesai < today ? 0 : 1;
+
       const data = {
         nama_promo: document.getElementById('eventName').value,
+        kode_promo: document.getElementById('eventKode').value,
         deskripsi: document.getElementById('eventDesc').value,
         tanggal_mulai: document.getElementById('eventMulai').value,
         tanggal_selesai: document.getElementById('eventSelesai').value,
-        is_active: 1
+        is_active: isActive
       };
     
       fetch('/promo', {
@@ -139,6 +159,7 @@
 
         //reset form
         document.getElementById('eventName').value = '';
+        document.getElementById('eventKode').value = '';
         document.getElementById('eventMulai').value = '';
         document.getElementById('eventSelesai').value = '';
         document.getElementById('eventDesc').value = '';
