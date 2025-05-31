@@ -117,7 +117,6 @@ class KasirController extends Controller
         $paymentMethod = $request->input('payment_method');
         $total = $request->input('total');
         $kodePromo = $request->input('kode_promo') ?? null;
-        Log::info('Kode promo yang diterima:', [$kodePromo]);
 
         // Ambil ID kasir dari session, fallback ke 0 jika tidak login
         $kasirId = session('userActive.id', 0);
@@ -275,6 +274,7 @@ class KasirController extends Controller
 
         $exists = DB::table('promo')
             ->where('kode_promo', $kode)
+            ->where('is_active', 1)
             ->exists();
 
         return response()->json(['exists' => $exists]);
