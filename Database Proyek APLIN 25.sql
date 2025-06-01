@@ -125,7 +125,7 @@ CREATE TABLE `user` (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT INTO `user` (username, nama, posisi, password) VALUES
+INSERT INTO `user` (username, nama, posisi, `password`) VALUES
 ('kasir1', 'Alexander Brick', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe'),
 ('kasir2', 'Dewi Sartika', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe'),
 ('kasir3', 'Budi Santoso', 'Kasir', '$2y$10$Zl6d7s0tAGZMXRVoQVTMqunblUwgPT.eFNmg7YbGjdk8IFaSFZPMe'),
