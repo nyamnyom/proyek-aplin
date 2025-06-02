@@ -8,7 +8,7 @@ use App\Models\Dtrans;
 use App\Models\Htrans;
 use App\Models\Menu;
 use App\Models\Promo;
-
+use App\Models\Shift;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -43,9 +43,55 @@ class AdminController extends Controller
         $users = User::all();
         return response()->json($users);
     }
+    public function get_shift(){
+        $shifts = Shift::all();
+        return response()->json($shifts);
+    }
     public function get_menu(){
         $menu = Menu::all();
         return response()->json($menu);
+    }
+    public function add_shift(Request $request)
+    {
+        DB::table('shift')->insert([
+            'user_id' => $request->user_id,
+            'hari_masuk' => $request->hari_masuk,
+            'jam_masuk' => $request->jam_masuk,
+            'jam_pulang' => $request->jam_pulang,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+    
+        return response()->json(['message' => 'User berhasil ditambahkan']);
+    }
+    public function update_shift(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'shifts' => 'required|array',
+            'shifts.*.hari_masuk' => 'required|string',
+            'shifts.*.jam_masuk' => 'required|string',
+            'shifts.*.jam_pulang' => 'required|string',
+        ]);
+
+        // Hapus shift lama user
+        DB::table('shift')->where('user_id', $request->user_id)->delete();
+
+        // Tambahkan shift baru
+        $newShifts = array_map(function ($shift) use ($request) {
+            return [
+                'user_id' => $request->user_id,
+                'hari_masuk' => $shift['hari_masuk'],
+                'jam_masuk' => $shift['jam_masuk'],
+                'jam_pulang' => $shift['jam_pulang'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }, $request->shifts);
+
+        DB::table('shift')->insert($newShifts);
+
+        return response()->json(['message' => 'Shift berhasil diperbarui']);
     }
     public function add_user(Request $request) //blomm jadi
     {
@@ -61,9 +107,9 @@ class AdminController extends Controller
 
         $user = User::create($validated);
 
-        return response()->json(['message' => 'User berhasil dibuat', 'user' => $user]);
+        return response()->json(['message' => 'User berhasil dibuat', 'id' => $user->id, 'user' => $user]);
     }
-        public function getDtrans() 
+    public function getDtrans() 
     {
         $dtrans = Dtrans::all(); // ambil semua data 
         return response()->json($dtrans); 
@@ -164,7 +210,12 @@ class AdminController extends Controller
             'message' => 'Menu berhasil dinonaktifkan'
         ]);
     }
-
+    public function deleteByUser($id)
+    {
+        DB::table('shift')->where('user_id', $id)->delete();
+    
+        return response()->json(['message' => 'Shift berhasil dihapus']);
+    }
     public function add_promo(Request $request)
     {
         DB::table('promo')->insert([

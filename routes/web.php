@@ -40,6 +40,11 @@ Route::get('/riwayat-penjualan', [AdminController::class, 'riwayat_penjualan']);
 
 // Get Data Page Admin
 Route::get('/user', [AdminController::class, 'get_all_user']);
+Route::get('/shift', [AdminController::class, 'get_shift']);
+Route::post('/shift', [AdminController::class, 'add_shift']);
+Route::post('/user/update', [AdminController::class, 'update_user']);
+Route::post('/shift/deleteByUser/{id}', [AdminController::class, 'deleteByUser'])->name('shift.deleteByUser');
+Route::post('/shift/update', [AdminController::class, 'update_shift']);
 Route::get('/promo', [AdminController::class, 'get_all_promo']);
 Route::post('/promo', [AdminController::class, 'add_promo']);
 Route::put('/promo/{id}', [AdminController::class, 'update_promo'])->name('promo.update');

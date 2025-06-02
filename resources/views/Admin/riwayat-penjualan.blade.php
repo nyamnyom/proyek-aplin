@@ -18,14 +18,14 @@
 
       <div class="tab-content" id="salesTabContent">
         <div class="tab-pane fade show active" id="cashier-pane" role="tabpanel">
-          <div class="list-group" id="cashierList"></div>
+          <div class="list-group overflow-auto border" style="max-height: 66vh;" id="cashierList"></div>
         </div>
         <div class="tab-pane fade" id="selfService-pane" role="tabpanel">
-          <div class="list-group" id="selfServiceList"></div>
+          <div class="list-group overflow-auto border" style="max-height: 66vh;" id="selfServiceList"></div>
         </div>
       </div>
 
-      <div class="list-group" id="salesList">
+      <div class="list-group overflow-auto border" style="max-height: 66vh;" id="salesList">
         <!-- List akan diisi oleh JavaScript -->
       </div>
     </div>

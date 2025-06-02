@@ -184,3 +184,46 @@ CREATE TABLE transaksi_promo (
   FOREIGN KEY (kasir_id) REFERENCES `user`(id),
   FOREIGN KEY (promo_id) REFERENCES promo(id)
 );
+
+CREATE TABLE `shift` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    hari_masuk ENUM('Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu') NOT NULL DEFAULT 'Senin',
+    jam_masuk TIME NOT NULL,
+    jam_pulang TIME,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
+
+INSERT INTO shift (user_id, hari_masuk, jam_masuk, jam_pulang) VALUES
+(1, 'Senin', '10:00:00', '16:00:00'),
+(1, 'Selasa', '16:00:00', '22:00:00'),
+(1, 'Rabu', '10:00:00', '16:00:00'),
+(1, 'Kamis', '16:00:00', '22:00:00'),
+(1, 'Jumat', '10:00:00', '16:00:00'),
+(1, 'Minggu', '10:00:00', '16:00:00'),
+(2, 'Senin', '16:00:00', '22:00:00'),
+(2, 'Selasa', '10:00:00', '16:00:00'),
+(2, 'Rabu', '16:00:00', '22:00:00'),
+(2, 'Kamis', '10:00:00', '16:00:00'),
+(2, 'Jumat', '16:00:00', '22:00:00'),
+(2, 'Sabtu', '10:00:00', '16:00:00'),
+(3, 'Senin', '10:00:00', '16:00:00'),
+(3, 'Selasa', '10:00:00', '16:00:00'),
+(3, 'Kamis', '16:00:00', '22:00:00'),
+(3, 'Jumat', '10:00:00', '16:00:00'),
+(3, 'Sabtu', '16:00:00', '22:00:00'),
+(3, 'Minggu', '10:00:00', '16:00:00'),
+(4, 'Senin', '16:00:00', '22:00:00'),
+(4, 'Selasa', '10:00:00', '16:00:00'),
+(4, 'Rabu', '16:00:00', '22:00:00'),
+(4, 'Kamis', '10:00:00', '16:00:00'),
+(4, 'Sabtu', '10:00:00', '16:00:00'),
+(4, 'Minggu', '16:00:00', '22:00:00'),
+(5, 'Selasa', '16:00:00', '22:00:00'),
+(5, 'Rabu', '10:00:00', '16:00:00'),
+(5, 'Kamis', '16:00:00', '22:00:00'),
+(5, 'Jumat', '10:00:00', '16:00:00'),
+(5, 'Sabtu', '16:00:00', '22:00:00'),
+(5, 'Minggu', '10:00:00', '16:00:00');
