@@ -12,7 +12,7 @@
     <!-- Optional navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="#">WeiHong Pembayaran Customer</a>
+            <a class="navbar-brand" href="#">WeiHong Pembayaran Kasir</a>
         </div>
     </nav>
 
