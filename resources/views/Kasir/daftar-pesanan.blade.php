@@ -203,6 +203,7 @@
 
         document.querySelectorAll('.btn-siap-saji').forEach(button => {
             button.addEventListener('click', function () {
+                this.innerHTML = `<i class="fa fa-spinner fa-spin"></i> Loading`;
                 const orderId = this.getAttribute('data-id');
                 fetch(`/siap-saji/${orderId}`, {
                     method: 'POST',
@@ -221,6 +222,7 @@
                     }
                 })
                 .catch(error => console.error('Error:', error));
+                this.innerHTML = `<i class="fas fa-utensils me-2"></i> Siap Saji`;
             });
         });
     });
@@ -249,12 +251,14 @@
         const printBtn = document.getElementById('print-btn');
         printBtn.setAttribute('data-id', id);
         document.getElementById('print-btn').addEventListener('click', function () {
+            printBtn.innerHTML = `<i class="fa fa-spinner fa-spin"></i> <b>Loading</b>`;
             const id = this.getAttribute('data-id');
             if (id) {
-                window.open(`/Kasir/nota/${id}`, '_blank');
+                window.location.replace(`/Kasir/nota/${id}`, '_blank');
             } else {
                 alert('Silakan pilih pesanan terlebih dahulu.');
             }
+            printBtn.innerHTML = `<i class="fas fa-print me-2"></i> <b>Print Nota</b>`;
         });
         // Tampilkan waktu berdasarkan created_at
         const firstItem = trx[0];

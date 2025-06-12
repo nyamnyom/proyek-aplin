@@ -6,6 +6,7 @@
   <title>Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <style>
     body {
@@ -116,7 +117,7 @@
         <input type="password" id="password" class="form-control" placeholder="Password" />
       </div>
   
-      <button class="btn btn-black w-100 mb-3" type="submit">Login</button>
+      <button class="btn btn-black w-100 mb-3" id="btnLogin" type="submit">Login</button>
     </form>
   </div>
 
@@ -125,6 +126,9 @@
 
     function login(e) {
       e.preventDefault();
+
+      let btnLogin = document.getElementById("btnLogin");
+      btnLogin.innerHTML = `<i class="fa fa-spinner fa-spin"></i> Loading`;
 
       const data = {
         username: document.getElementById('username').value,
@@ -149,6 +153,7 @@
         }
       })
       .catch(err => console.error(err));
+      btnLogin.innerHTML = "Login";
     }
   </script>
 </body>

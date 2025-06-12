@@ -82,14 +82,13 @@
 
 @section('scripts')
   <script>
-    function sumQtyByItemNameSorted(data) {
-      const result = {};
-    
-      data.forEach(item => {
-        if (!result[item.item_name]) {
-          result[item.item_name] = 0;
-        }
-        result[item.item_name] += Number(item.qty);
+      function sumQtyByItemNameSorted(data) {
+          const result = {};
+          data.forEach(item => {
+              if (!result[item.item_name]) {
+                result[item.item_name] = 0;
+              }
+          result[item.item_name] += Number(item.qty);
       });
     
       // Ubah hasil ke array lalu urutkan descending berdasarkan qty

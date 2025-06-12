@@ -150,21 +150,25 @@
         document.querySelector('.confirm-btn').addEventListener('click', function () {
             const activeMethod = document.querySelector('.payment-method.active .small').textContent;
             const paid = activeMethod === 'Cash' ? (parseInt(paymentInput.value.replace(/\./g, '')) || 0) : total;
-
+            
             const confirmBtn = document.querySelector('.confirm-btn');
+            confirmBtn.innerHTML = `<i class="fa fa-spinner fa-spin"></i> Loading`;
 
             // Ambil nilai jumlah item dari Blade
             const itemCount = {{ count($items) }};
             if (itemCount === 0) {
+                confirmBtn.innerHTML = "Selesaikan Pembayaran";
                 return alert('Tidak ada pesanan yang dipilih!');
             }
 
             if (paid < total) {
+                confirmBtn.innerHTML = "Selesaikan Pembayaran";
                 return alert('Jumlah pembayaran kurang dari total tagihan!');
             }
             
             const kodePromos = document.getElementById('promo-feedback').textContent;
             if (kodePromos != "") {
+                confirmBtn.innerHTML = "Selesaikan Pembayaran";
                 return alert('Kode promo tidak ditemukan');
             }
 
@@ -173,6 +177,8 @@
             document.getElementById('input-total').value = total;
             document.getElementById('input-kode-promo').value = document.getElementById('kodePromo').value;
             document.getElementById('payment-form').submit();
+
+            confirmBtn.innerHTML = "Selesaikan Pembayaran";
         });
 
         // Tombol batal

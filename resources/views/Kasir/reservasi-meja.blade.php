@@ -58,7 +58,7 @@
         </div>
 
         <button type="submit" class="btn btn-danger" id="submit-btn">Simpan Reservasi</button>
-        <button type="button" class="btn btn-secondary" onclick="resetForm()">Batal Edit</button>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">Batal</button>
       </form>
 
       <div class="mt-4">

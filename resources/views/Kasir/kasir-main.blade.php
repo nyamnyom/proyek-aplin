@@ -217,8 +217,10 @@
         }
 
 
-        document.getElementById('checkoutBtn').addEventListener('click', function () {
+        let btnCheckout = document.getElementById('checkoutBtn');
+        btnCheckout.addEventListener('click', function () {
             const orderData = [];
+            btnCheckout.innerHTML = `<i class="fa fa-spinner fa-spin"></i>Loading`;
             
             document.querySelectorAll('.order-item').forEach(item => {
                 const name = item.querySelector('.fw-bold').textContent;
@@ -251,6 +253,7 @@
                     alert('Gagal menyimpan pesanan ke session');
                 }
             });
+            btnCheckout.innerHTML = "Lanjutkan Pembayaran";
         });
 
     });

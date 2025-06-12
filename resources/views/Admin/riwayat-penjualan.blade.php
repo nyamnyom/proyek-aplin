@@ -18,14 +18,14 @@
 
       <div class="tab-content" id="salesTabContent">
         <div class="tab-pane fade show active" id="cashier-pane" role="tabpanel">
-          <div class="list-group overflow-auto border" style="max-height: 66vh;" id="cashierList"></div>
+          <div class="list-group overflow-auto border" style="max-height: 60vh;" id="cashierList"></div>
         </div>
         <div class="tab-pane fade" id="selfService-pane" role="tabpanel">
-          <div class="list-group overflow-auto border" style="max-height: 66vh;" id="selfServiceList"></div>
+          <div class="list-group overflow-auto border" style="max-height: 60vh;" id="selfServiceList"></div>
         </div>
       </div>
 
-      <div class="list-group overflow-auto border" style="max-height: 66vh;" id="salesList">
+      <div class="list-group overflow-auto border" style="max-height: 60vh;" id="salesList">
         <!-- List akan diisi oleh JavaScript -->
       </div>
     </div>
@@ -33,7 +33,7 @@
     <!-- Detail Penjualan -->
     <div class="col-md-5">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="overflow-y: auto; max-height: 69vh">
           <div class="d-flex justify-content-between">
             <h6 class="fw-bold" id="trxDetail">Pilih transaksi</h6>
             <span class="badge bg-danger" id="trxDate"></span>
@@ -92,6 +92,8 @@
     }
 
     function printReceipt(trx, ts) {
+      let btnPrint = document.getElementById("printButton");
+      btnPrint.innerHTML = `<i class="fa fa-spinner fa-spin"></i> Loading`;
       console.log(ts)
       const total = trx.reduce((sum, item) => sum + item.subtotal, 0);
       const totalQty = trx.reduce((sum, item) => sum + item.qty, 0);
@@ -151,6 +153,8 @@
       receiptWindow.document.open();
       receiptWindow.document.write(htmlContent);
       receiptWindow.document.close();
+
+      btnPrint.innerHTML = `<i class="fas fa-print"></i> Print Nota`;
     }
 
 

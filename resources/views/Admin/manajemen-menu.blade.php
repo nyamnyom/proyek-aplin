@@ -99,6 +99,7 @@
           <div class="mb-3">
             <label for="image" class="form-label">Gambar Menu</label>
             <input type="file" class="form-control" id="image" name="image">
+            <div id="error-image" style="color: red"></div>
           </div>
         </div>
 
@@ -116,13 +117,13 @@
     listMenu = @json($menus);
 
     function openForm() {
-      document.getElementById("menuModalLabel").textContent = "Tambah Menu";
-      document.getElementById("editIndex").value = "";
-      document.getElementById("namaMenu").value = "";
-      document.getElementById("kategori").value = "";
-      document.getElementById("harga").value = "";
-      document.getElementById("desc").value = "";
-      document.getElementById("image").value = "";
+        document.getElementById("error-image").innerHTML = "";
+        document.getElementById("menuModalLabel").textContent = "Tambah Menu";
+        document.getElementById("editIndex").value = "";
+        document.getElementById("namaMenu").value = "";
+        document.getElementById("kategori").value = "";
+        document.getElementById("harga").value = "";
+        document.getElementById("desc").value = "";
     } 
 
     function editMenu(index) {
@@ -133,7 +134,6 @@
         document.getElementById("kategori").value = data.category;
         document.getElementById("harga").value = data.price;
         document.getElementById("desc").value = data.description;
-        document.getElementById("image").value = "";
         new bootstrap.Modal(document.getElementById("menuModal")).show();
     }
 
@@ -165,6 +165,7 @@
 
     function saveMenu(e) {
       e.preventDefault();
+      document.getElementById("error-image").innerHTML = "";
       const id = document.getElementById("editIndex").value;
 
       const formData = new FormData();
@@ -176,6 +177,11 @@
       const imageFile = document.getElementById("image").files[0];
       if (imageFile) {
           formData.append("image", imageFile);
+      }
+      // Kalau insert wajib memasukkan gambar
+      else if (id == ""){
+          document.getElementById("error-image").innerHTML = "Wajib Input Gambar";
+          return false;
       }
 
       const url = id ? `/updateMenu/${id}` : '/insertMenu';

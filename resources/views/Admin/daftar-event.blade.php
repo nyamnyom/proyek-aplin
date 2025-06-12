@@ -12,7 +12,7 @@
     <div class="row mt-4">
       <!-- List Event -->
       <div class="col-md-7">
-        <div id="eventList" class="list-group overflow-auto border" style="max-height: 66vh;">
+        <div id="eventList" class="list-group overflow-auto border" style="max-height: 62vh;">
           <!-- Event akan dimuat di sini -->
         </div>
       </div>

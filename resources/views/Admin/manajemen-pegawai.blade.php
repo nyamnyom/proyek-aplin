@@ -17,7 +17,7 @@
             <i class="fas fa-user-plus me-1"></i> Tambah
           </button>
         </div>
-        <div class="list-group overflow-auto border" style="max-height: 66vh;" id="employeeList">
+        <div class="list-group overflow-auto border" style="overflow-y: auto; height: 61vh" id="employeeList">
           {{-- data masuk disini --}}
         </div>
       </div>
@@ -25,7 +25,7 @@
       <!-- Detail Pegawai -->
       <div class="col-md-5">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body" style="overflow-y: auto; max-height: 69vh">
             <h6 class="fw-bold" id="empDetail">Pilih pegawai</h6>
             <table class="table mt-3">
               <tbody id="detailPegawai">
