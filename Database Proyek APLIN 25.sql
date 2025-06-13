@@ -15,6 +15,7 @@ CREATE TABLE menus (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+
 INSERT INTO menus (`name`, `description`, price, category, image_url, total_ordered) VALUES
 ('Nasi Goreng Spesial', 'Nasi goreng spesial dengan telur dan daging', 25000, 'Makanan', 'uploads/nasi_goreng_spesial.jpg', 8),
 ('Ayam Bakar Madu', 'Ayam bakar dengan bumbu madu special', 35000, 'Makanan', 'uploads/ayam_bakar_madu.jpeg', 6),
